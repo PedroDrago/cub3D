@@ -16,8 +16,8 @@ ENDCOLOR=\e[0m
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJ)
-	$(CC) $(FLAGS) $(OBJ) $(LIBFT) $(INCLUDES) -o $(NAME)
+$(NAME): $(LIBFT) $(MINILIBX) $(OBJ)
+	$(CC) $(FLAGS) $(OBJ) $(MINILIBX) $(LIBFT) $(INCLUDES) -o $(NAME)
 
 .c.o:
 	$(CC) $(FLAGS) -c $< -o $@
