@@ -1,32 +1,37 @@
 NAME = cub3D
 
 SRC = src/main.c
-MINILIBX = minilibx-linux/libmlx.a
 OBJ = $(SRC:.c=.o)
+LINKS = -lX11 -lXext
 
-LIBFT = libft/libft.a
-INCLUDES = -lX11 -lXext
+MINILIBX_DIR = minilibx-linux
+MINILIBX = $(MINILIBX_DIR)/libmlx.a
+LIBFT_DIR = libft
+LIBFT = $(LIBFT_DIR)/libft.a
 
 CC = cc
 FLAGS = -Wall -Wextra -Werror -ggdb3
-
-RED=\e[31m
-GREEN=\e[32m
-ENDCOLOR=\e[0m
+DEV_FLAGS = -Wall -Wextra -ggdb3
 
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(MINILIBX) $(OBJ)
-	$(CC) $(FLAGS) $(OBJ) $(MINILIBX) $(LIBFT) $(INCLUDES) -o $(NAME)
+	$(CC) $(DEV_FLAGS) $(OBJ) $(MINILIBX) $(LIBFT) $(LINKS) -o $(NAME)
+
+$(LIBFT):
+	make -C libft/
+
+$(MINILIBX):
+	make -C $(MINILIBX_DIR)
 
 .c.o:
-	$(CC) $(FLAGS) -c $< -o $@
+	$(CC) $(DEV_FLAGS) -c $< -o $@
 
 exec: $(NAME)
 	./$(NAME)
 
-$(LIBFT):
-	make -C libft/
+debug: $(NAME)
+	lldb ./$(NAME)
 
 clean:
 	rm -f $(OBJ)
@@ -38,4 +43,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: clean fclean re all exec
+.PHONY: clean fclean re all exec debug
