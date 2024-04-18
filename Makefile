@@ -9,6 +9,10 @@ MINILIBX = $(MINILIBX_DIR)/libmlx.a
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
+RED=\e[31m
+GREEN=\e[32m
+ENDCOLOR=\e[0m
+
 CC = cc
 FLAGS = -Wall -Wextra -Werror -ggdb3
 DEV_FLAGS = -Wall -Wextra -ggdb3
@@ -17,6 +21,7 @@ all: $(NAME)
 
 $(NAME): $(LIBFT) $(MINILIBX) $(OBJ)
 	$(CC) $(DEV_FLAGS) $(OBJ) $(MINILIBX) $(LIBFT) $(LINKS) -o $(NAME)
+	@echo "$(RED)[ATTENTION] REMOVE DEV_FLAGS BEFORE SHIPPING"
 
 $(LIBFT):
 	make -C libft/
