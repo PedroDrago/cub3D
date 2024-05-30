@@ -14,6 +14,8 @@
 # define RGB_PURPLE 0xA020F0
 # define BROWN 0x964B00
 
+int    pressed_keys[5000];
+
 int worldMap[mapWidth][mapHeight]=
 {
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -56,44 +58,64 @@ void draw_line(t_image *img, int x, int start, int end, unsigned color)
 		my_mlx_pixel_put(img, x, start++, color);
 }
 
-int key_hook(int key, t_game *game)
+int key_hook(int key, t_game *game) // <- atualizar essa
 {
-	if (key == 65307)
-		exit(1);
-	if (key == 119) //w
-	{
-		game->data.posX += game->data.dirX * 0.5;
-		game->data.posY += game->data.dirY * 0.5;
-	}
-	if (key == 97)
-	{
-		double oldDirx = game->data.dirX;
-		game->data.dirX = game->data.dirX * cos(0.1) - game->data.dirY * sin(0.1);
-		game->data.dirY = oldDirx * sin(0.1) + game->data.dirY * cos(0.1);
-		double oldPlaneX = game->data.planeX;
-		game->data.planeX = game->data.planeX * cos(0.1) - game->data.planeY * sin(0.1);
-		game->data.planeY = oldPlaneX * sin(0.1) + game->data.planeY * cos(0.1);
-	}
-	if (key == 115) //s
-	{
-		game->data.posX -= game->data.dirX * 0.5;
-		game->data.posY -= game->data.dirY * 0.5;
-	}
-	if (key == 100) //d
-	{
-		double oldDirx = game->data.dirX;
-		game->data.dirX = game->data.dirX * cos(-0.1) - game->data.dirY * sin(-0.1);
-		game->data.dirY = oldDirx * sin(-0.1) + game->data.dirY * cos(-0.1);
-		double oldPlaneX = game->data.planeX;
-		game->data.planeX = game->data.planeX * cos(-0.1) - game->data.planeY * sin(-0.1);
-		game->data.planeY = oldPlaneX * sin(-0.1) + game->data.planeY * cos(-0.1);
-	}
-	return 0;
+    (void)game;
+    if (key == 65307)
+        exit(1);
+    if (key == 119) //w
+    pressed_keys[119] = !pressed_keys[119];
+    if (key == 97) //e
+        pressed_keys[97] = !pressed_keys[97];
+    if (key == 115) //s
+        pressed_keys[115] = !pressed_keys[115];
+    if (key == 100) //d
+        pressed_keys[100] = !pressed_keys[100];
+    return 0;
 }
 
-int game_loop(t_game *game)
+void    update_player_pos(t_game *game) // ESSA AQUI É NOVA
 {
-	t_image frame;
+    if (pressed_keys[119])
+    {
+        game->data.posX += game->data.dirX * 0.5;
+        game->data.posY += game->data.dirY * 0.5;
+    }
+    if (pressed_keys[97])
+    {
+        double oldDirx = game->data.dirX;
+        game->data.dirX = game->data.dirX * cos(0.1) - game->data.dirY * sin(0.1);
+        game->data.dirY = oldDirx * sin(0.1) + game->data.dirY * cos(0.1);
+        double oldPlaneX = game->data.planeX;
+        game->data.planeX = game->data.planeX * cos(0.1) - game->data.planeY * sin(0.1);
+        game->data.planeY = oldPlaneX * sin(0.1) + game->data.planeY * cos(0.1);
+    }
+    if (pressed_keys[115])
+    {
+        game->data.posX -= game->data.dirX * 0.5;
+        game->data.posY -= game->data.dirY * 0.5;
+    }
+    if (pressed_keys[100])
+    {
+        double oldDirx = game->data.dirX;
+        game->data.dirX = game->data.dirX * cos(-0.1) - game->data.dirY * sin(-0.1);
+        game->data.dirY = oldDirx * sin(-0.1) + game->data.dirY * cos(-0.1);
+        double oldPlaneX = game->data.planeX;
+        game->data.planeX = game->data.planeX * cos(-0.1) - game->data.planeY * sin(-0.1);
+        game->data.planeY = oldPlaneX * sin(-0.1) + game->data.planeY * cos(-0.1);
+    }
+}
+
+int game_loop(t_game *game) // <- Atualizar essa aqui (só ta com a parte de cima da função, o resto pode deixar igual.
+{
+    t_image frame;
+    static    int    movement_limiter = 0;
+    
+    if (++movement_limiter == 6)
+    {
+        movement_limiter = 0;
+        update_player_pos(game);
+    }
 	frame.img = mlx_new_image(game->mlx, screenWidth, screenHeight);
 	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, &frame.line_length, &frame.endian);
 	//Paints ceiling and floor of different colors
@@ -198,11 +220,26 @@ int game_loop(t_game *game)
 	return 0;
 }
 
+void	*ft_memset(void *s, int c, size_t n)
+{
+	size_t	count;
+	char	*ptr;
+
+	count = 0;
+	ptr = (char *) s;
+	while (count < n)
+	{
+		ptr[count] = c;
+		count++;
+	}
+	return (s);
+}
 
 int main(void)
 {
 	t_game	game;
 
+	ft_memset(pressed_keys, 0, sizeof(pressed_keys)); //  <-        ADICIONAR ESSA
 	game.data.posX = 22, game.data.posY = 12;  //x and y start position
 	game.data.dirX = -1, game.data.dirY = 0; //initial direction vector
 	game.data.planeX = 0, game.data.planeY = 0.66; //the 2d raycaster version of camera plane
@@ -213,7 +250,9 @@ int main(void)
 	game.mlx = mlx_init();
 	game.win = mlx_new_window(game.mlx, 640, 480, "Cub3D");
 	mlx_loop_hook(game.mlx, game_loop, &game);
-	mlx_key_hook(game.win, key_hook, &game);
+	//mlx_key_hook(game.win, key_hook, &game);
+	mlx_hook(game.win, KeyPress, KeyPressMask, &key_hook, 0); // <- ADICIONAR ESSA
+    mlx_hook(game.win, KeyRelease, KeyReleaseMask, &key_hook, 0); //<- ADICIONAR ESSA
 	mlx_loop(game.mlx);
 	return (0);
 }
