@@ -18,6 +18,8 @@ typedef struct s_data
 	t_vector_d pos;
 	t_vector_d plane;
 	t_vector_d dir;
+	double     mov_speed;
+	double     rot_speed;
 } t_data;
 
 typedef struct s_image

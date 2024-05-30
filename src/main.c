@@ -109,14 +109,14 @@ int key_hook(int key, t_game *game) // <- atualizar essa
 
 void	walk_foward(t_game *game)
 {
-	game->data.pos.x += game->data.dir.x * MOV_SPEED;
-	game->data.pos.y += game->data.dir.y * MOV_SPEED;
+	game->data.pos.x += game->data.dir.x * game->data.mov_speed;
+	game->data.pos.y += game->data.dir.y * game->data.mov_speed;
 }
 
 void walk_backwards(t_game *game)
 {
-	game->data.pos.x -= game->data.dir.x * MOV_SPEED;
-	game->data.pos.y -= game->data.dir.x * MOV_SPEED;
+	game->data.pos.x -= game->data.dir.x * game->data.mov_speed;
+	game->data.pos.y -= game->data.dir.x * game->data.mov_speed;
 }
 
 void rotate_left(t_game *game)
@@ -125,21 +125,21 @@ void rotate_left(t_game *game)
 	double old_plane_x;
 
 	old_dir_x = game->data.dir.x;
-	game->data.dir.x = game->data.dir.x * cos(ROT_SPEED) - game->data.dir.y * sin(ROT_SPEED);
-	game->data.dir.y = old_dir_x * sin(ROT_SPEED) + game->data.dir.y * cos(ROT_SPEED);
+	game->data.dir.x = game->data.dir.x * cos(game->data.rot_speed) - game->data.dir.y * sin(game->data.rot_speed);
+	game->data.dir.y = old_dir_x * sin(game->data.rot_speed) + game->data.dir.y * cos(game->data.rot_speed);
 	old_plane_x = game->data.plane.x;
-	game->data.plane.x = game->data.plane.x * cos(ROT_SPEED) - game->data.plane.y * sin(ROT_SPEED);
-	game->data.plane.y = old_plane_x * sin(ROT_SPEED) + game->data.plane.y * cos(ROT_SPEED);
+	game->data.plane.x = game->data.plane.x * cos(game->data.rot_speed) - game->data.plane.y * sin(game->data.rot_speed);
+	game->data.plane.y = old_plane_x * sin(game->data.rot_speed) + game->data.plane.y * cos(game->data.rot_speed);
 }
 
 void rotate_right(t_game *game)
 {
 	double oldDirx = game->data.dir.x;
-	game->data.dir.x= game->data.dir.x* cos(-ROT_SPEED) - game->data.dir.y* sin(-ROT_SPEED);
-	game->data.dir.y= oldDirx * sin(-ROT_SPEED) + game->data.dir.y* cos(-ROT_SPEED);
+	game->data.dir.x= game->data.dir.x* cos(-game->data.rot_speed) - game->data.dir.y* sin(-game->data.rot_speed);
+	game->data.dir.y= oldDirx * sin(-game->data.rot_speed) + game->data.dir.y* cos(-game->data.rot_speed);
 	double oldPlaneX = game->data.plane.x;
-	game->data.plane.x= game->data.plane.x* cos(-ROT_SPEED) - game->data.plane.y* sin(-ROT_SPEED);
-	game->data.plane.y = oldPlaneX * sin(-ROT_SPEED) + game->data.plane.y* cos(-ROT_SPEED);
+	game->data.plane.x= game->data.plane.x* cos(-game->data.rot_speed) - game->data.plane.y* sin(-game->data.rot_speed);
+	game->data.plane.y = oldPlaneX * sin(-game->data.rot_speed) + game->data.plane.y* cos(-game->data.rot_speed);
 }
 
 void    update_player_pos(t_game *game) // ESSA AQUI É NOVA
@@ -305,6 +305,8 @@ int main(void)
 	game.data.pos.x = 22, game.data.pos.y = 12;  //x and y start position
 	game.data.dir.x = -1, game.data.dir.y = 0; //initial direction vector
 	game.data.plane.x = 0, game.data.plane.y = 0.66; //the 2d raycaster version of camera plane
+	game.data.mov_speed = 0.5;
+	game.data.rot_speed = 0.1;
 	game.mlx = mlx_init();
 	game.win = mlx_new_window(game.mlx, 640, 480, "Cub3D");
 	mlx_loop_hook(game.mlx, game_loop, &game);

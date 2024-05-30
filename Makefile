@@ -2,7 +2,7 @@ NAME = cub3D
 
 SRC = src/main.c
 OBJ = $(SRC:.c=.o)
-LINKS = -lX11 -lXext
+LINKS = -lX11 -lXext -lm
 
 MINILIBX_DIR = minilibx-linux
 MINILIBX = $(MINILIBX_DIR)/libmlx.a
