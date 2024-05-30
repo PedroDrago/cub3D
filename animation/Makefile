@@ -2,7 +2,7 @@ NAME = animation
 
 SRC = main.c
 OBJ = $(SRC:.c=.o)
-LINKS = -lX11 -lXext
+LINKS = -lX11 -lXext -lmath
 
 MINILIBX_DIR = ../minilibx-linux
 MINILIBX = $(MINILIBX_DIR)/libmlx.a
