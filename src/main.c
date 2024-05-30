@@ -11,6 +11,8 @@
 #define RGB_BLUE   0x0000FF
 #define RGB_WHITE  0xFFFFFF
 #define RGB_YELLOW 0xFFFF0
+# define RGB_PURPLE 0xA020F0
+# define BROWN 0x964B00
 
 int worldMap[mapWidth][mapHeight]=
 {
@@ -94,6 +96,15 @@ int game_loop(t_game *game)
 	t_image frame;
 	frame.img = mlx_new_image(game->mlx, screenWidth, screenHeight);
 	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, &frame.line_length, &frame.endian);
+	//Paints ceiling and floor of different colors
+	for (int x = 0; x < screenWidth; x++) {
+		for (int y = 0; y < screenHeight / 2; y++) {
+			my_mlx_pixel_put(&frame, x, y, RGB_PURPLE);
+		}
+		for (int y = screenHeight / 2; y < screenHeight; y++) {
+			my_mlx_pixel_put(&frame, x, y, BROWN);
+		}
+	}
 	for(int x = 0; x < screenWidth; x++)
 	{
 		//calculate ray position and direction
