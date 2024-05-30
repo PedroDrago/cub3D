@@ -107,34 +107,37 @@ int key_hook(int key, t_game *game) // <- atualizar essa
 
 void	walk_foward(t_game *game)
 {
-	game->data.posX += game->data.dirX * 0.5;
-	game->data.posY += game->data.dirY * 0.5;
+	game->data.pos.x += game->data.dir.x * 0.5;
+	game->data.pos.y += game->data.dir.y * 0.5;
 }
 
 void walk_backwards(t_game *game)
 {
-	game->data.posX -= game->data.dirX * 0.5;
-	game->data.posY -= game->data.dirY * 0.5;
+	game->data.pos.x -= game->data.dir.x * 0.5;
+	game->data.pos.y -= game->data.dir.x * 0.5;
 }
 
 void rotate_left(t_game *game)
 {
-	double oldDirx = game->data.dirX;
-	game->data.dirX = game->data.dirX * cos(0.1) - game->data.dirY * sin(0.1);
-	game->data.dirY = oldDirx * sin(0.1) + game->data.dirY * cos(0.1);
-	double oldPlaneX = game->data.planeX;
-	game->data.planeX = game->data.planeX * cos(0.1) - game->data.planeY * sin(0.1);
-	game->data.planeY = oldPlaneX * sin(0.1) + game->data.planeY * cos(0.1);
+	double old_dir_x;
+	double old_plane_x;
+
+	old_dir_x = game->data.dir.x;
+	game->data.dir.x = game->data.dir.x * cos(0.1) - game->data.dir.y * sin(0.1);
+	game->data.dir.y = old_dir_x * sin(0.1) + game->data.dir.y * cos(0.1);
+	old_plane_x = game->data.plane.x;
+	game->data.plane.x = game->data.plane.x * cos(0.1) - game->data.plane.y * sin(0.1);
+	game->data.plane.y = old_plane_x * sin(0.1) + game->data.plane.y * cos(0.1);
 }
 
 void rotate_right(t_game *game)
 {
-	double oldDirx = game->data.dirX;
-	game->data.dirX = game->data.dirX * cos(-0.1) - game->data.dirY * sin(-0.1);
-	game->data.dirY = oldDirx * sin(-0.1) + game->data.dirY * cos(-0.1);
-	double oldPlaneX = game->data.planeX;
-	game->data.planeX = game->data.planeX * cos(-0.1) - game->data.planeY * sin(-0.1);
-	game->data.planeY = oldPlaneX * sin(-0.1) + game->data.planeY * cos(-0.1);
+	double oldDirx = game->data.dir.x;
+	game->data.dir.x= game->data.dir.x* cos(-0.1) - game->data.dir.y* sin(-0.1);
+	game->data.dir.y= oldDirx * sin(-0.1) + game->data.dir.y* cos(-0.1);
+	double oldPlaneX = game->data.plane.x;
+	game->data.plane.x= game->data.plane.x* cos(-0.1) - game->data.plane.y* sin(-0.1);
+	game->data.plane.y = oldPlaneX * sin(-0.1) + game->data.plane.y* cos(-0.1);
 }
 
 void    update_player_pos(t_game *game) // ESSA AQUI É NOVA
@@ -173,22 +176,22 @@ void calculate_step_and_side_dist(t_game *game, t_ray *ray)
 	if (ray->dir.x < 0)
 	{
 		ray->step.x = -1;
-		ray->side_dist.x = (game->data.posX - ray->map.x) * ray->delta_dist.x;
+		ray->side_dist.x = (game->data.pos.x - ray->map.x) * ray->delta_dist.x;
 	}
 	else
 	{
 		ray->step.x = 1;
-		ray->side_dist.x = (ray->map.x + 1.0 - game->data.posX) * ray->delta_dist.x;
+		ray->side_dist.x = (ray->map.x + 1.0 - game->data.pos.x) * ray->delta_dist.x;
 	}
 	if (ray->dir.y < 0)
 	{
 		ray->step.y = -1;
-		ray->side_dist.y = (game->data.posY - ray->map.y) * ray->delta_dist.y;
+		ray->side_dist.y = (game->data.pos.y - ray->map.y) * ray->delta_dist.y;
 	}
 	else
 	{
 		ray->step.y = 1;
-		ray->side_dist.y = (ray->map.y + 1.0 - game->data.posY) * ray->delta_dist.y;
+		ray->side_dist.y = (ray->map.y + 1.0 - game->data.pos.y) * ray->delta_dist.y;
 	}
 
 }
@@ -226,10 +229,10 @@ void calculate_pos_dir_delta(t_game *game,t_ray *ray, int x)
 {
 		//calculate ray position and direction
 		ray->camera.x = 2 * x / (double)S_WIDTH - 1; //x-coordinate in camera space
-		ray->dir.x = game->data.dirX + game->data.planeX * ray->camera.x;
-		ray->dir.y = game->data.dirY + game->data.planeY * ray->camera.x;
-		ray->map.x = (int)game->data.posX;
-		ray->map.y = (int)game->data.posY;
+		ray->dir.x = game->data.dir.x + game->data.plane.x * ray->camera.x;
+		ray->dir.y = game->data.dir.y + game->data.plane.y * ray->camera.x;
+		ray->map.x = (int)game->data.pos.x;
+		ray->map.y = (int)game->data.pos.y;
 		//length of ray from one x or y-side to next x or y-side
 		if (ray->dir.x == 0)
 			ray->delta_dist.x = 1e30;
@@ -253,8 +256,8 @@ void	pre_raycast(t_game *game,t_image *frame)
 	frame->img = mlx_new_image(game->mlx, S_WIDTH, S_HEIGHT);
 	frame->addr = mlx_get_data_addr(frame->img, &frame->bits_per_pixel, &frame->line_length, &frame->endian);
 	paint_floor_and_ceiling(frame);
-
 }
+
 int game_loop(t_game *game) // <- Atualizar essa aqui (só ta com a parte de cima da função, o resto pode deixar igual.
 {
 	t_image frame;
@@ -297,9 +300,9 @@ int main(void)
 	t_game	game;
 
 	ft_memset(pressed_keys, 0, sizeof(pressed_keys)); //  <-        ADICIONAR ESSA
-	game.data.posX = 22, game.data.posY = 12;  //x and y start position
-	game.data.dirX = -1, game.data.dirY = 0; //initial direction vector
-	game.data.planeX = 0, game.data.planeY = 0.66; //the 2d raycaster version of camera plane
+	game.data.pos.x = 22, game.data.pos.y = 12;  //x and y start position
+	game.data.dir.x = -1, game.data.dir.y = 0; //initial direction vector
+	game.data.plane.x = 0, game.data.plane.y = 0.66; //the 2d raycaster version of camera plane
 	game.data.time = 0; //time of current frame
 	game.data.moveSpeed = 60 * 5.0;
 	game.data.rotSpeed = 60 * 3.0;

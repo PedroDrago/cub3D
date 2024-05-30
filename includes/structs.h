@@ -15,16 +15,13 @@ typedef struct s_vector_i
 
 typedef struct s_data
 {
-	double posX;
-	double posY;
-	double planeX;
-	double planeY;
-	double dirX;
-	double dirY;
-	double time;
-	double oldTime;
-	double moveSpeed;
-	double rotSpeed;
+	t_vector_d pos;
+	t_vector_d plane;
+	t_vector_d dir;
+	double     time;
+	double     oldTime;
+	double     moveSpeed;
+	double     rotSpeed;
 } t_data;
 
 typedef struct s_image
