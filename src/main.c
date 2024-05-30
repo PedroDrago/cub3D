@@ -116,7 +116,7 @@ void	walk_foward(t_game *game)
 void walk_backwards(t_game *game)
 {
 	game->data.pos.x -= game->data.dir.x * game->data.mov_speed;
-	game->data.pos.y -= game->data.dir.x * game->data.mov_speed;
+	game->data.pos.y -= game->data.dir.y * game->data.mov_speed;
 }
 
 void rotate_left(t_game *game)
