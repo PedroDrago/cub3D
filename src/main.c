@@ -14,6 +14,8 @@
 # define RGB_PURPLE 0xA020F0
 # define RGB_BROWN 0x964B00
 # define W 119
+# define LEFT 65361
+# define RIGHT 65363
 # define A 97
 # define S 115
 # define D 100
@@ -105,9 +107,9 @@ int	key_hook(int key, t_game *game) // <- atualizar essa
 		pressed_keys[S] = !pressed_keys[S];
 	if (key == D)
 		pressed_keys[D] = !pressed_keys[D];
-	if (key == 65361)
-		pressed_keys[113] = !pressed_keys[113];
-	if (key == 65363)
+	if (key == LEFT)
+		pressed_keys[113] = !pressed_keys[113]; // NOTE: Nao entendi que codigos sao esses 113 e 144. Foram indexes arbitrarios ja que o codigo passava do tamanho do array?
+	if (key == RIGHT)
 		pressed_keys[114] = !pressed_keys[114];
 	return 0;
 }
@@ -353,6 +355,7 @@ int main(int argc, char *argv[])
 	read_map_file(&map_data, argv[1]);
 	parse_map(&map_data);
 	print_map_data(&map_data);
+	// WARN: Tudo acima é codigo do parser que está no arquivo novo parser.c.
 
 	ft_memset(pressed_keys, 0, sizeof(pressed_keys)); //  <-        ADICIONAR ESSA
 	game.map = &map_data;
