@@ -1,6 +1,7 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
+
 typedef struct s_vector_d
 {
 	double x;
@@ -58,6 +59,7 @@ typedef struct s_ray
 	int hit;
 	// was a NS or a EW wall hit?
 	int side;
+	int texture_index;
 
 } t_ray;
 
@@ -81,6 +83,16 @@ typedef struct s_map
 	char  *ceiling_color;
 } t_map;
 
+typedef struct s_texture {
+    void    *img;
+    char    *addr;
+    int     bits_per_pixel;
+    int     line_length;
+    int     endian;
+    int     width;
+    int     height;
+} t_texture;
+
 typedef struct s_game
 {
 	t_map     *map;
@@ -92,6 +104,9 @@ typedef struct s_game
 	double     old_time;
 	void      *mlx;
 	void      *win;
+    t_texture textures[4];
+	int			pressed_keys[5000];
+	char		**worldMap;
 } t_game;
 
 #endif

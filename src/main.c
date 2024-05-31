@@ -25,6 +25,25 @@
 
 int    pressed_keys[5000];
 
+
+t_texture	textures[4];
+
+void load_texture(t_game *game, t_texture *texture, char *path)
+{
+	texture->width = 0;
+	texture->height = 0;
+    texture->img = mlx_xpm_file_to_image(game->mlx, path, &texture->width, &texture->height);
+    texture->addr = mlx_get_data_addr(texture->img, &texture->bits_per_pixel, &texture->line_length, &texture->endian);
+}
+
+void init_textures(t_game *game)
+{
+    load_texture(game, &textures[1], "./assets/graystone.xpm");
+    load_texture(game, &textures[0], "./assets/bluestone.xpm");
+    load_texture(game, &textures[2], "./assets/redstone.xpm");
+    load_texture(game, &textures[3], "./assets/yellowstone.xpm");
+}
+
 char worldMap[mapWidth][mapHeight]=
 {
     {'1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'},
@@ -54,7 +73,7 @@ char worldMap[mapWidth][mapHeight]=
 };
 
 
-void	my_mlx_pixel_put(t_image *img, int x, int y, unsigned int color)
+void	 my_mlx_pixel_put(t_image *img, int x, int y, unsigned int color)
 {
 	char	*dst;
 
@@ -62,10 +81,34 @@ void	my_mlx_pixel_put(t_image *img, int x, int y, unsigned int color)
 	*(unsigned int*)dst = color;
 }
 
-void	draw_line(t_image *img, int x, int start, int end, unsigned color)
+void	draw_line(t_image *img, int x, t_line *line, t_ray *ray, t_texture *texture, t_game *game)
 {
-	while (start <= end)
-		my_mlx_pixel_put(img, x, start++, color);
+    int y = line->start;
+    int tex_y;
+	int tex_x;
+    int color;
+
+    double wall_x;
+    if (ray->side == 0)
+        wall_x = game->data.pos.y + ray->perp_wall_dist * ray->dir.y;
+    else
+        wall_x = game->data.pos.x + ray->perp_wall_dist * ray->dir.x;
+    wall_x -= floor(wall_x);
+    tex_x = (int)(wall_x * (double)texture->width);
+    if (ray->side == 0 && ray->dir.x > 0)
+        tex_x = texture->width - tex_x - 1;
+    if (ray->side == 1 && ray->dir.y < 0)
+        tex_x = texture->width - tex_x - 1;
+
+
+    while (y <= line->end)
+    {
+        int d = y * 256 - S_HEIGHT * 128 + line->height * 128;
+        tex_y = ((d * texture->height) / line->height) / 256;
+        color = *(unsigned int*)(texture->addr + (tex_y * texture->line_length + tex_x * (texture->bits_per_pixel / 8)));
+        my_mlx_pixel_put(img, x, y, color);
+        y++;
+    }
 }
 
 void	get_line(t_line *line, t_ray *ray)
@@ -253,7 +296,24 @@ void	digital_diferencial_analysis(t_ray *ray)
 			ray->side = 1;
 		}
 		//Check if ray->has hit a wall
-		if (worldMap[ray->map.x][ray->map.y] > '0') ray->hit = 1;
+		if (worldMap[ray->map.x][ray->map.y] > '0')
+		{
+            ray->hit = 1;
+            if (ray->side == 0)
+            {
+                if (ray->step.x > 0)
+                    ray->texture_index = 0;
+                else
+                    ray->texture_index = 1;
+            }
+            else
+            {
+                if (ray->step.y > 0)
+                    ray->texture_index = 2;
+                else
+                    ray->texture_index = 3;
+            }
+        }
 	} 
 }
 
@@ -315,7 +375,7 @@ int game_loop(t_game *game) // <- Atualizar essa aqui (só ta com a parte de cim
 		digital_diferencial_analysis(&ray);
 		calculate_distance(&ray);
 		get_line(&line, &ray);
-		draw_line(&frame, x, line.start, line.end, line.color);
+		draw_line(&frame, x, &line, &ray, &textures[ray.texture_index], game);
 		x++;
 	}
 	mlx_put_image_to_window(game->mlx, game->win, frame.img, 0, 0);
@@ -323,20 +383,7 @@ int game_loop(t_game *game) // <- Atualizar essa aqui (só ta com a parte de cim
 	return 0;
 }
 
-void	*ft_memset(void *s, int c, size_t n)
-{
-	size_t	count;
-	char	*ptr;
 
-	count = 0;
-	ptr = (char *) s;
-	while (count < n)
-	{
-		ptr[count] = c;
-		count++;
-	}
-	return (s);
-}
 
 int main(int argc, char *argv[])
 {
@@ -359,13 +406,16 @@ int main(int argc, char *argv[])
 
 	ft_memset(pressed_keys, 0, sizeof(pressed_keys)); //  <-        ADICIONAR ESSA
 	game.map = &map_data;
+	printf("hmm2\n");
 	game.data.pos.x = 22, game.data.pos.y = 12;  //x and y start position
 	game.data.dir.x = -1, game.data.dir.y = 0; //initial direction vector
 	game.data.plane.x = 0, game.data.plane.y = 0.66; //the 2d raycaster version of camera plane
 	game.data.mov_speed = 0.5;
 	game.data.rot_speed = 0.1;
 	game.mlx = mlx_init();
+	init_textures(&game);
 	game.win = mlx_new_window(game.mlx, 640, 480, "Cub3D");
+
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	//mlx_key_hook(game.win, key_hook, &game);
 	mlx_hook(game.win, KeyPress, KeyPressMask, &key_hook, 0); // <- ADICIONAR ESSA
