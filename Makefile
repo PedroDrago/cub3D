@@ -1,8 +1,8 @@
 NAME = cub3D
 
-SRC = src/main.c
+SRC = src/main.c src/parser.c src/hooks.c src/utils.c src/texture.c src/camera_mov.c src/player_mov.c
 OBJ = $(SRC:.c=.o)
-LINKS = -lX11 -lXext
+LINKS = -lX11 -lXext -lm
 
 MINILIBX_DIR = minilibx-linux
 MINILIBX = $(MINILIBX_DIR)/libmlx.a
@@ -48,4 +48,6 @@ fclean: clean
 
 re: fclean all
 
+exec2: re $(NAME)
+	./cub3D ./maps/default.cub
 .PHONY: clean fclean re all exec debug
