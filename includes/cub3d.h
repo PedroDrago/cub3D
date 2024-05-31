@@ -2,6 +2,7 @@
 # define CUB3D_H
 #include "../minilibx-linux/mlx.h"
 #include "../minilibx-linux/mlx_int.h"
+#include "../libft/libft.h"
 #include "structs.h"
 #include "macros.h"
 #include <stdlib.h>
