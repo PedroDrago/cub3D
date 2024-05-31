@@ -104,6 +104,10 @@ int key_hook(int key, t_game *game) // <- atualizar essa
 		pressed_keys[S] = !pressed_keys[S];
 	if (key == D)
 		pressed_keys[D] = !pressed_keys[D];
+	if (key == 65363)
+		pressed_keys[113] = !pressed_keys[113];
+	if (key == 65361)
+		pressed_keys[114] = !pressed_keys[114];
 	return 0;
 }
 
@@ -113,10 +117,29 @@ void	walk_foward(t_game *game)
 	game->data.pos.y += game->data.dir.y * game->data.mov_speed;
 }
 
-void walk_backwards(t_game *game)
+void	walk_backwards(t_game *game)
 {
 	game->data.pos.x -= game->data.dir.x * game->data.mov_speed;
 	game->data.pos.y -= game->data.dir.y * game->data.mov_speed;
+}
+
+
+void walk_left(t_game *game)
+{
+    double perp_dir_x = -game->data.dir.y;
+    double perp_dir_y = game->data.dir.x;
+
+    game->data.pos.x += perp_dir_x * game->data.mov_speed;
+    game->data.pos.y += perp_dir_y * game->data.mov_speed;
+}
+
+void walk_right(t_game *game)
+{
+    double perp_dir_x = game->data.dir.y;
+    double perp_dir_y = -game->data.dir.x;
+
+    game->data.pos.x += perp_dir_x * game->data.mov_speed;
+    game->data.pos.y += perp_dir_y * game->data.mov_speed;
 }
 
 void rotate_left(t_game *game)
@@ -147,10 +170,14 @@ void    update_player_pos(t_game *game) // ESSA AQUI É NOVA
 	if (pressed_keys[W])
 		walk_foward(game);
 	if (pressed_keys[A])
-		rotate_left(game);
+		walk_left(game);
 	if (pressed_keys[S])
 		walk_backwards(game);
 	if (pressed_keys[D])
+		walk_right(game);
+	if (pressed_keys[113])
+		rotate_left(game);
+	if (pressed_keys[114])
 		rotate_right(game);
 }
 
