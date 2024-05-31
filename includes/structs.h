@@ -65,8 +65,11 @@ typedef struct s_player
 {
 } t_player;
 
-typedef struct s_map_data
+typedef struct s_map
 {
+	char **map;
+	int    width;
+	int    height;
 	char **map_file_array;
 	int    file_height;
 	int    file_width;
@@ -76,13 +79,6 @@ typedef struct s_map_data
 	char  *east_path;
 	char  *floor_color;
 	char  *ceiling_color;
-} t_map_data;
-
-typedef struct s_map
-{
-	char       **map;
-	unsigned int floor_color;
-	unsigned int ceiling_color;
 } t_map;
 
 typedef struct s_game
