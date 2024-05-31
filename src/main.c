@@ -114,14 +114,18 @@ int	key_hook(int key, t_game *game) // <- atualizar essa
 
 void	walk_foward(t_game *game)
 {
-	game->data.pos.x += game->data.dir.x * game->data.mov_speed;
-	game->data.pos.y += game->data.dir.y * game->data.mov_speed;
+	if (worldMap[(int)(game->data.pos.x + game->data.dir.x * game->data.mov_speed)][(int)game->data.pos.y] == '0')
+		game->data.pos.x += game->data.dir.x * game->data.mov_speed;
+	if (worldMap[(int)game->data.pos.x][(int)(game->data.pos.y + game->data.dir.y * game->data.mov_speed)] == '0')
+		game->data.pos.y += game->data.dir.y * game->data.mov_speed;
 }
 
 void	walk_backwards(t_game *game)
 {
-	game->data.pos.x -= game->data.dir.x * game->data.mov_speed;
-	game->data.pos.y -= game->data.dir.y * game->data.mov_speed;
+	if (worldMap[(int)(game->data.pos.x - game->data.dir.x * game->data.mov_speed)][(int)game->data.pos.y] == '0')
+		game->data.pos.x -= game->data.dir.x * game->data.mov_speed;
+	if (worldMap[(int)game->data.pos.x][(int)(game->data.pos.y - game->data.dir.y * game->data.mov_speed)] == '0')
+		game->data.pos.y -= game->data.dir.y * game->data.mov_speed;
 }
 
 
@@ -130,8 +134,10 @@ void walk_left(t_game *game)
     double perp_dir_x = -game->data.dir.y;
     double perp_dir_y = game->data.dir.x;
 
-    game->data.pos.x += perp_dir_x * game->data.mov_speed;
-    game->data.pos.y += perp_dir_y * game->data.mov_speed;
+    if (worldMap[(int)(game->data.pos.x + perp_dir_x * game->data.mov_speed)][(int)game->data.pos.y] == '0')
+	game->data.pos.x += perp_dir_x * game->data.mov_speed;
+    if (worldMap[(int)game->data.pos.x][(int)(game->data.pos.y + perp_dir_y * game->data.mov_speed)] == '0')
+	game->data.pos.y += perp_dir_y * game->data.mov_speed;
 }
 
 void walk_right(t_game *game)
@@ -139,8 +145,10 @@ void walk_right(t_game *game)
     double perp_dir_x = game->data.dir.y;
     double perp_dir_y = -game->data.dir.x;
 
-    game->data.pos.x += perp_dir_x * game->data.mov_speed;
-    game->data.pos.y += perp_dir_y * game->data.mov_speed;
+    if (worldMap[(int)(game->data.pos.x + perp_dir_x * game->data.mov_speed)][(int)game->data.pos.y] == '0')
+	game->data.pos.x += perp_dir_x * game->data.mov_speed;
+    if (worldMap[(int)game->data.pos.x][(int)(game->data.pos.y + perp_dir_y * game->data.mov_speed)] == '0')
+	game->data.pos.y += perp_dir_y * game->data.mov_speed;
 }
 
 void rotate_left(t_game *game)
