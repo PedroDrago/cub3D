@@ -104,9 +104,9 @@ int key_hook(int key, t_game *game) // <- atualizar essa
 		pressed_keys[S] = !pressed_keys[S];
 	if (key == D)
 		pressed_keys[D] = !pressed_keys[D];
-	if (key == 65363)
-		pressed_keys[113] = !pressed_keys[113];
 	if (key == 65361)
+		pressed_keys[113] = !pressed_keys[113];
+	if (key == 65363)
 		pressed_keys[114] = !pressed_keys[114];
 	return 0;
 }
