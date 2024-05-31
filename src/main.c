@@ -37,7 +37,7 @@ char worldMap[mapWidth][mapHeight]=
     {'1','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','1'},
     {'1','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','1'},
     {'1','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','1'},
-    {'1','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','1'},
+    {'1','0','0','0','0','0','0','0','0','0','0','9','0','0','0','0','0','0','0','0','0','0','0','1'},
     {'1','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','1'},
     {'1','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','1'},
     {'1','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','1'},
@@ -76,14 +76,15 @@ void	get_line(t_line *line, t_ray *ray)
 	line->end = line->height / 2 + S_HEIGHT / 2;
 	if (line->end >= S_HEIGHT)
 		line->end = S_HEIGHT - 1;
-	if (worldMap[ray->map.x][ray->map.y] == '1')
+
+	if (ray->side == 0 && ray->dir.x > 0)
 		line->color = RGB_RED;
-	else if (worldMap[ray->map.x][ray->map.y] == '2')
+	else if (ray->side == 0 && ray->dir.x < 0)
 		line->color = RGB_GREEN;
-	else if (worldMap[ray->map.x][ray->map.y] == '3')
+	else if (ray->side == 1 && ray->dir.y < 0)
 		line->color = RGB_BLUE;
-	else if (worldMap[ray->map.x][ray->map.y] == '4')
-		line->color = RGB_WHITE;
+	//else if (ray->side == 0 && ray->dir.x > 0)
+	//	line->color = RGB_WHITE;
 	else
 		line->color = RGB_YELLOW;
 	//give x and y sides different brightness
@@ -242,7 +243,7 @@ void	digital_diferencial_analysis(t_ray *ray)
 			ray->side = 1;
 		}
 		//Check if ray->has hit a wall
-		if (worldMap[ray->map.x][ray->map.y] == '1') ray->hit = 1;
+		if (worldMap[ray->map.x][ray->map.y] > '0') ray->hit = 1;
 	} 
 }
 
@@ -292,9 +293,11 @@ int game_loop(t_game *game) // <- Atualizar essa aqui (só ta com a parte de cim
 	t_image frame;
 	t_ray ray;
 	t_line line;
+	int	x;
 
+	x = 0;
 	pre_raycast(game, &frame);
-	for(int x = 0; x < S_WIDTH; x++)
+	while(x < S_WIDTH)
 	{
 		calculate_pos_dir_delta(game, &ray, x);
 		ray.hit = 0;  
@@ -303,6 +306,7 @@ int game_loop(t_game *game) // <- Atualizar essa aqui (só ta com a parte de cim
 		calculate_distance(&ray);
 		get_line(&line, &ray);
 		draw_line(&frame, x, line.start, line.end, line.color);
+		x++;
 	}
 	mlx_put_image_to_window(game->mlx, game->win, frame.img, 0, 0);
 	mlx_destroy_image(game->mlx, frame.img);
