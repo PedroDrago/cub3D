@@ -336,11 +336,26 @@ void	*ft_memset(void *s, int c, size_t n)
 	return (s);
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
 	t_game	game;
 
+
+	t_map map_data;
+	map_data.file_height = 0;
+	map_data.file_width = 0;
+	if (argc != 2)
+	{
+		printf("Too much or too many arguments\n");
+		exit(1);
+	}
+	get_map_proportions(&map_data, argv[1]);
+	read_map_file(&map_data, argv[1]);
+	parse_map(&map_data);
+	print_map_data(&map_data);
+
 	ft_memset(pressed_keys, 0, sizeof(pressed_keys)); //  <-        ADICIONAR ESSA
+	game.map = &map_data;
 	game.data.pos.x = 22, game.data.pos.y = 12;  //x and y start position
 	game.data.dir.x = -1, game.data.dir.y = 0; //initial direction vector
 	game.data.plane.x = 0, game.data.plane.y = 0.66; //the 2d raycaster version of camera plane

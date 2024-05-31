@@ -60,8 +60,6 @@ void print_map_data(t_map *map_data)
 {
 	int i;
 
-	printf("file_width: %i\n", map_data->file_width);
-	printf("file_height: %i\n", map_data->file_height);
 	printf("north_path: %s\n", map_data->north_path);
 	printf("south_path: %s\n", map_data->south_path);
 	printf("west_path: %s\n", map_data->west_path);
@@ -212,7 +210,6 @@ int get_map_array(t_map *map_data, int start)
 	while(i < map_data->height) // WARN: <= ?
 	{
 		len = ft_strlen(map_data->map_file_array[start]);
-		printf("len: %i | width: %i\n", len, map_data->width);
 		if (len < map_data->width)
 		{
 			map_data->map_file_array[start] = remove_linebreak(map_data->map_file_array[start]);
@@ -271,20 +268,4 @@ int parse_map(t_map *map_data)
 	if (!get_map_data(map_data))
 		return 0;
 	return 1;
-}
-int main(int argc, char *argv[])
-{
-	t_map map_data;
-	map_data.file_height = 0;
-	map_data.file_width = 0;
-	if (argc != 2)
-	{
-		printf("Too much or too many arguments\n");
-		exit(1);
-	}
-	get_map_proportions(&map_data, argv[1]);
-	read_map_file(&map_data, argv[1]);
-	parse_map(&map_data);
-	print_map_data(&map_data);
-	return 0;
 }

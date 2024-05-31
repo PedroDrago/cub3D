@@ -1,6 +1,6 @@
 NAME = cub3D
 
-SRC = src/main.c
+SRC = src/main.c src/parser.c
 OBJ = $(SRC:.c=.o)
 LINKS = -lX11 -lXext -lm
 

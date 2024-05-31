@@ -83,6 +83,7 @@ typedef struct s_map
 
 typedef struct s_game
 {
+	t_map     *map;
 	t_data     data;
 	t_player   player;
 	t_vector_d camera;
