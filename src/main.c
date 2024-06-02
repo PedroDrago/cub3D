@@ -22,8 +22,7 @@ void	get_initial_pos(t_camera *camera, char **map)
 		}
 		x++;
 	}
-	camera->pos.x = 1;
-	camera->pos.y = 1;
+	exit(1); //n achou deu merda, eh pra ter validado essa porra antes de chegar aqui (no momento ainda n esta validando).
 }
 
 void init_camera(t_camera *camera, t_game *game)
