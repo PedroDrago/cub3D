@@ -3,7 +3,8 @@
 void setup_raycasting(t_game *game, t_ray *ray, int x) // this initialize some data about this current ray we'll trace
 {
 	ray->camera.x = 2 * x / (double)S_WIDTH - 1; // ray.camera.x is the x-coordinate on the Camera Plane (game->camera.plane) that the current X-coordinate of the screen represents.
-	ray->dir.x = game->camera.dir.x + game->camera.plane.x * ray->camera.x; //ray.dir represents the direction vector that the ray will be casted, calculated using the vector sum between the current camera direction vector and the ray.camera.x.
+	ray->dir.x = game->camera.dir.x + game->camera.plane.x * ray->camera.x; //ray.dir represents the direction vector that the ray will be casted, 
+																			//calculated using the vector sum between the current camera direction vector and the ray.camera.x.
 	ray->dir.y = game->camera.dir.y + game->camera.plane.y * ray->camera.x;
 	ray->map.x = (int) game->camera.pos.x; // map.x and map.y are the TILE/SQUARE/BOX in our tiled world we are current in, the equivalent of the index in the map array;
 	ray->map.y = (int) game->camera.pos.y;
@@ -12,13 +13,18 @@ void setup_raycasting(t_game *game, t_ray *ray, int x) // this initialize some d
 void dda_setup(t_game *game, t_ray *ray) //this setup data for the DDA algorithm
 {
 	ray->hit = 0;
-	// For the DDA part is important that we understand that we keep the information of ther in the map grid we are (ray.map.x | ray.map.y) with integer as indexes and where inside that single square we are, so that we can calculate the distance between a certain floating point coordinate inside this square until the square side and so perform the step and see if it is a hit.
+	// NOTE: For the DDA part is important that we understand that we keep the information of ther in the map grid we are (ray.map.x | ray.map.y) 
+	// with integer as indexes and where inside that single square we are, so that we can calculate the distance between a certain floating point coordinate 
+	// inside this square until the square side and so perform the step and see if it is a hit.
 	ray->delta_dist.x = fabs(1 / ray->dir.x); //delta dist is the length of the ray from one x-side to the next x-side OR one y-side to the next y-side.
 	ray->delta_dist.y = fabs(1 / ray->dir.y);
 	if (ray->dir.x < 0)
 	{
-		ray->step.x = -1; //step defines the ritm and direction the DDA will jump in the calculation, it always jump 1 square each iteration, but the sign represents the axle whe are going in the vector;
-		ray->side_dist.x = (game->camera.pos.x - ray->map.x) * ray->delta_dist.x; //side_dist is the distance tha ray has to travel from its start position to the first side it should encounter. So X side_dist is the distance from the right/left sides it has to hit, if x direction is negative it will calculate the distance to the first side to the LEFT and if positive the first side to the RIGHT. 
+		ray->step.x = -1; //step defines the ritm and direction the DDA will jump in the calculation, it always jump 1 square 
+						  //each iteration, but the sign represents the axle whe are going in the vector;
+		ray->side_dist.x = (game->camera.pos.x - ray->map.x) * ray->delta_dist.x; //side_dist is the distance tha ray has to travel from its start position to the first 
+		//side it should encounter. So X side_dist is the distance from the right/left sides it has to hit, if x direction is negative it will calculate the distance 
+		//to the first side to the LEFT and if positive the first side to the RIGHT. 
 	}
 	else
 	{
@@ -28,7 +34,8 @@ void dda_setup(t_game *game, t_ray *ray) //this setup data for the DDA algorithm
 	if (ray->dir.y < 0)
 	{
 		ray->step.y = -1;
-		ray->side_dist.y = (game->camera.pos.y - ray->map.y) * ray->delta_dist.y; // Same logic of side_sit.x, but if y direction is negative it will calculate the distance to the first side ABOVE, of it is positive the first side BELOW
+		ray->side_dist.y = (game->camera.pos.y - ray->map.y) * ray->delta_dist.y; // Same logic of side_sit.x, but if y direction is negative it will calculate the 
+																				//distance to the first side ABOVE, of it is positive the first side BELOW
 	}
 	else
 	{

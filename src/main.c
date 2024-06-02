@@ -7,7 +7,9 @@ void init_camera(t_camera *camera)
 	camera->rot_speed = 0.2;
 	camera->pos.x = 9; // get based on N,S,E,W character on map array.
 	camera->pos.y = 4; // get based on N,S,E,W character on map array.
-	// NOTE: So that we can spawn the camera to the right direction (N, S, E, W) we need to alter camera.dir and camera.plane, just like in the rotation functions, but to a fixed value that would represent a 90 angle? idk, something like that, but I know that this current value makes tha camera looks to NORTH, so if we invert all the values to:
+	// NOTE: So that we can spawn the camera to the right direction (N, S, E, W) we need to alter camera.dir and camera.plane, just like in the rotation functions, 
+	// but to a fixed value that would represent a 90 angle? idk, something like that, but I know that this current value makes tha camera looks to NORTH, 
+	// so if we invert all the values to:
 	// dir.x = 1
 	// dir.y = 0
 	// plane.x = 0
@@ -15,7 +17,12 @@ void init_camera(t_camera *camera)
 	// We should get a SOUTH directed camera. But for west and east I have no idea, i guess GPT could help with that.
 	camera->dir.x = -1;
 	camera->dir.y = 0;
-	camera->plane.x = 0; //the camera plane representes the vector of where the camera exists. This is necessary because when drawing the ray, if the trace it directly to the player exatc point (pos.x, pos.y) all the rays will appear rounded, with the fish eye effect. This happens because when each point is traced directly to the player, each of them will have a calculated distance different from each other becuase of the player distance horizontal ditance to them, so the distance will increase respecting the horizontal position as well, and this cause each ray to have a different height not based on vertical distance but based on horizontal distance, and that causes the rounded effect.
+	camera->plane.x = 0; 
+	// NOTE: the camera plane representes the vector of where the camera exists. This is necessary because when drawing the ray, if the trace it directly 
+	// to the player exatc point (pos.x, pos.y) all the rays will appear rounded, with the fish eye effect. This happens because when each point is traced directly to the player, 
+	// each of them will have a calculated distance different from each other becuase of the player distance horizontal ditance to them, so the distance will 
+	// increase respecting the horizontal position as well, and this cause each ray to have a different height not based on vertical distance but based on horizontal 
+	// distance, and that causes the rounded effect.
 	//NOTE:
 	//--.---.---.---
 	//  \   |   /
@@ -23,7 +30,9 @@ void init_camera(t_camera *camera)
 	//    \ | /
 	//     \|/
 	//      P
-	// In the above example we can visualize it. Both 3 points should appear the same height, because the are at the same vertical distance from the player, but because we trace them directly to the player x,y they will have different distances to it (straight line always the shortest path etc), so they'll be drawd with different heights.
+	// In the above example we can visualize it. Both 3 points should appear the same height, because the are at the same vertical distance from the player, 
+	// but because we trace them directly to the player x,y they will have different distances to it (straight line always the shortest path etc), so they'll 
+	// be drawd with different heights.
 	//--.---.---.---
 	//  |   |   |
 	//  |   |   |
@@ -31,7 +40,8 @@ void init_camera(t_camera *camera)
 	//  |   |   |
 	//------P------- -> Camera Plane
 	// Here we trace them to the camera Plane instead of the Player, so we can see that both 3 points have the same distance from this plain, so will have the same height when drawed
-	// This type of technique is not a fisheye correction, the fisheye is simply avoided by this way of calculating. It makes the calculations easier also, since whe don't even need to know the exact location where the wall was hit.
+	// This type of technique is not a fisheye correction, the fisheye is simply avoided by this way of calculating. It makes the calculations easier also, since whe don't 
+	//even need to know the exact location where the wall was hit.
 	camera->plane.y = 0.66;
 }
 
