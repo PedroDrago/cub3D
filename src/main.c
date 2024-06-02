@@ -2,24 +2,6 @@
 #include <math.h>
 #include <stdio.h>
 
-# define MAP_WIDTH 24
-# define MAP_HEIGHT 24
-# define S_WIDTH 640
-# define S_HEIGHT 480
-# define RGB_RED    0xFF0000
-# define RGB_GREEN  0x00FF00
-# define RGB_BLUE   0x0000FF
-# define RGB_WHITE  0xFFFFFF
-# define RGB_YELLOW 0xFFFF0
-# define RGB_PURPLE 0xA020F0
-# define RGB_BROWN 0x964B00
-# define LEFT 65361
-# define RIGHT 65363
-# define W 119
-# define A 97
-# define S 115
-# define D 100
-# define ESC 65307
 
 char worldMap[MAP_WIDTH][MAP_HEIGHT]=
 {
@@ -50,7 +32,7 @@ char worldMap[MAP_WIDTH][MAP_HEIGHT]=
 };
 
 
-void	 my_mlx_pixel_put(t_image *img, int x, int y, unsigned int color)
+void	 my_mlx_pixel_put(t_data *img, int x, int y, unsigned int color)
 {
 	char	*dst;
 
@@ -58,10 +40,10 @@ void	 my_mlx_pixel_put(t_image *img, int x, int y, unsigned int color)
 	*(unsigned int*)dst = color;
 }
 
-void	draw_line(t_image *img, int x, int line_start, int line_end, unsigned int color)
+void	draw_line(t_data *img, int x, t_line line)
 {
-	while (line_start <= line_end)
-		my_mlx_pixel_put(img, x, line_start++, color);
+	while (line.start <= line.end)
+		my_mlx_pixel_put(img, x, line.start++, line.color);
 }
 
 // # define MAP_WIDTH 24
@@ -71,8 +53,12 @@ void	draw_line(t_image *img, int x, int line_start, int line_end, unsigned int c
 
 void init_camera(t_camera *camera)
 {
+	camera->mov_speed = 0.5;
+	camera->rot_speed = 0.2;
 	camera->pos.x = 22;
 	camera->pos.y =  12;
+	camera->dir.x = -1;
+	camera->dir.y = 0;
 	camera->plane.x = 0; // the camera plane representes the vector of where the camera exists. This is necessary because when drawing the ray, if the trace it directly to the player exatc point (pos.x, pos.y) all the rays will appear rounded, with the fish eye effect. This happens because when each point is traced directly to the player, each of them will have a calculated distance different from each other becuase of the player distance horizontal ditance to them, so the distance will increase respecting the horizontal position as well, and this cause each ray to have a different height not based on vertical distance but based on horizontal distance, and that causes the rounded effect.
 	//--.---.---.---
 	//  \   |   /
@@ -88,7 +74,7 @@ void init_camera(t_camera *camera)
 	//  |   |   |
 	//------P------- -> Camera Plane
 	// Here we trace them to the camera Plane instead of the Player, so we can see that both 3 points have the same distance from this plain, so will have the same height when drawed
-	//
+	// This type of technique is not a fisheye correction, the fisheye is simply avoided by this way of calculating. It makes the calculations easier also, since whe don't even need to know the exact location where the wall was hit.
 	camera->plane.y = 0.66;
 }
 
@@ -96,11 +82,24 @@ int key_handler(int key, t_game *game)
 {
 	if (key == ESC)
 		exit(1);
+	else if (key == W)
+		walk_forward(&game->camera);
+	else if (key == A)
+		walk_left(&game->camera);
+	else if (key == S)
+		walk_backwards(&game->camera);
+	else if (key == D)
+		walk_right(&game->camera);
+	else if (key == LEFT)
+		rotate_left(&game->camera);
+	else if (key == RIGHT)
+		rotate_right(&game->camera);
 	return 0;
 }
 
 void dda_setup(t_game *game, t_ray *ray) //this setup data for the DDA algorithm
 {
+	ray->hit = 0;
 	// For the DDA part is important that we understand that we keep the information of ther in the map grid we are (ray.map.x | ray.map.y) with integer as indexes and where inside that single square we are, so that we can calculate the distance between a certain floating point coordinate inside this square until the square side and so perform the step and see if it is a hit.
 	ray->delta_dist.x = fabs(1 / ray->dir.x); //delta dist is the length of the ray from one x-side to the next x-side OR one y-side to the next y-side.
 	ray->delta_dist.y = fabs(1 / ray->dir.y);
@@ -163,22 +162,67 @@ void digital_diferencial_analysis(t_game *game, t_ray *ray) //this is de DDA alg
 void setup_raycasting(t_game *game, t_ray *ray, int x) // this initialize some data about this current ray we'll trace
 {
 	ray->camera.x = 2 * x / (double)S_WIDTH - 1; // ray.camera.x is the x-coordinate on the Camera Plane (game->camera.plane) that the current X-coordinate of the screen represents.
-	ray->dir.x = game->camera.dir.x + game->camera.dir.y * ray->camera.x; //ray.dir represents the direction vector that the ray will be casted, calculated using the vector sum between the current camera direction vector and the ray.camera.x.
+	ray->dir.x = game->camera.dir.x + game->camera.plane.x * ray->camera.x; //ray.dir represents the direction vector that the ray will be casted, calculated using the vector sum between the current camera direction vector and the ray.camera.x.
+	ray->dir.y = game->camera.dir.y + game->camera.plane.y * ray->camera.x;
 	ray->map.x = (int) game->camera.pos.x; // map.x and map.y are the TILE/SQUARE/BOX in our tiled world we are current in, the equivalent of the index in the map array;
 	ray->map.y = (int) game->camera.pos.y;
+}
+
+
+void calculate_line(t_ray *ray, t_line *line)
+{
+	// First we calculate the perpendicular distance between the hitpoint and the camera plane
+	// If the ray hited a x side (right/left)
+	if (ray->side == 0)
+		ray->wall_dist = ray->side_dist.x - ray->delta_dist.x;
+	//if the ray hited a y side (down/up)
+	else
+		ray->wall_dist = ray->side_dist.y - ray->delta_dist.y;
+	// Our map is composed of X * Y tiles, each tile being a square:
+	//         UP
+	//       -----
+	// LEFT  |   | RIGHT
+	//       -----
+	//        DOWN
+
+	// Then we calculate the line data:
+	//1. line.height: The height which the line will have when drawn
+	line->height = (int) S_HEIGHT / ray->wall_dist;
+	//2. the y coordinate of the first pixel of the line
+	line->start = (-line->height / 2) + (S_HEIGHT / 2); // here S_HEIGHT /2 is because every wall center is at the center of the screen.
+	if (line->start < 0) // if start point is beyond screen limits, cap it to the begin of the screen. Same for the end point and end of the screen.
+		line->start = 0;
+	//3. the y coordinate of the last pixel of the line
+	line->end = (line->height / 2) + (S_HEIGHT / 2); 
+	if (line->end >= S_HEIGHT)
+		line->end = S_HEIGHT - 1;
+	// Remember, we only calculate the y-start and the y-end because we always have the x-coordinates since the main raycasting loop iterates over each X stripe of the screen
+	line->color = RGB_RED;
+	if (ray->side)
+		line->color = line->color / 2;
 }
 
 int game_loop(t_game *game)
 {
 	int x;
 	t_ray ray;
+	t_data frame;
+	t_line line;
 
 	x = 0;
+	// mlx_new_image(void *mlx_ptr, int width, int height)
+	frame.img = mlx_new_image(game->mlx, S_WIDTH, S_HEIGHT);
+	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, &frame.line_length, &frame.endian);
 	while (x < S_WIDTH) // for every vertical stripe on the screen we raycast
 	{
 		setup_raycasting(game, &ray, x);
 		digital_diferencial_analysis(game, &ray);
+		calculate_line(&ray, &line);
+		draw_line(&frame, x, line);
+		x++;
 	}
+	mlx_put_image_to_window(game->mlx, game->win, frame.img, 0, 0);
+	mlx_destroy_image(game->mlx, frame.img);
 	return 0;
 }
 

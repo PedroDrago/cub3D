@@ -15,15 +15,6 @@ typedef struct s_vector_i
 
 typedef struct s_data
 {
-	t_vector_d pos;
-	t_vector_d plane;
-	t_vector_d dir;
-	double     mov_speed;
-	double     rot_speed;
-} t_data;
-
-typedef struct s_image
-{
 	void *img;
 	char *addr;
 	int   bits_per_pixel;
@@ -33,7 +24,7 @@ typedef struct s_image
 	int   y;
 	int   width;
 	int   height;
-} t_image;
+} t_data;
 
 typedef struct s_line
 {
@@ -50,7 +41,7 @@ typedef struct s_ray
 	t_vector_i map;
 	t_vector_d side_dist;
 	t_vector_d delta_dist;
-	double     perp_wall_dist;
+	double     wall_dist;
 	t_vector_i step;
 	int        hit;
 	int        side;
@@ -90,6 +81,8 @@ typedef struct s_texture
 
 typedef struct s_camera
 {
+	double     mov_speed;
+	double     rot_speed;
 	t_vector_d pos;
 	t_vector_d dir;
 	t_vector_d plane;
