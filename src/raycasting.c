@@ -49,7 +49,7 @@ void dda_setup(t_game *game, t_ray *ray) //this setup data for the DDA algorithm
 	//           -y             
 }
 
-void digital_diferencial_analysis(t_game *game, t_ray *ray) //this is de DDA algorithm, responsible to get the position where the ray will hit a wall
+void digital_diferencial_analysis(t_game *game, t_ray *ray, t_line *line) //this is de DDA algorithm, responsible to get the position where the ray will hit a wall
 {
 	dda_setup(game, ray);
 	while (ray->hit == 0) //each iteration we jump 1 square in in a direaction (x or y).
@@ -67,7 +67,23 @@ void digital_diferencial_analysis(t_game *game, t_ray *ray) //this is de DDA alg
 			ray->side = 1;
 		}
 		if (game->map.map[ray->map.x][ray->map.y] != '0') //if the position we landed in the array is not an empty space, it means we have a hit, so we stop DDA and now have our ray data.
+		{
 			ray->hit = 1;
+			if (ray->side == 0)
+			{
+				if (ray->step.x > 0)
+					line->color = RGB_RED;
+				else
+					line->color = RGB_BLUE;
+			}
+			else
+			{
+				if (ray->step.y > 0)
+					line->color = RGB_GREEN;
+				else
+					line->color = RGB_WHITE;
+			}
+		}
 	}
 }
 
@@ -99,7 +115,4 @@ void calculate_line(t_ray *ray, t_line *line)
 	if (line->end >= S_HEIGHT)
 		line->end = S_HEIGHT - 1;
 	// Remember, we only calculate the y-start and the y-end because we always have the x-coordinates since the main raycasting loop iterates over each X stripe of the screen
-	line->color = RGB_RED;
-	if (ray->side)
-		line->color = line->color / 2;
 }

@@ -75,6 +75,8 @@ typedef struct s_camera
 typedef struct s_game
 {
 	int      keys[20];
+	t_data   textures[4];
+	int      texture_index;
 	t_camera camera;
 	t_map    map;
 	void    *mlx;

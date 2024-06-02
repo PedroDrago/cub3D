@@ -95,7 +95,7 @@ int game_loop(t_game *game)
 	while (x < S_WIDTH) // for every vertical stripe on the screen we raycast
 	{
 		setup_raycasting(game, &ray, x);
-		digital_diferencial_analysis(game, &ray);
+		digital_diferencial_analysis(game, &ray, &line);
 		calculate_line(&ray, &line);
 		draw_line(&frame, x, line);
 		x++;
@@ -130,6 +130,7 @@ int main(int argc, char *argv[])
 	game.mlx = mlx_init();
 	game.win = mlx_new_window(game.mlx, S_WIDTH, S_HEIGHT, "Cub3D");
 	init_camera(&game.camera);
+	init_textures(&game);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_hook(game.win, KeyPress, KeyPressMask, &key_hook, &game);
 	mlx_hook(game.win, KeyRelease, KeyReleaseMask, &key_hook, &game);
