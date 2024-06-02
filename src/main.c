@@ -9,6 +9,12 @@ void init_camera(t_camera *camera)
 	// camera->pos.y =  12;
 	camera->pos.x = 9;
 	camera->pos.y = 4;
+	// NOTE: So that we can spawn the camera to the right direction (N, S, E, W) we need to alter camera.dir and camera.plane, just like in the rotation functions, but to a fixed value that would represent a 90 angle? idk, something like that, but I know that this current value makes tha camera looks to NORTH, so if we invert all the values to:
+	// dir.x = 1
+	// dir.y = 0
+	// plane.x = 0
+	// plane.y = -0.66
+	// We should get a SOUTH directed camera. But for west and east I have no idea, i guess GPT could help with that.
 	camera->dir.x = -1;
 	camera->dir.y = 0;
 	camera->plane.x = 0; //the camera plane representes the vector of where the camera exists. This is necessary because when drawing the ray, if the trace it directly to the player exatc point (pos.x, pos.y) all the rays will appear rounded, with the fish eye effect. This happens because when each point is traced directly to the player, each of them will have a calculated distance different from each other becuase of the player distance horizontal ditance to them, so the distance will increase respecting the horizontal position as well, and this cause each ray to have a different height not based on vertical distance but based on horizontal distance, and that causes the rounded effect.
@@ -55,7 +61,7 @@ void	update_camera(t_game *game)
 {
 	static    int    movement_limiter = 0;
 
-	if (++movement_limiter == 15)
+	if (++movement_limiter == RATE)
 	{
 		movement_limiter = 0;
 		if (game->keys[I_W])
@@ -73,6 +79,7 @@ void	update_camera(t_game *game)
 	}
 }
 
+
 int game_loop(t_game *game)
 {
 	int x;
@@ -84,6 +91,7 @@ int game_loop(t_game *game)
 	update_camera(game);
 	frame.img = mlx_new_image(game->mlx, S_WIDTH, S_HEIGHT);
 	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, &frame.line_length, &frame.endian);
+	draw_background(&frame);
 	while (x < S_WIDTH) // for every vertical stripe on the screen we raycast
 	{
 		setup_raycasting(game, &ray, x);
@@ -120,7 +128,7 @@ int main(int argc, char *argv[])
 	ft_bzero(game.keys, 20);
 	get_map(&game, argv[1]);
 	game.mlx = mlx_init();
-	game.win = mlx_new_window(game.mlx, 640, 480, "Cub3D");
+	game.win = mlx_new_window(game.mlx, S_WIDTH, S_HEIGHT, "Cub3D");
 	init_camera(&game.camera);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_hook(game.win, KeyPress, KeyPressMask, &key_hook, &game);

@@ -29,5 +29,7 @@ void dda_setup(t_game *game, t_ray *ray); // this setup data for the DDA algorit
 void setup_raycasting(t_game *game, t_ray *ray, int x); // this initialize some data about this current ray we'll trace
 void draw_line(t_data *img, int x, t_line line);
 void print_split(char **splited);
+void my_mlx_pixel_put(t_data *img, int x, int y, unsigned int color);
+void draw_background(t_data *frame);
 
 #endif
