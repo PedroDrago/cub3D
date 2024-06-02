@@ -13,14 +13,14 @@
 #define RGB_PURPLE 0xA020F0
 #define RGB_BROWN 0x964B00
 #define RGB_LIGHT_BLUE 0x87CEFA
-#define LEFT 65361
+#define LEFT 65361 // Esses macros com nome de tecla sao os keycodes
 #define RIGHT 65363
 #define W 119
 #define A 97
 #define S 115
 #define D 100
 #define ESC 65307
-#define I_W 0
+#define I_W 0 // esses macros com I antes do nome da tecla sao os indexes de cada tecla pro array (que ai a gnt n precisa alocar um buffer tao grande)
 #define I_A 1
 #define I_S 2
 #define I_D 3
