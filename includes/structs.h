@@ -47,13 +47,8 @@ typedef struct s_ray
 	int        side;
 } t_ray;
 
-typedef struct s_player
-{
-} t_player;
-
 typedef struct s_map
 {
-	char   tmp_map[24][24];
 	char **map;
 	int    width;
 	int    height;
@@ -68,17 +63,6 @@ typedef struct s_map
 	char  *ceiling_color;
 } t_map;
 
-typedef struct s_texture
-{
-	void *img;
-	char *addr;
-	int   bits_per_pixel;
-	int   line_length;
-	int   endian;
-	int   width;
-	int   height;
-} t_texture;
-
 typedef struct s_camera
 {
 	double     mov_speed;
@@ -90,6 +74,7 @@ typedef struct s_camera
 
 typedef struct s_game
 {
+	int      keys[20];
 	t_camera camera;
 	t_map    map;
 	void    *mlx;

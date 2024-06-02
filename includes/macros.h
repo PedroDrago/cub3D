@@ -19,4 +19,10 @@
 #define S 115
 #define D 100
 #define ESC 65307
+#define I_W 0
+#define I_A 1
+#define I_S 2
+#define I_D 3
+#define I_LEFT 4
+#define I_RIGHT 5
 #endif

@@ -56,20 +56,33 @@ int read_map_file(t_map *map_data, char *file_path)
 
 }
 
+void	print_split(char **splited)
+{
+	int i = -1;
+	int len = ft_strlen(splited[0]);
+	while (++i <= len + 1)
+		printf("-");
+	printf("\n");
+	i = 0;
+	while(splited[i])
+		printf("!%s!\n", splited[i++]);
+	i = -1;
+	while (++i <= len + 1)
+		printf("-");
+	printf("\n");
+}
+
+//9/4
+
 void print_map_data(t_map *map_data)
 {
-	int i;
-
 	printf("north_path: %s\n", map_data->north_path);
 	printf("south_path: %s\n", map_data->south_path);
 	printf("west_path: %s\n", map_data->west_path);
 	printf("east_path: %s\n", map_data->east_path);
 	printf("floor_color: %s\n", map_data->floor_color);
 	printf("ceiling_color: %s\n", map_data->ceiling_color);
-	printf("---------------------------\n");
-	i = 0;
-	while(map_data->map[i])
-		printf("%s\n", map_data->map[i++]);
+	print_split(map_data->map);
 }
 
 int is_empty_line(char *line)
