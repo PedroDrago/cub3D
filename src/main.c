@@ -1,12 +1,37 @@
 #include "../includes/cub3d.h"
 
-void init_camera(t_camera *camera)
+
+void	get_initial_pos(t_camera *camera, char **map)
+{
+	int	x;
+	int y;
+
+	x = 0;
+	while (map[x])
+	{
+		y = 0;
+		while(map[x][y])
+		{
+			if (map[x][y] == 'N' || map[x][y] == 'S' || map[x][y] == 'E' || map[x][y] == 'W')
+			{
+				camera->pos.x = x;
+				camera->pos.y = y;
+				return ;
+			}
+			y++;
+		}
+		x++;
+	}
+	camera->pos.x = 1;
+	camera->pos.y = 1;
+}
+
+void init_camera(t_camera *camera, t_game *game)
 {
 	//9/4
 	camera->mov_speed = 0.5;
 	camera->rot_speed = 0.2;
-	camera->pos.x = 9; // get based on N,S,E,W character on map array.
-	camera->pos.y = 4; // get based on N,S,E,W character on map array.
+	get_initial_pos(camera, game->map.map);
 	// NOTE: So that we can spawn the camera to the right direction (N, S, E, W) we need to alter camera.dir and camera.plane, just like in the rotation functions, 
 	// but to a fixed value that would represent a 90 angle? idk, something like that, but I know that this current value makes tha camera looks to NORTH, 
 	// so if we invert all the values to:
@@ -137,7 +162,7 @@ int main(int argc, char *argv[])
 	get_map(&game, argv[1]);
 	game.mlx = mlx_init();
 	game.win = mlx_new_window(game.mlx, S_WIDTH, S_HEIGHT, "Cub3D");
-	init_camera(&game.camera);
+	init_camera(&game.camera, &game);
 	init_textures(&game);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_hook(game.win, KeyPress, KeyPressMask, &key_hook, &game);
