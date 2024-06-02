@@ -47,3 +47,13 @@ Esse n deve ser dificil, nunca usei evento do mouse mas deve ter um eixo x,y, ai
 2. raycasting
 3. arma
 4. hud (minimapa)
+
+
+### Extra Bonus
+acho que da p gnt fazer umas paradas maneiras que n dariam tanto trabalho:
+- Musica
+- Sound effects
+- Inimigos estaticos (n andam mas toman tiro e somem)
+- Items que ficam jogados no chao que se passar em cima pega e muda algo na gameplay (uma bota que da mais speed, municao, etc, pra fazer o fundo ficar transparente da pra usar um artigo que um maluco da 42 sobre fazer imagens xpm ficarem com o fundo transparente ao inves de preto)
+
+Mas esses seriam so se a gnt n tiver de saco cheio do projeto quando terminar o que tiver que fazer kkkkkkkkkkkk

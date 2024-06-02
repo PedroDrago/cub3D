@@ -5,10 +5,8 @@ void init_camera(t_camera *camera)
 	//9/4
 	camera->mov_speed = 0.5;
 	camera->rot_speed = 0.2;
-	// camera->pos.x = 22;
-	// camera->pos.y =  12;
-	camera->pos.x = 9;
-	camera->pos.y = 4;
+	camera->pos.x = 9; // get based on N,S,E,W character on map array.
+	camera->pos.y = 4; // get based on N,S,E,W character on map array.
 	// NOTE: So that we can spawn the camera to the right direction (N, S, E, W) we need to alter camera.dir and camera.plane, just like in the rotation functions, but to a fixed value that would represent a 90 angle? idk, something like that, but I know that this current value makes tha camera looks to NORTH, so if we invert all the values to:
 	// dir.x = 1
 	// dir.y = 0
