@@ -46,7 +46,7 @@ void	rotate_left(t_camera *camera)
 	return;
 }
 
-void	walk_forward(t_camera *camera)
+void	walk_forward(t_camera *camera, char **map)
 {
 	t_vector_d fut_pos;
 	t_vector_i curr_pos;
@@ -57,12 +57,12 @@ void	walk_forward(t_camera *camera)
 	curr_pos.x = camera->pos.x;
 	curr_pos.y = camera->pos.y;
 
-	if (worldMap[(int)fut_pos.x][curr_pos.y] == '0')
+	if (map[(int)fut_pos.x][curr_pos.y] == '0')
 		camera->pos.x = fut_pos.x;
-	if (worldMap[curr_pos.x][(int)fut_pos.y] == '0')
+	if (map[curr_pos.x][(int)fut_pos.y] == '0')
 		camera->pos.y = fut_pos.y;
 }
-void	walk_backwards(t_camera *camera)
+void	walk_backwards(t_camera *camera, char **map)
 {
 	t_vector_d fut_pos;
 	t_vector_i curr_pos;
@@ -73,14 +73,14 @@ void	walk_backwards(t_camera *camera)
 	curr_pos.x = camera->pos.x;
 	curr_pos.y = camera->pos.y;
 
-	if (worldMap[(int)fut_pos.x][curr_pos.y] == '0')
+	if (map[(int)fut_pos.x][curr_pos.y] == '0')
 		camera->pos.x = fut_pos.x;
-	if (worldMap[curr_pos.x][(int)fut_pos.y] == '0')
+	if (map[curr_pos.x][(int)fut_pos.y] == '0')
 		camera->pos.y = fut_pos.y;
 
 }
 
-void	walk_left(t_camera *camera)
+void	walk_left(t_camera *camera, char **map)
 {
 
 	t_vector_d fut_pos;
@@ -92,14 +92,14 @@ void	walk_left(t_camera *camera)
 	curr_pos.x = camera->pos.x;
 	curr_pos.y = camera->pos.y;
 
-	if (worldMap[(int)fut_pos.x][curr_pos.y] == '0')
+	if (map[(int)fut_pos.x][curr_pos.y] == '0')
 		camera->pos.x = fut_pos.x;
-	if (worldMap[curr_pos.x][(int)fut_pos.y] == '0')
+	if (map[curr_pos.x][(int)fut_pos.y] == '0')
 		camera->pos.y = fut_pos.y;
 	
 }
 
-void	walk_right(t_camera *camera)
+void	walk_right(t_camera *camera, char **map)
 {
 
 	t_vector_d fut_pos;
@@ -111,8 +111,8 @@ void	walk_right(t_camera *camera)
 	curr_pos.x = camera->pos.x;
 	curr_pos.y = camera->pos.y;
 	
-	if (worldMap[(int)fut_pos.x][curr_pos.y] == '0')
+	if (map[(int)fut_pos.x][curr_pos.y] == '0')
 		camera->pos.x = fut_pos.x;
-	if (worldMap[curr_pos.x][(int)fut_pos.y] == '0')
+	if (map[curr_pos.x][(int)fut_pos.y] == '0')
 		camera->pos.y = fut_pos.y;
 }
