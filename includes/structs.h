@@ -1,7 +1,6 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
-
 typedef struct s_vector_d
 {
 	double x;
@@ -46,21 +45,15 @@ typedef struct s_line
 
 typedef struct s_ray
 {
-	t_vector_i map;
-	t_vector_d camera;
 	t_vector_d dir;
-	// length of ray from current position to next x or y-side
+	t_vector_d camera;
+	t_vector_i map;
 	t_vector_d side_dist;
 	t_vector_d delta_dist;
 	double     perp_wall_dist;
-	// what direction to step in x or y-direction (either +1 or -1)
-	t_vector_d step;
-	// was there a wall hit?
-	int hit;
-	// was a NS or a EW wall hit?
-	int side;
-	int texture_index;
-
+	t_vector_i step;
+	int        hit;
+	int        side;
 } t_ray;
 
 typedef struct s_player
@@ -69,6 +62,7 @@ typedef struct s_player
 
 typedef struct s_map
 {
+	char   tmp_map[24][24];
 	char **map;
 	int    width;
 	int    height;
@@ -83,30 +77,30 @@ typedef struct s_map
 	char  *ceiling_color;
 } t_map;
 
-typedef struct s_texture {
-    void    *img;
-    char    *addr;
-    int     bits_per_pixel;
-    int     line_length;
-    int     endian;
-    int     width;
-    int     height;
+typedef struct s_texture
+{
+	void *img;
+	char *addr;
+	int   bits_per_pixel;
+	int   line_length;
+	int   endian;
+	int   width;
+	int   height;
 } t_texture;
+
+typedef struct s_camera
+{
+	t_vector_d pos;
+	t_vector_d dir;
+	t_vector_d plane;
+} t_camera;
 
 typedef struct s_game
 {
-	t_map     *map;
-	t_data     data;
-	t_player   player;
-	t_vector_d camera;
-	t_ray      ray;
-	double     time;
-	double     old_time;
-	void      *mlx;
-	void      *win;
-    t_texture textures[4];
-	int			pressed_keys[5000];
-	char		**worldMap;
+	t_camera camera;
+	t_map    map;
+	void    *mlx;
+	void    *win;
 } t_game;
 
 #endif
