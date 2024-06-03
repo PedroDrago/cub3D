@@ -9,24 +9,52 @@ ja temos
 Percorrer array do mapa, e desenhar um quadrado para cada index do array, variando a cor dependendo do caractere:
 ```c
 //Esboco de algo que deve fucnionar
-	while(map[i])
+#define SQUARE_SIDE 15
+
+void	draw_square(t_data *image, int y, int x, unsigned int color)
+{
+	int i;
+	int j;
+
+	i = y;
+	while(i < (y + SQUARE_SIDE))
+	{
+		j = x;
+		while(j < (x + SQUARE_SIDE))
+		{
+			my_mlx_pixel_put(image, j, i, color);
+			j++;
+		}
+		i++;
+	}
+}
+
+
+void	draw_map(t_game *game, t_data *tile)
+{
+	int i = 0;
+	int j = 0;
+	int x = 0;
+	int y = 0;
+	while(game->map.map[i])
 	{
 		j = 0;
 		x = 0;
-		while(map[i][j])
+		while(game->map.map[i][j])
 		{
-			if (map[i][j] == ' ' || map[i][j] == '0')
-				draw_square(&tile, y, x, RGB_WHITE);
-			else if (map[i][j] == '1')
-				draw_square(&tile, y, x, RGB_PURPLE);
+			if (game->map.map[i][j] == ' ' || game->map.map[i][j] == '0')
+				draw_square(tile, y, x, RGB_WHITE);
+			else if (game->map.map[i][j] == '1')
+				draw_square(tile, y, x, RGB_PURPLE);
 			else
-				draw_square(&tile, y, x, RGB_GREEN);
+				draw_square(tile, y, x, RGB_GREEN);
 			j++;
 			x += SQUARE_SIDE;
 		}
 		y += SQUARE_SIDE;
 		i++;
 	}
+}
 ```
 Tambem teria que modificar o array do mapa para ter a referencia de onde o jogador ta. Ideia: toda vez que se movimentar mudar o lugar novo para 'P' e o lugar antigo para o que era antes, igual logica da so_long. Essa parte acho que n vai ser tao facil, tentei fazer um esboco mas n consegui, mas de qualquer forma o pdf n eh especifico se precisa ter um indicador do personagem no mapa kkkkkkkkkk.
 
