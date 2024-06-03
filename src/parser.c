@@ -282,3 +282,13 @@ int parse_map(t_map *map_data)
 		return 0;
 	return 1;
 }
+
+
+// TODO: 
+// - testar se verificacoes existentes estao funcionando e estao dando free em tudo que precisa corretamente.
+// - Bolar funcoes de saida pro programa, evitando double-frees e leaks.
+// - por enquanto apenas as infos (texturas e cores) estao sendo validadas, o mapa em si ainda n eh validado e deve ser feito:
+//		- Mapa cercado por parede
+//		- Mapa apenas com caracteres permitidos
+//		- Mapa com personagem existente
+//		- Personagem nao inicia nas bordas do mapa
