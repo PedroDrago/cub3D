@@ -1,6 +1,5 @@
 #include "../includes/cub3d.h"
 
-
 void	get_initial_pos(t_camera *camera, char **map)
 {
 	int	x;

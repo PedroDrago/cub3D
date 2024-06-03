@@ -1,8 +1,6 @@
 #ifndef MACROS_H
 #define MACROS_H
 
-#define MAP_WIDTH 24
-#define MAP_HEIGHT 24
 #define S_WIDTH 1280
 #define S_HEIGHT 720
 #define RGB_RED 0xFF0000
@@ -26,5 +24,5 @@
 #define I_D 3
 #define I_LEFT 4
 #define I_RIGHT 5
-#define RATE 2
+#define RATE 3
 #endif
