@@ -1,4 +1,5 @@
 #include "../includes/cub3d.h"
+#include <stdio.h>
 
 void	get_initial_pos(t_camera *camera, char **map)
 {
@@ -21,6 +22,7 @@ void	get_initial_pos(t_camera *camera, char **map)
 		}
 		x++;
 	}
+	printf("Exiting at get_initial_pos\n");
 	exit(1); //n achou deu merda, eh pra ter validado essa porra antes de chegar aqui (no momento ainda n esta validando).
 }
 
@@ -71,6 +73,8 @@ void init_camera(t_camera *camera, t_game *game)
 
 int key_hook(int key, t_game *game)
 {
+	// FIX: O problema de iniciar o jogo com algo apertado eh que isso aqui roda antes do game_loop. Entao como a janela ja eh inicializada com uma tecla apertada, no main loop ja chega com o index pressed, e a logica
+	//fica invertida, talvez fazer hooks diferentes para keypress e keyrelease consertaria.
 	if (key == ESC)
 		exit(1);
 	if (key == W)
@@ -140,9 +144,21 @@ void	get_map(t_game *game, char *file)
 {
 	game->map.file_height = 0;
 	game->map.file_width = 0;
-	get_map_proportions(&game->map, file);
-	read_map_file(&game->map, file);
-	parse_map(&game->map);
+	if (!get_map_proportions(&game->map, file))
+	{
+		printf("Error at get_map_proportions\n");
+		exit(1);
+	}
+	if(!read_map_file(&game->map, file))
+	{
+		printf("Error at read_map_file\n");
+		exit(1);
+	}
+	if (!parse_map(&game->map))
+	{
+		printf("Error at parse_map\n");
+		exit(1);
+	}
 	// print_map_data(&game->map);
 	print_split(game->map.map);
 }
