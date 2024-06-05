@@ -11,15 +11,15 @@ void	 my_mlx_pixel_put(t_data *img, int x, int y, unsigned int color)
 
 void	draw_line(t_data *img, int x, t_line line)
 {
-	// int i;
-	//
-	// i = 0;
-	// while (i < line.start)
-	// 	my_mlx_pixel_put(img, x, i++, RGB_LIGHT_BLUE);
+	int i;
+
+	i = 0;
+	while (i < line.start)
+		my_mlx_pixel_put(img, x, i++, RGB_LIGHT_BLUE);
 	while (line.start <= line.end)
 		my_mlx_pixel_put(img, x, line.start++, line.color);
-	// while (line.end <= S_HEIGHT - 1)
-	// 	my_mlx_pixel_put(img, x, line.end++, RGB_BROWN);
+	while (line.end <= S_HEIGHT - 1)
+		my_mlx_pixel_put(img, x, line.end++, RGB_BROWN);
 }
 
 void	draw_background(t_data *frame)

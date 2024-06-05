@@ -114,6 +114,17 @@ void	update_camera(t_game *game)
 	}
 }
 
+void quick_fix(t_game *game)
+{
+	static int i = 0;
+	if (i == 0)
+	{
+		// walk_left(&game->camera, game->map.map);
+		// rotate_left(&game->camera);
+		// rotate_right(&game->camera);
+		i++;
+	}
+}
 
 int game_loop(t_game *game)
 {
@@ -123,10 +134,11 @@ int game_loop(t_game *game)
 	t_line line;
 
 	x = 0;
+	quick_fix(game);
 	update_camera(game);
 	frame.img = mlx_new_image(game->mlx, S_WIDTH, S_HEIGHT);
 	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, &frame.line_length, &frame.endian);
-	draw_background(&frame);
+	// draw_background(&frame);
 	while (x < S_WIDTH) // for every vertical stripe on the screen we raycast
 	{
 		setup_raycasting(game, &ray, x);
