@@ -54,8 +54,8 @@ void print_map_data(t_map *map_data)
 	printf("south_path: %s\n", map_data->south_path);
 	printf("west_path: %s\n", map_data->west_path);
 	printf("east_path: %s\n", map_data->east_path);
-	printf("floor_color: %s\n", map_data->floor_color);
-	printf("ceiling_color: %s\n", map_data->ceiling_color);
+	printf("floor_color: %s\n", map_data->floor_rgb);
+	printf("ceiling_color: %s\n", map_data->ceiling_rgb);
 	print_split(map_data->map);
 }
 
@@ -132,16 +132,16 @@ int	parse_colors(t_map *map_data, char *line)
 {
 	char	**splited;
 
-	splited = ft_split(line, ' ');
+	splited = ft_split(line, ' '); // FIX: This needs to be a split_charset splitting by space and comma (' ', ',')
 	if (split_len(splited) != 2)
 	{
 		free_split(splited);
 		return 0;
 	}
 	if (!ft_strncmp(splited[0], "F", 3))
-		map_data->floor_color = remove_linebreak(splited[1]);
+		map_data->floor_rgb = remove_linebreak(splited[1]);
 	else if (!ft_strncmp(splited[0], "C", 3))
-		map_data->ceiling_color = remove_linebreak(splited[1]); 
+		map_data->ceiling_rgb = remove_linebreak(splited[1]); 
 	else
 	{
 		free_split(splited);
@@ -181,21 +181,17 @@ unsigned int rgb_to_hex(char *rgb)
 
 	color = 0;
 	splited = ft_split(rgb, ',');
+	print_split(splited);
 	if (!splited[0] || !splited[1] || !splited[2])
 	{ // WARN: if any of these indexes are NULL it means RGB lacks data (it should not happen, because it should be validated prior, in parser
 		free_split(splited);
 		printf("Error on rgb_to_hex\n");
 		exit(1);
 	}
-	len = ft_strlen(splited[0]);
-	ft_memmove(splited[0], splited[0] + 2, len - 1); // NOTE: Remove C or F from start of R code
-	splited[0][len - 2] = '\0';
 	color = (ft_atoi(splited[0]) << 16) | (ft_atoi(splited[1]) << 8) | ft_atoi(splited[2]);
 	free_split(splited);
 	return color;
 }
-
-
 
 int get_map_array(t_map *map_data, int start)
 {
@@ -335,8 +331,8 @@ void	init_map(t_map *map)
 	map->west_path = NULL;
 	map->south_path = NULL;
 	map->north_path = NULL;
-	map->ceiling_color = NULL;
-	map->floor_color = NULL;
+	map->ceiling_rgb = NULL;
+	map->floor_rgb = NULL;
 }
 
 int is_surrounded(char **map, int i, int j)
@@ -433,6 +429,8 @@ void	get_map(t_game *game, char *file)
 	free_split(game->map.map_file_array);
 	game->map.map_file_array = NULL;
 	print_map_data(&game->map);
+	game->map.floor_color = rgb_to_hex(game->map.floor_rgb);
+	game->map.ceiling_color = rgb_to_hex(game->map.ceiling_rgb);
 }
 
 void destroy_map(t_map *map)

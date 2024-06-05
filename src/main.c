@@ -145,7 +145,7 @@ int game_loop(t_game *game)
 		setup_raycasting(game, &ray, x);
 		digital_diferencial_analysis(game, &ray, &line);
 		calculate_line(&ray, &line);
-		draw_line(&frame, x, line);
+		draw_line(&frame, x, line, game->map.floor_color, game->map.ceiling_color);
 		x++;
 	}
 	mlx_put_image_to_window(game->mlx, game->win, frame.img, 0, 0);

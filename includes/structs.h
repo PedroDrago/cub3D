@@ -49,18 +49,20 @@ typedef struct s_ray
 
 typedef struct s_map
 {
-	char **map;
-	int    width;
-	int    height;
-	char **map_file_array;
-	int    file_height;
-	int    file_width;
-	char  *north_path;
-	char  *south_path;
-	char  *west_path;
-	char  *east_path;
-	char  *floor_color;
-	char  *ceiling_color;
+	char       **map;
+	int          width;
+	int          height;
+	char       **map_file_array;
+	int          file_height;
+	int          file_width;
+	char        *north_path;
+	char        *south_path;
+	char        *west_path;
+	char        *east_path;
+	char        *floor_rgb;
+	char        *ceiling_rgb;
+	unsigned int floor_color;
+	unsigned int ceiling_color;
 } t_map;
 
 typedef struct s_camera
