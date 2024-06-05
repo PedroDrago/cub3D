@@ -29,15 +29,15 @@ void	draw_square(t_data *image, int y, int x, unsigned int color, int square_sid
 
 int get_square_size(t_map *map)
 {
-	int size1;
-	int size2;
+	int width;
+	int height;
 
-	size1 = S_WIDTH/map->width;
-	size2 = S_HEIGHT/map->height;
+	width = S_WIDTH/map->width;
+	height = S_HEIGHT/map->height;
 
-	if (size1 < size2)
-		return (size1);
-	return (size2);
+	if (width < height)
+		return (width);
+	return (height);
 }
 
 void	draw_map(t_game *game, t_data *tile)
