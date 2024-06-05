@@ -367,7 +367,7 @@ int	validate_map(char **map, int height, int width)
 		while(map[i][j])
 		{
 			if (is_player_char(map[i][j]))
-				has_player = 1;
+				has_player++;
 			if (is_invalid_char(map[i][j]))
 				return (0);
 			if (map[i][j] != '1' && map[i][j] != ' ')
@@ -381,7 +381,7 @@ int	validate_map(char **map, int height, int width)
 		}
 		i++;
 	}
-	if (!has_player)
+	if (!has_player || has_player > 1)
 		return (0);
 	return (1);
 }
@@ -423,11 +423,9 @@ void destroy_map(t_map *map)
 	free_split(map->map);
 }
 
-// TODO: 
-// - testar se verificacoes existentes estao funcionando e estao dando free em tudo que precisa corretamente.
-// - Bolar funcoes de saida pro programa, evitando double-frees e leaks.
-// - por enquanto apenas as infos (texturas e cores) estao sendo validadas, o mapa em si ainda n eh validado e deve ser feito:
-//		- Mapa cercado por parede
-//		- Mapa apenas com caracteres permitidos
-//		- Mapa com personagem existente
-//		- Personagem nao inicia nas bordas do mapa
+// TODO: Adicionar validacoes do mapa
+
+// TODO: Testar todos os cenarios de input e checar leak das saidas:
+// - Falta de cada uma das texturas
+// - Ma formatacao de cada uma das texturas
+// - Ma formatacao do mapa
