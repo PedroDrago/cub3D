@@ -322,7 +322,7 @@ void	init_map(t_map *map)
 	map->floor_color = NULL;
 }
 
-int is_valid(char **map, int i, int j)
+int is_surrounded(char **map, int i, int j)
 {
 	if (map[i][j + 1] == ' ' || map[i][j - 1] == ' ')
 		return (0);
@@ -340,28 +340,49 @@ int is_valid(char **map, int i, int j)
 	return (1);
 
 }
-int	check_surrounded(char **map, int height, int width)
+
+int is_invalid_char(char c)
+{
+	return (c != '1' && c != '0' && c != 'N' && c != 'S' && c != 'E' && c != 'W' && c != ' ');
+}
+
+int is_player_char(char c)
+{
+	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+		return (1);
+	return (0);
+}
+
+int	validate_map(char **map, int height, int width)
 {
 	int i;
 	int j;
+	int has_player;
 
 	i = 0;
+	has_player = 0;
 	while(map[i])
 	{
 		j = 0;
 		while(map[i][j])
 		{
+			if (is_player_char(map[i][j]))
+				has_player = 1;
+			if (is_invalid_char(map[i][j]))
+				return (0);
 			if (map[i][j] != '1' && map[i][j] != ' ')
 			{
 				if (i == 0 || i == (height - 1) || j == 0 || j == (width - 1 ))
 					return 0;
-				if (!is_valid(map, i, j))
+				if (!is_surrounded(map, i, j))
 					return 0;
 			}
 			j++;
 		}
 		i++;
 	}
+	if (!has_player)
+		return (0);
 	return (1);
 }
 void	get_map(t_game *game, char *file)
@@ -387,7 +408,7 @@ void	get_map(t_game *game, char *file)
 		printf("Error at parse_map\n");
 		exit(1);
 	}
-	if (!check_surrounded(game->map.map, game->map.height, game->map.width))
+	if (!validate_map(game->map.map, game->map.height, game->map.width))
 	{
 		printf("Error at check_surrounded\n");
 		exit(1);
