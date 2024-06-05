@@ -9,18 +9,16 @@ ja temos
 Percorrer array do mapa, e desenhar um quadrado para cada index do array, variando a cor dependendo do caractere:
 ```c
 //Esboco de algo que deve fucnionar
-#define SQUARE_SIDE 15
-
-void	draw_square(t_data *image, int y, int x, unsigned int color)
+void	draw_square(t_data *image, int y, int x, unsigned int color, int square_side)
 {
 	int i;
 	int j;
 
 	i = y;
-	while(i < (y + SQUARE_SIDE))
+	while(i < (y + square_side))
 	{
 		j = x;
-		while(j < (x + SQUARE_SIDE))
+		while(j < (x + square_side))
 		{
 			my_mlx_pixel_put(image, j, i, color);
 			j++;
@@ -29,6 +27,18 @@ void	draw_square(t_data *image, int y, int x, unsigned int color)
 	}
 }
 
+int get_square_size(t_map *map)
+{
+	int size1;
+	int size2;
+
+	size1 = S_WIDTH/map->width;
+	size2 = S_HEIGHT/map->height;
+
+	if (size1 < size2)
+		return (size1);
+	return (size2);
+}
 
 void	draw_map(t_game *game, t_data *tile)
 {
@@ -36,6 +46,7 @@ void	draw_map(t_game *game, t_data *tile)
 	int j = 0;
 	int x = 0;
 	int y = 0;
+	int square_side = get_square_size(&game->map);
 	while(game->map.map[i])
 	{
 		j = 0;
@@ -43,22 +54,20 @@ void	draw_map(t_game *game, t_data *tile)
 		while(game->map.map[i][j])
 		{
 			if (game->map.map[i][j] == ' ' || game->map.map[i][j] == '0')
-				draw_square(tile, y, x, RGB_WHITE);
+				draw_square(tile, y, x, RGB_WHITE, square_side);
 			else if (game->map.map[i][j] == '1')
-				draw_square(tile, y, x, RGB_PURPLE);
+				draw_square(tile, y, x, RGB_PURPLE, square_side);
 			else
-				draw_square(tile, y, x, RGB_GREEN);
+				draw_square(tile, y, x, RGB_GREEN, square_side);
 			j++;
-			x += SQUARE_SIDE;
+			x += square_side;
 		}
-		y += SQUARE_SIDE;
+		y += square_side;
 		i++;
 	}
 }
 ```
 Tambem teria que modificar o array do mapa para ter a referencia de onde o jogador ta. Ideia: toda vez que se movimentar mudar o lugar novo para 'P' e o lugar antigo para o que era antes, igual logica da so_long. Essa parte acho que n vai ser tao facil, tentei fazer um esboco mas n consegui, mas de qualquer forma o pdf n eh especifico se precisa ter um indicador do personagem no mapa kkkkkkkkkk.
-
-Outro problema eh escalar isso de acordo com o tamanho do mapa, nesse esboco de codigo acima se o mapa fosse mto grande ia ocupar a tela toda, entao acredito que `SQUARE_SIDE` tenha que ser uma variavel calculada de acordo com o tamanho da tela X tamanho do mapa, provavelmente uma divisao ou algo assim.
 
 ### Portas que abrem e fecham
 Esse n sei qual a melhor forma, mas penso em algo de ter um caracter `D` no mapa para a porta, verificar se o personagem esta atualmente adjacente a essa porta, e se tiver, ai tem um evento pra tecla `E` que transforma esse caractere `D` em um caractere `O` representando porta aberta, ai a gnt ignora esse caractere nas colisoes e tambem muda a textura. talvez tb seja bom n permitir abrir/fechar a porta se o personagem estiver em cima de onde eh a porta.

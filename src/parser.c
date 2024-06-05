@@ -48,8 +48,6 @@ void	print_split(char **splited)
 	printf("\n");
 }
 
-//9/4
-
 void print_map_data(t_map *map_data)
 {
 	printf("north_path: %s\n", map_data->north_path);

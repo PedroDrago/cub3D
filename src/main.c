@@ -140,10 +140,12 @@ int game_loop(t_game *game)
 	return 0;
 }
 
-
 int main(int argc, char *argv[])
 {
 	t_game	game;
+	// int wd;
+	// int hg;
+	// mlx_get_screen_size(game->mlx, &wd, &hg); // make some math with this to have dinamic sized window based on the monitor, and also define RATE based on the screen resolution
 
 	if (argc != 2)
 	{
