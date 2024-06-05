@@ -126,6 +126,7 @@ void quick_fix(t_game *game)
 	}
 }
 
+
 int game_loop(t_game *game)
 {
 	int x;

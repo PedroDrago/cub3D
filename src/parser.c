@@ -173,6 +173,28 @@ char *get_spaced_line(char *line, int len)
 	return spaced_line;
 }
 
+unsigned int rgb_to_hex(char *rgb)
+{
+	unsigned int color;
+	char **splited;
+	int len;
+
+	color = 0;
+	splited = ft_split(rgb, ',');
+	if (!splited[0] || !splited[1] || !splited[2])
+	{ // WARN: if any of these indexes are NULL it means RGB lacks data (it should not happen, because it should be validated prior, in parser
+		free_split(splited);
+		printf("Error on rgb_to_hex\n");
+		exit(1);
+	}
+	len = ft_strlen(splited[0]);
+	ft_memmove(splited[0], splited[0] + 2, len - 1); // NOTE: Remove C or F from start of R code
+	splited[0][len - 2] = '\0';
+	color = (ft_atoi(splited[0]) << 16) | (ft_atoi(splited[1]) << 8) | ft_atoi(splited[2]);
+	free_split(splited);
+	return color;
+}
+
 
 
 int get_map_array(t_map *map_data, int start)

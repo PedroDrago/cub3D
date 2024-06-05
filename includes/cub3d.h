@@ -33,5 +33,6 @@ void my_mlx_pixel_put(t_data *img, int x, int y, unsigned int color);
 void draw_background(t_data *frame);
 void init_textures(t_game *game);
 void get_map(t_game *game, char *file);
+void free_split(char **splited);
 
 #endif
