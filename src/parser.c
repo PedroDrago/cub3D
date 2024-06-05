@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-
-
 int read_map_file(t_map *map_data, char *file_path)
 {
 	int fd;
@@ -197,10 +195,12 @@ int get_map_array(t_map *map_data, int start)
 		map_data->height++;
 		tmp++;
 	}
+	if (map_data->height < 3 || map_data->width < 4) //4 because here we still have \n at end of each line
+		return 0;
 	map_data->map = malloc(sizeof(char *) * (map_data->height + 1));
 	if (!map_data->map)
 		return 0;
-	while(i < map_data->height) // WARN: <= ?
+	while(i < map_data->height)
 	{
 		len = ft_strlen(map_data->map_file_array[start]);
 		if (len < map_data->width)
@@ -276,7 +276,6 @@ int get_map_proportions(t_map *map_data, char *file_path)
 	char *line;
 
 	len = 0;
-	printf("File: !%s!\n", file_path);
 	fd = open(file_path, O_RDONLY);
 	if (fd < 0)
 		return 0;
@@ -291,8 +290,6 @@ int get_map_proportions(t_map *map_data, char *file_path)
 		line = get_next_line(fd);
 	}
 	close(fd);
-	if (map_data->file_height < 3 || map_data->file_width < 3) //too small in height
-		return 0;
 	return 1;
 }
 
@@ -424,6 +421,7 @@ void destroy_map(t_map *map)
 }
 
 // TODO: Adicionar validacoes do mapa
+// - [ ] Descobrir um jeito de validar se o mapa esta cercado por paredes sem fazer com que espacos no meio do mapa gerem erro.
 
 // TODO: Testar todos os cenarios de input e checar leak das saidas:
 // - Falta de cada uma das texturas
