@@ -35,4 +35,10 @@ void init_textures(t_game *game);
 void get_map(t_game *game, char *file);
 void free_split(char **splited);
 
+void print_split(char **splited);
+void print_map_data(t_map *map_data);
+void print_all_map_file(t_map *map_data);
+int  split_len(char **splited);
+void free_split(char **splited);
+
 #endif
