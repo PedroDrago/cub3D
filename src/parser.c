@@ -5,28 +5,6 @@
 #include <time.h>
 
 
-int get_map_proportions(t_map *map_data, char *file_path)
-{
-	int fd;
-	int len;
-	char *line;
-
-	fd = open(file_path, O_RDONLY);
-	if (fd < 0)
-		return 0;
-	line = get_next_line(fd);
-	while(line)
-	{
-		map_data->file_height++;
-		len = ft_strlen(line);
-		if (len > map_data->file_width)
-			map_data->file_width = len;
-		free(line);
-		line = get_next_line(fd);
-	}
-	close(fd);
-	return 1;
-}
 
 int read_map_file(t_map *map_data, char *file_path)
 {
@@ -113,7 +91,7 @@ int	split_len(char **splited)
 void	free_split(char **splited)
 {
 	int	i;
-	
+
 	i = 0;
 	while(splited[i])
 		free(splited[i++]);
@@ -199,6 +177,8 @@ char *get_spaced_line(char *line, int len)
 	return spaced_line;
 }
 
+
+
 int get_map_array(t_map *map_data, int start)
 {
 	int	tmp;
@@ -283,6 +263,144 @@ int parse_map(t_map *map_data)
 	return 1;
 }
 
+
+void	destroy_map_data(t_map *map_data)
+{
+	free_split(map_data->map);
+}
+
+int get_map_proportions(t_map *map_data, char *file_path)
+{
+	int fd;
+	int len;
+	char *line;
+
+	len = 0;
+	printf("File: !%s!\n", file_path);
+	fd = open(file_path, O_RDONLY);
+	if (fd < 0)
+		return 0;
+	line = get_next_line(fd);
+	while(line)
+	{
+		map_data->file_height++;
+		len = ft_strlen(line);
+		if (len > map_data->file_width)
+			map_data->file_width = len;
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
+	if (map_data->file_height < 3 || map_data->file_width < 3) //too small in height
+		return 0;
+	return 1;
+}
+
+int	check_extension(char *file)
+{
+	char *dot;
+
+	dot = ft_strrchr(file, '.');
+	if (dot && !ft_strncmp(dot, ".cub", 4))
+		return 1;
+	return 0;
+}
+
+void	init_map(t_map *map)
+{
+	map->map = NULL;
+	map->file_width = 0;
+	map->file_height = 0;
+	map->width = 0;
+	map->height = 0;
+	map->map_file_array = NULL;
+	map->east_path = NULL;
+	map->west_path = NULL;
+	map->south_path = NULL;
+	map->north_path = NULL;
+	map->ceiling_color = NULL;
+	map->floor_color = NULL;
+}
+
+int is_valid(char **map, int i, int j)
+{
+	if (map[i][j + 1] == ' ' || map[i][j - 1] == ' ')
+		return (0);
+	if (map[i + 1] && map[i + 1][j] == ' ')
+		return 0;
+	if (map[i - 1][j] == ' ')
+		return 0;
+	// WARN: This approach will generate error when the map has a space character inside of it like:
+	// 111111
+	// 100001
+	// 100 01
+	// 100N01
+	// 111111
+	// The subject specifies that spaces are a valid part of the map, but is up to us to handle how we want.
+	return (1);
+
+}
+int	check_surrounded(char **map, int height, int width)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while(map[i])
+	{
+		j = 0;
+		while(map[i][j])
+		{
+			if (map[i][j] != '1' && map[i][j] != ' ')
+			{
+				if (i == 0 || i == (height - 1) || j == 0 || j == (width - 1 ))
+					return 0;
+				if (!is_valid(map, i, j))
+					return 0;
+			}
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
+void	get_map(t_game *game, char *file)
+{
+	if (!check_extension(file))
+	{
+		printf("Error at check_extension\n");
+		exit(1);
+	}
+	init_map(&game->map);
+	if (!get_map_proportions(&game->map, file))
+	{
+		printf("Error at get_map_proportions\n");
+		exit(1);
+	}
+	if(!read_map_file(&game->map, file))
+	{
+		printf("Error at read_map_file\n");
+		exit(1);
+	}
+	if (!parse_map(&game->map))
+	{
+		printf("Error at parse_map\n");
+		exit(1);
+	}
+	if (!check_surrounded(game->map.map, game->map.height, game->map.width))
+	{
+		printf("Error at check_surrounded\n");
+		exit(1);
+	}
+	free_split(game->map.map_file_array);
+	game->map.map_file_array = NULL;
+	print_map_data(&game->map);
+}
+
+void destroy_map(t_map *map)
+{
+	free_split(map->map);
+}
 
 // TODO: 
 // - testar se verificacoes existentes estao funcionando e estao dando free em tudo que precisa corretamente.

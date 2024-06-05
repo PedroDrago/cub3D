@@ -140,28 +140,6 @@ int game_loop(t_game *game)
 	return 0;
 }
 
-void	get_map(t_game *game, char *file)
-{
-	game->map.file_height = 0;
-	game->map.file_width = 0;
-	if (!get_map_proportions(&game->map, file))
-	{
-		printf("Error at get_map_proportions\n");
-		exit(1);
-	}
-	if(!read_map_file(&game->map, file))
-	{
-		printf("Error at read_map_file\n");
-		exit(1);
-	}
-	if (!parse_map(&game->map))
-	{
-		printf("Error at parse_map\n");
-		exit(1);
-	}
-	// print_map_data(&game->map);
-	print_split(game->map.map);
-}
 
 int main(int argc, char *argv[])
 {
