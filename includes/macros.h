@@ -1,6 +1,10 @@
 #ifndef MACROS_H
 #define MACROS_H
 
+#define NORTH 0
+#define SOUTH 1
+#define WEST 2
+#define EAST 3
 #define S_WIDTH 1280
 #define S_HEIGHT 720
 #define RGB_RED 0xFF0000
@@ -18,7 +22,8 @@
 #define S 115
 #define D 100
 #define ESC 65307
-#define I_W 0 // esses macros com I antes do nome da tecla sao os indexes de cada tecla pro array (que ai a gnt n precisa alocar um buffer tao grande)
+#define I_W \
+	0 // esses macros com I antes do nome da tecla sao os indexes de cada tecla pro array (que ai a gnt n precisa alocar um buffer tao grande)
 #define I_A 1
 #define I_S 2
 #define I_D 3

@@ -126,6 +126,17 @@ void quick_fix(t_game *game)
 	}
 }
 
+void	test_textures(t_game *game)
+{
+	int x = 0;
+	mlx_put_image_to_window(game->mlx, game->win, game->textures[NORTH].img, 0, 0);
+	x += game->textures[NORTH].width;
+	mlx_put_image_to_window(game->mlx, game->win, game->textures[SOUTH].img, x, 0);
+	x += game->textures[NORTH].width;
+	mlx_put_image_to_window(game->mlx, game->win, game->textures[WEST].img, x, 0);
+	x += game->textures[NORTH].width;
+	mlx_put_image_to_window(game->mlx, game->win, game->textures[EAST].img, x, 0);
+}
 
 int game_loop(t_game *game)
 {
@@ -149,6 +160,7 @@ int game_loop(t_game *game)
 		x++;
 	}
 	mlx_put_image_to_window(game->mlx, game->win, frame.img, 0, 0);
+	test_textures(game);
 	mlx_destroy_image(game->mlx, frame.img);
 	return 0;
 }

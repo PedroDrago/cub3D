@@ -177,11 +177,9 @@ unsigned int rgb_to_hex(char *rgb)
 {
 	unsigned int color;
 	char **splited;
-	int len;
 
 	color = 0;
 	splited = ft_split(rgb, ',');
-	print_split(splited);
 	if (!splited[0] || !splited[1] || !splited[2])
 	{ // WARN: if any of these indexes are NULL it means RGB lacks data (it should not happen, because it should be validated prior, in parser
 		free_split(splited);
@@ -398,6 +396,30 @@ int	validate_map(char **map, int height, int width)
 		return (0);
 	return (1);
 }
+
+int test_files(t_map *map)
+{
+	int fd;
+
+	fd = open(map->north_path, O_RDONLY);
+	if (fd < 0)
+		return (0);
+	close(fd);
+	fd = open(map->south_path, O_RDONLY);
+	if (fd < 0)
+		return (0);
+	close(fd);
+	fd = open(map->east_path, O_RDONLY);
+	if (fd < 0)
+		return (0);
+	close(fd);
+	fd = open(map->west_path, O_RDONLY);
+	if (fd < 0)
+		return (0);
+	close(fd);
+	return (1);
+}
+
 void	get_map(t_game *game, char *file)
 {
 	if (!check_extension(file))
@@ -431,6 +453,13 @@ void	get_map(t_game *game, char *file)
 	print_map_data(&game->map);
 	game->map.floor_color = rgb_to_hex(game->map.floor_rgb);
 	game->map.ceiling_color = rgb_to_hex(game->map.ceiling_rgb);
+	free(game->map.floor_rgb);
+	free(game->map.ceiling_rgb);
+	if (!test_files(&game->map))
+	{
+		printf("Error at test_files\n");
+		exit(1);
+	}
 }
 
 void destroy_map(t_map *map)

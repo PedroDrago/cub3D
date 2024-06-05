@@ -91,6 +91,7 @@ acho que da p gnt fazer umas paradas maneiras que n dariam tanto trabalho:
 - Correr: Esse é facil, acredito que apenas ter uma variavel com o modificador de velocidade tipo 1.5x. Ter um index no array de keys_pressed para o shift, e na hora de mover o personagem e multiplicar a posicao pelo mov_speed verificar se shift ta apertado, se estiver move move_speed * run_modifier.
 - Musica
 - Sound effects
+- FPS counter
 - Inimigos estaticos (n andam mas toman tiro e somem)
 - Items que ficam jogados no chao que se passar em cima pega e muda algo na gameplay (uma bota que da mais speed, municao, etc, pra fazer o fundo ficar transparente da pra usar um artigo que um maluco da 42 sobre fazer imagens xpm ficarem com o fundo transparente ao inves de preto)
 

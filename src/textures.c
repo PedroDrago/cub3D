@@ -10,8 +10,8 @@ void load_texture(t_game *game, t_data *texture, char *path)
 
 void init_textures(t_game *game)
 {
-	load_texture(game, &game->textures[0], "./assets/bluestone.xpm");
-	load_texture(game, &game->textures[1], "./assets/graystone.xpm");
-	load_texture(game, &game->textures[2], "./assets/redstone.xpm");
-	load_texture(game, &game->textures[3], "./assets/yellowstone.xpm");
+	load_texture(game, &game->textures[NORTH], game->map.north_path);
+	load_texture(game, &game->textures[SOUTH], game->map.south_path);
+	load_texture(game, &game->textures[EAST], game->map.east_path);
+	load_texture(game, &game->textures[WEST], game->map.west_path);
 }
