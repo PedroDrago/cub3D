@@ -198,7 +198,7 @@ int game_loop(t_game *game)
 	update_camera(game);
 	frame.img = mlx_new_image(game->mlx, S_WIDTH, S_HEIGHT);
 	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, &frame.line_length, &frame.endian);
-	// draw_background(&frame);
+	draw_background(&frame);
 	while (x < S_WIDTH) // for every vertical stripe on the screen we raycast
 	{
 		setup_raycasting(game, &ray, x);

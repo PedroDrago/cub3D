@@ -14,12 +14,14 @@ void	draw_line(t_data *img, int x, t_line line, unsigned int floor_color, unsign
 	int i;
 
 	i = 0;
-	while (i < line.start)
-		my_mlx_pixel_put(img, x, i++, ceiling_color);
+	// NOTE: this both whiles commented are a performance improovment on ceiling and floor rendering, but causes a segfault insetead of wall transparency
+	// This will probably solved when collision range is increased
+	// while (i < line.start)
+	// 	my_mlx_pixel_put(img, x, i++, ceiling_color);
 	while (line.start <= line.end)
 		my_mlx_pixel_put(img, x, line.start++, line.color);
-	while (line.end <= S_HEIGHT - 1)
-		my_mlx_pixel_put(img, x, line.end++, floor_color);
+	// while (line.end <= S_HEIGHT - 1)
+	// 	my_mlx_pixel_put(img, x, line.end++, floor_color);
 }
 
 void	draw_background(t_data *frame)
