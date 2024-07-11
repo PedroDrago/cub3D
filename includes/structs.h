@@ -1,6 +1,16 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
+typedef struct s_texture {
+    void    *img;
+    char    *addr;
+    int     bits_per_pixel;
+    int     line_length;
+    int     endian;
+    int     width;
+    int     height;
+} t_data;
+
 typedef struct s_vector_d
 {
 	double x;
@@ -12,19 +22,6 @@ typedef struct s_vector_i
 	int x;
 	int y;
 } t_vector_i;
-
-typedef struct s_data
-{
-	void *img;
-	char *addr;
-	int   bits_per_pixel;
-	int   line_length;
-	int   endian;
-	int   x;
-	int   y;
-	int   width;
-	int   height;
-} t_data;
 
 typedef struct s_line
 {
@@ -77,7 +74,7 @@ typedef struct s_camera
 typedef struct s_game
 {
 	int      keys[20];
-	t_data   textures[4];
+	t_data textures[4];
 	int      texture_index;
 	t_camera camera;
 	t_map    map;

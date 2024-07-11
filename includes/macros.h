@@ -29,5 +29,5 @@
 #define I_D 3
 #define I_LEFT 4
 #define I_RIGHT 5
-#define RATE 2
+#define RATE 3
 #endif

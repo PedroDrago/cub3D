@@ -48,75 +48,110 @@ void	rotate_left(t_camera *camera)
 	return;
 }
 
-void	walk_forward(t_camera *camera, char **map)
+void walk_forward(t_camera *camera, char **map)
 {
-	t_vector_d fut_pos;
-	t_vector_i curr_pos;
-	
+    t_vector_d fut_pos;
 
-	// NOTE: we update each coordinate by the current position in that axel + the camera direction in that axel times the move speed multipler
-	//      -> next_pos = curr_pos + direction * speed
-	fut_pos.x = camera->pos.x + camera->dir.x * camera->mov_speed;
-	fut_pos.y = camera->pos.y + camera->dir.y * camera->mov_speed;
-	curr_pos.x = camera->pos.x;
-	curr_pos.y = camera->pos.y;
+    // Calculate future position
+    fut_pos.x = camera->pos.x + camera->dir.x * camera->mov_speed;
+    fut_pos.y = camera->pos.y + camera->dir.y * camera->mov_speed;
 
-	if (map[(int)fut_pos.x][curr_pos.y] == '0')
-		camera->pos.x = fut_pos.x;
-	if (map[curr_pos.x][(int)fut_pos.y] == '0')
-		camera->pos.y = fut_pos.y;
-}
-void	walk_backwards(t_camera *camera, char **map)
-{
-	t_vector_d fut_pos;
-	t_vector_i curr_pos;
-	
+    // Convert current position to integer for indexing map
+    int curr_x = (int)(camera->pos.x);
+    int curr_y = (int)(camera->pos.y);
 
-	fut_pos.x = camera->pos.x - camera->dir.x * camera->mov_speed;
-	fut_pos.y = camera->pos.y - camera->dir.y * camera->mov_speed;
-	curr_pos.x = camera->pos.x;
-	curr_pos.y = camera->pos.y;
+    // Check for collision with walls in x-direction
+    if (camera->dir.x > 0.1 && map[(int)(fut_pos.x + 0.3)][curr_y] == '0') {
+        camera->pos.x = fut_pos.x;
+    } else if (camera->dir.x < 0.1 && map[(int)(fut_pos.x - 0.3)][curr_y] == '0') {
+        camera->pos.x = fut_pos.x;
+    }
 
-	if (map[(int)fut_pos.x][curr_pos.y] == '0')
-		camera->pos.x = fut_pos.x;
-	if (map[curr_pos.x][(int)fut_pos.y] == '0')
-		camera->pos.y = fut_pos.y;
-
+    // Check for collision with walls in y-direction
+    if (camera->dir.y > 0.1 && map[curr_x][(int)(fut_pos.y + 0.3)] == '0') {
+        camera->pos.y = fut_pos.y;
+    } else if (camera->dir.y < 0.1 && map[curr_x][(int)(fut_pos.y - 0.3)] == '0') {
+        camera->pos.y = fut_pos.y;
+    }
 }
 
-void	walk_left(t_camera *camera, char **map)
+void walk_backwards(t_camera *camera, char **map)
 {
+    t_vector_d fut_pos;
 
-	t_vector_d fut_pos;
-	t_vector_i curr_pos;
-	
+    // Calculate future position
+    fut_pos.x = camera->pos.x - camera->dir.x * camera->mov_speed;
+    fut_pos.y = camera->pos.y - camera->dir.y * camera->mov_speed;
 
-	fut_pos.x = camera->pos.x + -camera->dir.y * camera->mov_speed;
-	fut_pos.y = camera->pos.y + camera->dir.x * camera->mov_speed;
-	curr_pos.x = camera->pos.x;
-	curr_pos.y = camera->pos.y;
+    // Convert current position to integer for indexing map
+    int curr_x = (int)(camera->pos.x);
+    int curr_y = (int)(camera->pos.y);
 
-	if (map[(int)fut_pos.x][curr_pos.y] == '0')
-		camera->pos.x = fut_pos.x;
-	if (map[curr_pos.x][(int)fut_pos.y] == '0')
-		camera->pos.y = fut_pos.y;
-	
+    // Check for collision with walls in x-direction
+    if (camera->dir.x > 0.1 && map[(int)(fut_pos.x - 0.3)][curr_y] == '0') {
+        camera->pos.x = fut_pos.x;
+    } else if (camera->dir.x < 0.1 && map[(int)(fut_pos.x + 0.3)][curr_y] == '0') {
+        camera->pos.x = fut_pos.x;
+    }
+
+    // Check for collision with walls in y-direction
+    if (camera->dir.y > 0.1 && map[curr_x][(int)(fut_pos.y - 0.3)] == '0') {
+        camera->pos.y = fut_pos.y;
+    } else if (camera->dir.y < 0.1 && map[curr_x][(int)(fut_pos.y + 0.3)] == '0') {
+        camera->pos.y = fut_pos.y;
+    }
 }
 
-void	walk_right(t_camera *camera, char **map)
+void walk_left(t_camera *camera, char **map)
 {
+    t_vector_d fut_pos;
 
-	t_vector_d fut_pos;
-	t_vector_i curr_pos;
-	
+    // Calculate future position perpendicular to camera direction
+    fut_pos.x = camera->pos.x - camera->plane.x * camera->mov_speed;
+    fut_pos.y = camera->pos.y - camera->plane.y * camera->mov_speed;
 
-	fut_pos.x = camera->pos.x - -camera->dir.y * camera->mov_speed;
-	fut_pos.y = camera->pos.y - camera->dir.x * camera->mov_speed;
-	curr_pos.x = camera->pos.x;
-	curr_pos.y = camera->pos.y;
-	
-	if (map[(int)fut_pos.x][curr_pos.y] == '0')
-		camera->pos.x = fut_pos.x;
-	if (map[curr_pos.x][(int)fut_pos.y] == '0')
-		camera->pos.y = fut_pos.y;
+    // Convert current position to integer for indexing map
+    int curr_x = (int)(camera->pos.x);
+    int curr_y = (int)(camera->pos.y);
+
+    // Check for collision with walls in x-direction
+    if (camera->plane.x > 0.1 && map[(int)(fut_pos.x - 0.3)][curr_y] == '0') {
+        camera->pos.x = fut_pos.x;
+    } else if (camera->plane.x < 0.1 && map[(int)(fut_pos.x + 0.3)][curr_y] == '0') {
+        camera->pos.x = fut_pos.x;
+    }
+
+    // Check for collision with walls in y-direction
+    if (camera->plane.y > 0.1 && map[curr_x][(int)(fut_pos.y + 0.3)] == '0') {
+        camera->pos.y = fut_pos.y;
+    } else if (camera->plane.y < 0.1 && map[curr_x][(int)(fut_pos.y - 0.3)] == '0') {
+        camera->pos.y = fut_pos.y;
+    }
+}
+
+void walk_right(t_camera *camera, char **map)
+{
+    t_vector_d fut_pos;
+
+    // Calculate future position perpendicular to camera direction
+    fut_pos.x = camera->pos.x + camera->plane.x * camera->mov_speed;
+    fut_pos.y = camera->pos.y + camera->plane.y * camera->mov_speed;
+
+    // Convert current position to integer for indexing map
+    int curr_x = (int)(camera->pos.x);
+    int curr_y = (int)(camera->pos.y);
+
+    // Check for collision with walls in x-direction
+    if (camera->plane.x > 0.1 && map[(int)(fut_pos.x + 0.3)][curr_y] == '0') {
+        camera->pos.x = fut_pos.x;
+    } else if (camera->plane.x < 0.1 && map[(int)(fut_pos.x - 0.3)][curr_y] == '0') {
+        camera->pos.x = fut_pos.x;
+    }
+
+    // Check for collision with walls in y-direction
+    if (camera->plane.y > 0.1 && map[curr_x][(int)(fut_pos.y - 0.3)] == '0') {
+        camera->pos.y = fut_pos.y;
+    } else if (camera->plane.y < 0.1 && map[curr_x][(int)(fut_pos.y + 0.3)] == '0') {
+        camera->pos.y = fut_pos.y;
+    }
 }

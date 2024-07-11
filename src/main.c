@@ -189,6 +189,20 @@ void	draw_map(t_game *game, t_data *tile)
 	}
 }
 
+t_data get_sprite(t_line line, t_game *game)
+{
+	t_data tex;
+
+	if (line.color == NORTH)
+		tex = game->textures[0];
+	else if (line.color == SOUTH)
+		tex = game->textures[1];
+	else if (line.color == WEST)
+		tex = game->textures[2];
+	else
+		tex = game->textures[3];
+	return (tex);
+}
 
 int game_loop(t_game *game)
 {
@@ -196,6 +210,7 @@ int game_loop(t_game *game)
 	t_ray ray;
 	t_data frame;
 	t_line line;
+	t_data sprite;
 
 	x = 0;
 	update_camera(game);
@@ -207,7 +222,8 @@ int game_loop(t_game *game)
 		setup_raycasting(game, &ray, x);
 		digital_diferencial_analysis(game, &ray, &line);
 		calculate_line(&ray, &line);
-		draw_line(&frame, x, line, game->map.floor_color, game->map.ceiling_color);
+		sprite = get_sprite(line, game);
+		draw_line(&frame, x, line, &ray, game, &sprite);
 		x++;
 	}
 	draw_map(game, &frame);

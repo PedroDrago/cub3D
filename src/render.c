@@ -9,19 +9,35 @@ void	 my_mlx_pixel_put(t_data *img, int x, int y, unsigned int color)
 	*(unsigned int*)dst = color;
 }
 
-void	draw_line(t_data *img, int x, t_line line, unsigned int floor_color, unsigned int ceiling_color)
+void	draw_line(t_data *img, int x, t_line line, t_ray *ray, t_game *game, t_data *texture)
 {
-	int i;
+	int y = line.start;
+	int tex_y;
+	int tex_x;
+	int color;
 
-	i = 0;
-	// NOTE: this both whiles commented are a performance improovment on ceiling and floor rendering, but causes a segfault insetead of wall transparency
-	// This will probably solved when collision range is increased
-	// while (i < line.start)
-	// 	my_mlx_pixel_put(img, x, i++, ceiling_color);
-	while (line.start <= line.end)
-		my_mlx_pixel_put(img, x, line.start++, line.color);
-	// while (line.end <= S_HEIGHT - 1)
-	// 	my_mlx_pixel_put(img, x, line.end++, floor_color);
+
+	double wall_x;
+	if (ray->side == 0)
+		wall_x = game->camera.pos.y + ray->wall_dist * ray->dir.y;
+	else
+		wall_x = game->camera.pos.x + ray->wall_dist * ray->dir.x;
+	wall_x -= floor(wall_x);
+	tex_x = (int)(wall_x * (double)texture->width);
+	if (ray->side == 0 && ray->dir.x > 0)
+		tex_x = texture->width - tex_x - 1;
+	if (ray->side == 1 && ray->dir.y < 0)
+		tex_x = texture->width - tex_x - 1;
+
+	// printf("wall dist: %f | dir.x: %f | dir.y: %f | cam.x: %f | cam.y: %f\n", ray->wall_dist, ray->dir.x, ray->dir.y, ray->camera.x, ray->camera.y);
+	while (y <= line.end)
+	{
+		int d = y * 256 - S_HEIGHT * 128 + line.height * 128;
+		tex_y = ((d * texture->height) / line.height) / 256;
+		color = *(unsigned int*)(texture->addr + (tex_y * texture->line_length + tex_x * (texture->bits_per_pixel / 8)));
+		my_mlx_pixel_put(img, x, y, color);
+		y++;
+	}
 }
 
 void	draw_background(t_data *frame)

@@ -80,16 +80,16 @@ void digital_diferencial_analysis(t_game *game, t_ray *ray, t_line *line) //this
 			if (ray->side == 0)
 			{
 				if (ray->step.x > 0)
-					line->color = RGB_RED;
+					line->color = NORTH;
 				else
-					line->color = RGB_BLUE;
+					line->color = SOUTH;
 			}
 			else
 			{
 				if (ray->step.y > 0)
-					line->color = RGB_GREEN;
+					line->color = WEST;
 				else
-					line->color = RGB_WHITE;
+					line->color = EAST;
 			}
 		}
 	}
