@@ -70,25 +70,41 @@ void init_camera(t_camera *camera, t_game *game)
 	camera->plane.y = 0.66;
 }
 
-
-int key_hook(int key, t_game *game)
+int key_hook_down(int key, t_game *game)
 {
-	// FIX: O problema de iniciar o jogo com algo apertado eh que isso aqui roda antes do game_loop. Entao como a janela ja eh inicializada com uma tecla apertada, no main loop ja chega com o index pressed, e a logica
-	//fica invertida, talvez fazer hooks diferentes para keypress e keyrelease consertaria.
 	if (key == ESC)
 		exit(1);
 	if (key == W)
-		game->keys[I_W] = !game->keys[I_W];
+		game->keys[I_W] =  1;
 	if (key == A)
-		game->keys[I_A] = !game->keys[I_A];
+		game->keys[I_A] =  1;
 	if (key == S)
-		game->keys[I_S] = !game->keys[I_S];
+		game->keys[I_S] =  1;
 	if (key == D)
-		game->keys[I_D] = !game->keys[I_D];
+		game->keys[I_D] =  1;
 	if (key == LEFT)
-		game->keys[I_LEFT] = !game->keys[I_LEFT];
+		game->keys[I_LEFT] =  1;
 	if (key == RIGHT)
-		game->keys[I_RIGHT] = !game->keys[I_RIGHT];
+		game->keys[I_RIGHT] = 1;
+	return 0;
+}
+
+int key_hook_up(int key, t_game *game)
+{
+	if (key == ESC)
+		exit(1);
+	if (key == W)
+		game->keys[I_W] =  0;
+	if (key == A)
+		game->keys[I_A] =  0;
+	if (key == S)
+		game->keys[I_S] =  0;
+	if (key == D)
+		game->keys[I_D] =  0;
+	if (key == LEFT)
+		game->keys[I_LEFT] =  0;
+	if (key == RIGHT)
+		game->keys[I_RIGHT] = 0;
 	return 0;
 }
 
@@ -111,18 +127,6 @@ void	update_camera(t_game *game)
 			rotate_left(&game->camera);
 		if (game->keys[I_RIGHT])
 			rotate_right(&game->camera);
-	}
-}
-
-void quick_fix(t_game *game)
-{
-	static int i = 0;
-	if (i == 0)
-	{
-		// walk_left(&game->camera, game->map.map);
-		// rotate_left(&game->camera);
-		// rotate_right(&game->camera);
-		i++;
 	}
 }
 
@@ -194,7 +198,6 @@ int game_loop(t_game *game)
 	t_line line;
 
 	x = 0;
-	quick_fix(game);
 	update_camera(game);
 	frame.img = mlx_new_image(game->mlx, S_WIDTH, S_HEIGHT);
 	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, &frame.line_length, &frame.endian);
@@ -232,8 +235,8 @@ int main(int argc, char *argv[])
 	init_camera(&game.camera, &game);
 	init_textures(&game);
 	mlx_loop_hook(game.mlx, game_loop, &game);
-	mlx_hook(game.win, KeyPress, KeyPressMask, &key_hook, &game);
-	mlx_hook(game.win, KeyRelease, KeyReleaseMask, &key_hook, &game);
+	mlx_hook(game.win, KeyPress, KeyPressMask, &key_hook_down, &game);
+	mlx_hook(game.win, KeyRelease, KeyReleaseMask, &key_hook_up, &game);
 	mlx_loop(game.mlx);
 	return (0);
 }
