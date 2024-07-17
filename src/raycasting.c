@@ -74,7 +74,7 @@ void digital_diferencial_analysis(t_game *game, t_ray *ray, t_line *line) //this
 			ray->side = 1;
 		}
 		// FIX: Need to change this to not '0', not 'W', not 'E', not 'N', not 'S'
-		if (game->map.map[ray->map.x][ray->map.y] != '0') //if the position we landed in the array is not an empty space, it means we have a hit, so we stop DDA and now have our ray data.
+		if (game->map.map[ray->map.x][ray->map.y] == '1') //if the position we landed in the array is not an empty space, it means we have a hit, so we stop DDA and now have our ray data.
 		{
 			ray->hit = 1;
 			if (ray->side == 0)
