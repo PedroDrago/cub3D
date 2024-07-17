@@ -127,6 +127,11 @@ void walk_left(t_camera *camera, char **map)
     } else if (camera->dir.y < 0.3 && map[curr_x][(int)(fut_pos.y - 0.3)] == '0') {
         camera->pos.y = fut_pos.y;
     }
+    printf("left\n");
+    printf("camera->pos.x: %f\n", camera->pos.x);
+    printf("camera->pos.y: %f\n", camera->pos.y);
+    printf("camera->dir.x: %f\n", camera->dir.x);
+    printf("camera->dir.y: %f\n", camera->dir.y);
 }
 
 void walk_right(t_camera *camera, char **map)
@@ -142,16 +147,22 @@ void walk_right(t_camera *camera, char **map)
     int curr_y = (int)(camera->pos.y);
 
     // Check for collision with walls in x-direction
-    if (camera->dir.x > 0.3 && map[(int)(fut_pos.x + 0.3)][curr_y] == '0') {
+    if (camera->dir.x > 0.3 && map[(int)(fut_pos.x + 0.3)][curr_y] == '0' && map[(int)(fut_pos.x - 0.3)][curr_y] == '0'){
         camera->pos.x = fut_pos.x;
-    } else if (camera->dir.x < 0.3 && map[(int)(fut_pos.x - 0.3)][curr_y] == '0') {
+    } else if (camera->dir.x < 0.3 && map[(int)(fut_pos.x - 0.3)][curr_y] == '0' && map[(int)(fut_pos.x + 0.3)][curr_y] == '0'){
         camera->pos.x = fut_pos.x;
     }
 
     // Check for collision with walls in y-direction
-    if (camera->dir.y > 0.3 && map[curr_x][(int)(fut_pos.y - 0.3)] == '0') {
+    if (camera->dir.y > 0.3 && map[curr_x][(int)(fut_pos.y + 0.3)] == '0' && map[curr_x][(int)(fut_pos.y - 0.3)] == '0'){
         camera->pos.y = fut_pos.y;
-    } else if (camera->dir.y < 0.3 && map[curr_x][(int)(fut_pos.y + 0.3)] == '0') {
+    } else if (camera->dir.y < 0.3 && map[curr_x][(int)(fut_pos.y - 0.3)] == '0' && map[curr_x][(int)(fut_pos.y + 0.3)] == '0'){
         camera->pos.y = fut_pos.y;
     }
+
+    printf("right\n");
+    printf("camera->pos.x: %f\n", camera->pos.x);
+    printf("camera->pos.y: %f\n", camera->pos.y);
+    printf("camera->dir.x: %f\n", camera->dir.x);
+    printf("camera->dir.y: %f\n", camera->dir.y);
 }
