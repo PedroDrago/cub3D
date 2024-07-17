@@ -1,3 +1,4 @@
 cub3D
 src/*.o
 libft/*.o
+.vscode
