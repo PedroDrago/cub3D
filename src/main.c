@@ -32,6 +32,7 @@ void init_camera(t_camera *camera, t_game *game)
 	camera->mov_speed = 0.5;
 	camera->rot_speed = 0.2;
 	get_initial_pos(camera, game->map.map);
+	game->map.map[(int)camera->pos.x][(int)camera->pos.y] = '0';
 	// NOTE: So that we can spawn the camera to the right direction (N, S, E, W) we need to alter camera.dir and camera.plane, just like in the rotation functions, 
 	// but to a fixed value that would represent a 90 angle? idk, something like that, but I know that this current value makes tha camera looks to NORTH, 
 	// so if we invert all the values to:
