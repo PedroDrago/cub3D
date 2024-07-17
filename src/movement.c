@@ -88,16 +88,16 @@ void walk_backwards(t_camera *camera, char **map)
     int curr_y = (int)(camera->pos.y);
 
     // Check for collision with walls in x-direction
-    if (camera->dir.x > 0.3 && map[(int)(fut_pos.x - 0.3)][curr_y] == '0') {
+    if (camera->dir.x > 0.3 && map[(int)(fut_pos.x - 0.3)][curr_y] == '0' && map[(int)(fut_pos.x + 0.3)][curr_y] == '0'){
         camera->pos.x = fut_pos.x;
-    } else if (camera->dir.x < 0.3 && map[(int)(fut_pos.x + 0.3)][curr_y] == '0') {
+    } else if (camera->dir.x < 0.3 && map[(int)(fut_pos.x + 0.3)][curr_y] == '0' && map[(int)(fut_pos.x - 0.3)][curr_y] == '0'){
         camera->pos.x = fut_pos.x;
     }
 
     // Check for collision with walls in y-direction
-    if (camera->dir.y > 0.3 && map[curr_x][(int)(fut_pos.y - 0.3)] == '0') {
+    if (camera->dir.y > 0.3 && map[curr_x][(int)(fut_pos.y - 0.3)] == '0' && map[curr_x][(int)(fut_pos.y + 0.3)] == '0'){
         camera->pos.y = fut_pos.y;
-    } else if (camera->dir.y < 0.3 && map[curr_x][(int)(fut_pos.y + 0.3)] == '0') {
+    } else if (camera->dir.y < 0.3 && map[curr_x][(int)(fut_pos.y + 0.3)] == '0' && map[curr_x][(int)(fut_pos.y - 0.3)] == '0'){
         camera->pos.y = fut_pos.y;
     }
 }
