@@ -14,8 +14,8 @@ void	get_initial_pos(t_camera *camera, char **map)
 		{
 			if (map[x][y] == 'N' || map[x][y] == 'S' || map[x][y] == 'E' || map[x][y] == 'W')
 			{
-				camera->pos.x = x;
-				camera->pos.y = y;
+				camera->pos.x = x + 0.5;
+				camera->pos.y = y + 0.5;
 				return ;
 			}
 			y++;
