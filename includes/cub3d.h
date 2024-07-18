@@ -7,44 +7,38 @@
 #include "structs.h"
 #include <fcntl.h>
 #include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
 
+int  get_map_proportions(t_map *map_data, char *file_path);
+int  read_map_file(t_map *map_data, char *file_path);
+int  parse_map(t_map *map_data);
+void print_map_data(t_map *map_data);
+void init_textures(t_game *game);
+int  key_hook(int key, t_game *game);
+void rotate_right(t_camera *camera);
+void rotate_left(t_camera *camera);
+void walk_forward(t_camera *camera, char **map);
+void walk_backwards(t_camera *camera, char **map);
+void walk_left(t_camera *camera, char **map);
+void walk_right(t_camera *camera, char **map);
+void calculate_line(t_ray *ray, t_line *line);
+void digital_diferencial_analysis(t_game *game, t_ray *ray, t_line *line); // this is de DDA algorithm, responsible to get the position where the ray will hit a wall
+void dda_setup(t_game *game, t_ray *ray); // this setup data for the DDA algorithm
+void setup_raycasting(t_game *game, t_ray *ray, int x); // this initialize some data about this current ray we'll trace
+void	draw_line(t_data *img, int x, t_line line, t_ray *ray, t_game *game, t_data *texture);
+void print_split(char **splited);
+void my_mlx_pixel_put(t_data *img, int x, int y, unsigned int color);
+void draw_background(t_data *frame);
+void init_textures(t_game *game);
+void get_map(t_game *game, char *file);
+void free_split(char **splited);
 
-# define mapWidth 24
-# define mapHeight 24
-# define S_WIDTH 640
-# define S_HEIGHT 480
-# define RGB_RED    0xFF0000
-# define RGB_GREEN  0x00FF00
-# define RGB_BLUE   0x0000FF
-# define RGB_WHITE  0xFFFFFF
-# define RGB_YELLOW 0xFFFF0
-# define RGB_PURPLE 0xA020F0
-# define RGB_BROWN 0x964B00
-# define W 119
-# define LEFT 65361
-# define RIGHT 65363
-# define A 97
-# define S 115
-# define D 100
-# define ESC 65307
-# define MOV_SPEED 0.5
-# define ROT_SPEED 0.1
-
-
-int		get_map_proportions(t_map *map_data, char *file_path);
-int		read_map_file(t_map *map_data, char *file_path);
-int		parse_map(t_map *map_data);
-void	print_map_data(t_map *map_data);
-void	init_textures(t_game *game);
-int		key_hook(int key, t_game *game);
-void	rotate_right(t_game *game);
-void	rotate_left(t_game *game);
-void	walk_forward(t_game *game);
-void	walk_backwards(t_game *game);
-void	walk_left(t_game *game);
-void	walk_right(t_game *game);
+void print_split(char **splited);
+void print_map_data(t_map *map_data);
+void print_all_map_file(t_map *map_data);
+int  split_len(char **splited);
+void free_split(char **splited);
 
 #endif
