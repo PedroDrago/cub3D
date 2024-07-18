@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 
 int read_map_file(t_map *map_data, char *file_path)
 {
@@ -308,36 +309,84 @@ int is_player_char(char c)
 	return (0);
 }
 
-int	validate_map(char **map, int height, int width)
+int ft_floodfill(char **map, int i, int j)
+{
+	if (i < 0 || j < 0 || !map[i] || map[i][j] == '1' || map[i][j] == ' ')
+		return (0);
+	map[i][j] = '1';
+	ft_floodfill(map, i + 1, j);
+	ft_floodfill(map, i - 1, j);
+	ft_floodfill(map, i, j + 1);
+	ft_floodfill(map, i, j - 1);
+	return (1);
+}
+
+char **copy_map(char **map, int height, int width)
+{
+	char **copy;
+	int i;
+
+	copy = malloc(sizeof(char *) * (height + 1 + 1));
+	if (!copy)
+		return NULL;
+	i = 0;
+	while (i < width)
+	{
+		copy[0][i] = '2';
+		i++;
+	}
+	i = 1;
+	while(i < height)
+	{
+		copy[i] = ft_strjoin(ft_strjoin("2", ft_strdup(map[i]), O_NONE), "2", O_NONE);
+		// TODO:tem leak
+		i++;
+	}
+	copy[i] = NULL;
+	return copy;
+}
+
+int	get_initial_position(char **map, t_vector_i *pos, int width, int height)
 {
 	int i;
 	int j;
-	int has_player;
 
 	i = 0;
-	has_player = 0;
-	while(map[i])
+	while(i < height)
 	{
 		j = 0;
-		while(map[i][j])
+		while (j < width)
 		{
-			if (is_player_char(map[i][j]))
-				has_player++;
-			if (is_invalid_char(map[i][j]))
-				return (0);
-			if (map[i][j] != '1' && map[i][j] != ' ')
+			if (map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'W' || map[i][j] == 'E')
 			{
-				if (i == 0 || i == (height - 1) || j == 0 || j == (width - 1 ))
-					return 0;
-				if (!is_surrounded(map, i, j))
-					return 0;
+				pos->x = i;
+				pos->y = j;
+				return (1);
 			}
 			j++;
 		}
 		i++;
 	}
-	if (!has_player || has_player > 1)
+	return (0);
+}
+
+int validate_map(char **map, int height, int width)
+{
+
+	char **duplicate;
+	t_vector_i pos;
+
+	printf("%i\n", height);
+	duplicate = copy_map(map, height);
+	get_initial_position(duplicate, &pos, width, height);
+	printf("%i | %i\n", pos.x, pos.y);
+	duplicate[pos.x][pos.y] = '0';
+	if (!ft_floodfill(duplicate, pos.x, pos.y))
+	{
+		exit(1);
+		printf("Failing on floodfill\n");
 		return (0);
+	}
 	return (1);
 }
 
