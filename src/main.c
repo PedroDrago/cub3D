@@ -1,10 +1,11 @@
 #include "../includes/cub3d.h"
 #include <stdio.h>
 
-void	get_initial_pos(t_camera *camera, char **map)
+t_vector_d get_initial_pos(char **map)
 {
 	int	x;
 	int y;
+	t_vector_d pos;
 
 	x = 0;
 	while (map[x])
@@ -14,9 +15,9 @@ void	get_initial_pos(t_camera *camera, char **map)
 		{
 			if (map[x][y] == 'N' || map[x][y] == 'S' || map[x][y] == 'E' || map[x][y] == 'W')
 			{
-				camera->pos.x = x + 0.5;
-				camera->pos.y = y + 0.5;
-				return ;
+				pos.x = x + 0.5;
+				pos.y = y + 0.5;
+				return pos;
 			}
 			y++;
 		}
@@ -31,8 +32,7 @@ void init_camera(t_camera *camera, t_game *game)
 	//9/4
 	camera->mov_speed = 0.5;
 	camera->rot_speed = 0.2;
-	get_initial_pos(camera, game->map.map);
-	game->map.map[(int)camera->pos.x][(int)camera->pos.y] = '0';
+	camera->pos = get_initial_pos(game->map.map);
 	// NOTE: So that we can spawn the camera to the right direction (N, S, E, W) we need to alter camera.dir and camera.plane, just like in the rotation functions, 
 	// but to a fixed value that would represent a 90 angle? idk, something like that, but I know that this current value makes tha camera looks to NORTH, 
 	// so if we invert all the values to:
@@ -69,6 +69,8 @@ void init_camera(t_camera *camera, t_game *game)
 	// This type of technique is not a fisheye correction, the fisheye is simply avoided by this way of calculating. It makes the calculations easier also, since whe don't 
 	//even need to know the exact location where the wall was hit.
 	camera->plane.y = 0.66;
+	// This is for making easier to update the minimap player position and keep the player movements validations short
+	game->map.map[(int)camera->pos.x][(int)camera->pos.y] = 'P';
 }
 
 int key_hook_down(int key, t_game *game)

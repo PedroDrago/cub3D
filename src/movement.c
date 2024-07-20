@@ -2,6 +2,17 @@
 #include <math.h>
 #include <stdio.h>
 
+void update_map(char **map, t_vector_d fut_pos, int curr_x, int curr_y)
+{
+		map[(int)fut_pos.x][(int)fut_pos.y] = 'P';
+		map[(int)curr_x][(int)curr_y] = '0';
+}
+
+int is_empty_tile(char c)
+{
+	return (c == '0' || c == 'P');
+}
+
 void	rotate_right(t_camera *camera)
 {
 	double old_dir_x;
@@ -61,17 +72,21 @@ void walk_forward(t_camera *camera, char **map)
     int curr_y = (int)(camera->pos.y);
 
     // Check for collision with walls in x-direction
-    if (camera->dir.x > 0.3 && map[(int)(fut_pos.x + 0.3)][curr_y] == '0') {
+    if (camera->dir.x > 0.3 && is_empty_tile(map[(int)(fut_pos.x + 0.3)][curr_y])) {
         camera->pos.x = fut_pos.x;
-    } else if (camera->dir.x < 0.3 && map[(int)(fut_pos.x - 0.3)][curr_y] == '0') {
+		update_map(map, fut_pos, curr_x, curr_y);
+    } else if (camera->dir.x < 0.3 && is_empty_tile(map[(int)(fut_pos.x - 0.3)][curr_y])) {
         camera->pos.x = fut_pos.x;
+		update_map(map, fut_pos, curr_x, curr_y);
     }
 
     // Check for collision with walls in y-direction
-    if (camera->dir.y > 0.3 && map[curr_x][(int)(fut_pos.y + 0.3)] == '0') {
+    if (camera->dir.y > 0.3 && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.3)] )) {
         camera->pos.y = fut_pos.y;
-    } else if (camera->dir.y < 0.3 && map[curr_x][(int)(fut_pos.y - 0.3)] == '0') {
+		update_map(map, fut_pos, curr_x, curr_y);
+    } else if (camera->dir.y < 0.3 && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.3)] )) {
         camera->pos.y = fut_pos.y;
+		update_map(map, fut_pos, curr_x, curr_y);
     }
 }
 
@@ -88,17 +103,21 @@ void walk_backwards(t_camera *camera, char **map)
     int curr_y = (int)(camera->pos.y);
 
     // Check for collision with walls in x-direction
-    if (camera->dir.x > 0.3 && map[(int)(fut_pos.x - 0.3)][curr_y] == '0' && map[(int)(fut_pos.x + 0.3)][curr_y] == '0'){
+    if (camera->dir.x > 0.3 && is_empty_tile(map[(int)(fut_pos.x - 0.3)][curr_y]) && is_empty_tile(map[(int)(fut_pos.x + 0.3)][curr_y])){
         camera->pos.x = fut_pos.x;
-    } else if (camera->dir.x < 0.3 && map[(int)(fut_pos.x + 0.3)][curr_y] == '0' && map[(int)(fut_pos.x - 0.3)][curr_y] == '0'){
+		update_map(map, fut_pos, curr_x, curr_y);
+    } else if (camera->dir.x < 0.3 && is_empty_tile(map[(int)(fut_pos.x + 0.3)][curr_y]) && is_empty_tile(map[(int)(fut_pos.x - 0.3)][curr_y])){
         camera->pos.x = fut_pos.x;
+		update_map(map, fut_pos, curr_x, curr_y);
     }
 
     // Check for collision with walls in y-direction
-    if (camera->dir.y > 0.3 && map[curr_x][(int)(fut_pos.y - 0.3)] == '0' && map[curr_x][(int)(fut_pos.y + 0.3)] == '0'){
+    if (camera->dir.y > 0.3 && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.3)]) && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.3)])){
         camera->pos.y = fut_pos.y;
-    } else if (camera->dir.y < 0.3 && map[curr_x][(int)(fut_pos.y + 0.3)] == '0' && map[curr_x][(int)(fut_pos.y - 0.3)] == '0'){
+		update_map(map, fut_pos, curr_x, curr_y);
+    } else if (camera->dir.y < 0.3 && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.3)]) && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.3)]) ){
         camera->pos.y = fut_pos.y;
+		update_map(map, fut_pos, curr_x, curr_y);
     }
 }
 
@@ -115,19 +134,25 @@ void walk_left(t_camera *camera, char **map)
     int curr_y = (int)(camera->pos.y);
 
     // Check for collision with walls in x-direction
-    if (camera->dir.x > 0.3 && map[(int)(fut_pos.x - 0.3)][curr_y] == '0' && map[(int)(fut_pos.x + 0.3)][curr_y] == '0'){
+    if (camera->dir.x > 0.3 && is_empty_tile(map[(int)(fut_pos.x - 0.3)][curr_y])  && is_empty_tile(map[(int)(fut_pos.x + 0.3)][curr_y])){
         camera->pos.x = fut_pos.x;
-    } else if (camera->dir.x < 0.3 && map[(int)(fut_pos.x + 0.3)][curr_y] == '0' && map[(int)(fut_pos.x - 0.3)][curr_y] == '0'){
+		update_map(map, fut_pos, curr_x, curr_y);
+    } else if (camera->dir.x < 0.3 && is_empty_tile(map[(int)(fut_pos.x + 0.3)][curr_y]) && is_empty_tile(map[(int)(fut_pos.x - 0.3)][curr_y])){
         camera->pos.x = fut_pos.x;
+		update_map(map, fut_pos, curr_x, curr_y);
     }
 
     // Check for collision with walls in y-direction
-    if (camera->dir.y > 0.3 && map[curr_x][(int)(fut_pos.y + 0.3)] == '0' && map[curr_x][(int)(fut_pos.y - 0.3)] == '0'){
+    if (camera->dir.y > 0.3 && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.3)]) && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.3)])){
         camera->pos.y = fut_pos.y;
-    } else if (camera->dir.y < 0.3 && map[curr_x][(int)(fut_pos.y - 0.3)] == '0' && map[curr_x][(int)(fut_pos.y + 0.3)] == '0'){
+		update_map(map, fut_pos, curr_x, curr_y);
+    } else if (camera->dir.y < 0.3 && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.3)]) && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.3)])){
         camera->pos.y = fut_pos.y;
+		update_map(map, fut_pos, curr_x, curr_y);
     }
 }
+
+
 
 void walk_right(t_camera *camera, char **map)
 {
@@ -142,16 +167,22 @@ void walk_right(t_camera *camera, char **map)
     int curr_y = (int)(camera->pos.y);
 
     // Check for collision with walls in x-direction
-    if (camera->dir.x > 0.3 && map[(int)(fut_pos.x + 0.3)][curr_y] == '0' && map[(int)(fut_pos.x - 0.3)][curr_y] == '0'){
+    if (camera->dir.x > 0.3 && is_empty_tile(map[(int)(fut_pos.x + 0.3)][curr_y]) && is_empty_tile(map[(int)(fut_pos.x - 0.3)][curr_y]))
+	{
         camera->pos.x = fut_pos.x;
-    } else if (camera->dir.x < 0.3 && map[(int)(fut_pos.x - 0.3)][curr_y] == '0' && map[(int)(fut_pos.x + 0.3)][curr_y] == '0'){
+		update_map(map, fut_pos, curr_x, curr_y);
+    } else if (camera->dir.x < 0.3 && is_empty_tile(map[(int)(fut_pos.x - 0.3)][curr_y]) && is_empty_tile(map[(int)(fut_pos.x + 0.3)][curr_y]))
+	{
         camera->pos.x = fut_pos.x;
+		update_map(map, fut_pos, curr_x, curr_y);
     }
 
     // Check for collision with walls in y-direction
-    if (camera->dir.y > 0.3 && map[curr_x][(int)(fut_pos.y + 0.3)] == '0' && map[curr_x][(int)(fut_pos.y - 0.3)] == '0'){
+    if (camera->dir.y > 0.3 && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.3)]) && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.3)])){
         camera->pos.y = fut_pos.y;
-    } else if (camera->dir.y < 0.3 && map[curr_x][(int)(fut_pos.y - 0.3)] == '0' && map[curr_x][(int)(fut_pos.y + 0.3)] == '0'){
+		update_map(map, fut_pos, curr_x, curr_y);
+    } else if (camera->dir.y < 0.3 && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.3)]) && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.3)]) ){
         camera->pos.y = fut_pos.y;
+		update_map(map, fut_pos, curr_x, curr_y);
     }
 }
