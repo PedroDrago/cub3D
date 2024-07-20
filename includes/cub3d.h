@@ -40,5 +40,6 @@ void print_map_data(t_map *map_data);
 void print_all_map_file(t_map *map_data);
 int  split_len(char **splited);
 void free_split(char **splited);
+void	draw_map(t_game *game, t_data *tile);
 
 #endif
