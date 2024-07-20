@@ -1,11 +1,10 @@
 #include "../includes/cub3d.h"
 #include <stdio.h>
 
-t_vector_d get_initial_pos(char **map)
+int get_initial_pos_i(char **map, t_vector_i *pos)
 {
 	int	x;
 	int y;
-	t_vector_d pos;
 
 	x = 0;
 	while (map[x])
@@ -15,9 +14,9 @@ t_vector_d get_initial_pos(char **map)
 		{
 			if (map[x][y] == 'N' || map[x][y] == 'S' || map[x][y] == 'E' || map[x][y] == 'W')
 			{
-				pos.x = x + 0.5;
-				pos.y = y + 0.5;
-				return pos;
+				pos->x = x;
+				pos->y = y;
+				return 1;
 			}
 			y++;
 		}
@@ -25,6 +24,33 @@ t_vector_d get_initial_pos(char **map)
 	}
 	printf("Exiting at get_initial_pos\n");
 	exit(1); //n achou deu merda, eh pra ter validado essa porra antes de chegar aqui (no momento ainda n esta validando).
+	return 0;
+}
+
+int get_initial_pos(char **map, t_vector_d *pos)
+{
+	int	x;
+	int y;
+
+	x = 0;
+	while (map[x])
+	{
+		y = 0;
+		while(map[x][y])
+		{
+			if (map[x][y] == 'N' || map[x][y] == 'S' || map[x][y] == 'E' || map[x][y] == 'W')
+			{
+				pos->x = x + 0.5;
+				pos->y = y + 0.5;
+				return 1;
+			}
+			y++;
+		}
+		x++;
+	}
+	printf("Exiting at get_initial_pos\n");
+	exit(1); //n achou deu merda, eh pra ter validado essa porra antes de chegar aqui (no momento ainda n esta validando).
+	return 0;
 }
 
 void init_camera(t_camera *camera, t_game *game)
@@ -32,7 +58,7 @@ void init_camera(t_camera *camera, t_game *game)
 	//9/4
 	camera->mov_speed = 0.5;
 	camera->rot_speed = 0.2;
-	camera->pos = get_initial_pos(game->map.map);
+	get_initial_pos(game->map.map, &camera->pos);
 	// NOTE: So that we can spawn the camera to the right direction (N, S, E, W) we need to alter camera.dir and camera.plane, just like in the rotation functions, 
 	// but to a fixed value that would represent a 90 angle? idk, something like that, but I know that this current value makes tha camera looks to NORTH, 
 	// so if we invert all the values to:

@@ -42,4 +42,7 @@ int  split_len(char **splited);
 void free_split(char **splited);
 void	draw_map(t_game *game, t_data *tile);
 
+int get_initial_pos(char **map, t_vector_d *pos);
+int get_initial_pos_i(char **map, t_vector_i *pos);
+
 #endif

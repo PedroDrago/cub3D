@@ -278,24 +278,6 @@ void	init_map(t_map *map)
 	map->floor_rgb = NULL;
 }
 
-int is_surrounded(char **map, int i, int j)
-{
-	if (map[i][j + 1] == ' ' || map[i][j - 1] == ' ')
-		return (0);
-	if (map[i + 1] && map[i + 1][j] == ' ')
-		return 0;
-	if (map[i - 1][j] == ' ')
-		return 0;
-	// WARN: This approach will generate error when the map has a space character inside of it like:
-	// 111111
-	// 100001
-	// 100 01
-	// 100N01
-	// 111111
-	// The subject specifies that spaces are a valid part of the map, but is up to us to handle how we want.
-	return (1);
-
-}
 
 int is_invalid_char(char c)
 {
@@ -309,8 +291,115 @@ int is_player_char(char c)
 	return (0);
 }
 
+
+int	validate_characters(char **map)
+{
+	int i;
+	int j;
+	int player;
+
+	i = 0;
+	player = 0;
+	while(map[i])
+	{
+		j = 0;
+		while(map[i][j])
+		{
+			if (map[i][j] != 'N' && map[i][j] != 'E' && map[i][j] != 'W' && map[i][j] != 'S' && map[i][j] != '0' && map[i][j] != '1')
+				return (0);
+			if (is_player_char(map[i][j]))
+				player++;
+			if (player > 1)
+				return (0);
+			j++;
+		}
+		i++;
+	}
+	if (player < 1)
+		return (0);
+	return (1);
+}
+
+char	*ft_strdup_margin(const char *s)
+{
+	char	*ret;
+	int		count;
+	int		count2;
+
+	ret = (char *) malloc (sizeof(char) * ft_strlen(s) + 1 + 2);
+	if (!ret)
+		return (NULL);
+	ret[0] = '0';
+	count = 1;
+	count2 = 0;
+	while (s[count2])
+	{
+		ret[count++] = s[count2++];
+	}
+	ret[count++] = '0';
+	ret[count] = '\0';
+	return (ret);
+}
+
+void ft_floodfill(char **map, int i, int j, int height, int width)
+{
+	if (i < 0 || i >= height || j < 0 || j >= width || map[i][j] != '0')
+		return;
+	map[i][j] = '2';
+	ft_floodfill(map, i + 1, j, height, width);
+	ft_floodfill(map, i - 1, j, height, width);
+	ft_floodfill(map, i, j + 1, height, width);
+	ft_floodfill(map, i, j - 1, height, width);
+}
+
+char **duplicate_map(char **map, int height, int width)
+{
+	char **copy_map;
+	int i;
+	int j;
+
+	copy_map = malloc(sizeof(char *) * (height + 3)); //1 for null | 1 for first extra | 1 for last extra
+	if (!copy_map)
+		return (NULL);
+	copy_map[0] = malloc(sizeof(char) * (width + 1));
+	if (!copy_map[0])
+		return (NULL);
+	i = 0;
+	while (i < width + 1)
+		copy_map[0][i++] = '0';
+	i = 1;
+	j = 0;
+	while(map[j])
+		copy_map[i++] = ft_strdup_margin(map[j++]);
+	copy_map[i] = malloc(sizeof(char) * (width + 1));
+	if (!copy_map[i])
+		return (NULL);
+	j = 0;
+	while (j < width + 1)
+		copy_map[i][j++] = '0';
+	copy_map[++i] = NULL;
+	return copy_map;
+}
+
 int validate_map(char **map, int height, int width)
 {
+	char **copy_map;
+	t_vector_i pos;
+
+	pos.x = 0;
+	pos.y = 0;
+	if (!validate_characters(map))
+		return (0);
+	copy_map = duplicate_map(map, height, width);
+	if (!copy_map)
+		return (0);
+	get_initial_pos_i(copy_map, &pos);
+	ft_floodfill(copy_map, 0, 0, height, width);
+	if ((copy_map[(int)pos.x][(int)pos.y + 1] == '2') || (copy_map[(int)pos.x][(int)pos.y - 1] == '2') || (copy_map[(int)pos.x + 1][(int)pos.y] == '2') || (copy_map[(int)pos.x - 1][(int)pos.y] == '2'))
+	{
+		free_split(copy_map);
+		return (0);
+	}
 	return (1);
 }
 
@@ -337,6 +426,24 @@ int files_exist(t_map *map)
 	return (1);
 }
 
+void fill_spaces_with_zero(char **map, int height, int width)
+{
+	int i;
+	int j;
+	i = 0;
+	while(i < height)
+	{
+		j = 0;
+		while(j < width)
+		{
+			if (map[i][j] == ' ')
+				map[i][j] = '0';
+			j++;
+		}
+		i++;
+	}
+}
+
 void	get_map(t_game *game, char *file)
 {
 	if (!check_extension(file))
@@ -360,6 +467,7 @@ void	get_map(t_game *game, char *file)
 		printf("Error at parse_map\n");
 		exit(1);
 	}
+	fill_spaces_with_zero(game->map.map, game->map.height, game->map.width);
 	if (!validate_map(game->map.map, game->map.height, game->map.width))
 	{
 		printf("Error at check_surrounded\n");
