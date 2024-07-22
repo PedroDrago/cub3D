@@ -72,7 +72,11 @@ void walk_forward(t_camera *camera, char **map)
     int curr_y = (int)(camera->pos.y);
 
     // Check for collision with walls in x-direction
-    if (camera->dir.x > 0.3 && is_empty_tile(map[(int)(fut_pos.x + 0.3)][curr_y]))
+    if (!is_empty_tile(map[(int)(fut_pos.x + 0.3)][curr_y]))
+	{
+		fut_pos.x = camera->pos.x;
+	}
+	if (camera->dir.x > 0.3 && is_empty_tile(map[(int)(fut_pos.x + 0.3)][curr_y]))
 	{
         camera->pos.x = fut_pos.x;
 		update_map(map, fut_pos, curr_x, curr_y);
@@ -84,7 +88,11 @@ void walk_forward(t_camera *camera, char **map)
     }
 
     // Check for collision with walls in y-direction
-    if (camera->dir.y > 0.3 && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.3)] ))
+	if (!is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.3)]))
+	{
+		fut_pos.y = camera->pos.y;
+	}
+	if (camera->dir.y > 0.3 && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.3)] ))
 	{
         camera->pos.y = fut_pos.y;
 		update_map(map, fut_pos, curr_x, curr_y);
@@ -94,6 +102,7 @@ void walk_forward(t_camera *camera, char **map)
         camera->pos.y = fut_pos.y;
 		update_map(map, fut_pos, curr_x, curr_y);
     }
+	printf("pos.x: %f, pos.y: %f\n", camera->pos.x, camera->pos.y);
 }
 
 void walk_backwards(t_camera *camera, char **map)
