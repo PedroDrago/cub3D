@@ -1,3 +1,7 @@
 cub3D
 src/*.o
 libft/*.o
+libft/*.a
+libft/get_next_line/*.o
+libft/get_next_line/*.a
+.vscode
