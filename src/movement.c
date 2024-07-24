@@ -8,8 +8,11 @@ void update_minimap(char **mini_map, t_vector_d fut_pos, int curr_x, int curr_y)
 	{
 		
 		// TODO: This must be with a copy map. Reference map for movement must be immutable
-		mini_map[(int)fut_pos.x][(int)fut_pos.y] = 'P';
-		mini_map[(int)curr_x][(int)curr_y] = '0';
+		if (mini_map[(int)fut_pos.x][(int)fut_pos.y] == '0')
+		{
+			mini_map[(int)fut_pos.x][(int)fut_pos.y] = 'P';
+			mini_map[(int)curr_x][(int)curr_y] = '0';
+		}
 	}
 }
 
