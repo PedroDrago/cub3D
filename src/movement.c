@@ -2,14 +2,14 @@
 #include <math.h>
 #include <stdio.h>
 
-void update_minimap(char **map, t_vector_d fut_pos, int curr_x, int curr_y)
+void update_minimap(char **mini_map, t_vector_d fut_pos, int curr_x, int curr_y)
 {
 	if ((int)fut_pos.x != curr_x || (int)fut_pos.y != curr_y)
 	{
 		
 		// TODO: This must be with a copy map. Reference map for movement must be immutable
-		// map[(int)fut_pos.x][(int)fut_pos.y] = 'P';
-		// map[(int)curr_x][(int)curr_y] = '0';
+		mini_map[(int)fut_pos.x][(int)fut_pos.y] = 'P';
+		mini_map[(int)curr_x][(int)curr_y] = '0';
 	}
 }
 
@@ -64,7 +64,7 @@ void	rotate_left(t_camera *camera)
 	return;
 }
 
-void walk_forward(t_camera *camera, char **map)
+void walk_forward(t_camera *camera, char **map, char **mini_map)
 {
     t_vector_d fut_pos;
 
@@ -84,10 +84,10 @@ void walk_forward(t_camera *camera, char **map)
         camera->pos.y = fut_pos.y;
 	else if (camera->dir.y < 0.3 && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.3)] ))
         camera->pos.y = fut_pos.y;
-	update_minimap(map, fut_pos, curr_x, curr_y);
+	update_minimap(mini_map, fut_pos, curr_x, curr_y);
 }
 
-void walk_backwards(t_camera *camera, char **map)
+void walk_backwards(t_camera *camera, char **map, char **mini_map)
 {
     t_vector_d fut_pos;
 
@@ -103,10 +103,10 @@ void walk_backwards(t_camera *camera, char **map)
         camera->pos.y = fut_pos.y;
 	else if (camera->dir.y < 0.3 && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.3)]) && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.3)]) )
         camera->pos.y = fut_pos.y;
-	update_minimap(map, fut_pos, curr_x, curr_y);
+	update_minimap(mini_map, fut_pos, curr_x, curr_y);
 }
 
-void walk_left(t_camera *camera, char **map)
+void walk_left(t_camera *camera, char **map, char **mini_map)
 {
     t_vector_d fut_pos;
 
@@ -122,10 +122,10 @@ void walk_left(t_camera *camera, char **map)
         camera->pos.y = fut_pos.y;
 	else if (camera->dir.y < 0.3 && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.3)]) && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.3)]))
         camera->pos.y = fut_pos.y;
-	update_minimap(map, fut_pos, curr_x, curr_y);
+	update_minimap(mini_map, fut_pos, curr_x, curr_y);
 }
 
-void walk_right(t_camera *camera, char **map)
+void walk_right(t_camera *camera, char **map, char **mini_map)
 {
     t_vector_d fut_pos;
 
@@ -141,5 +141,5 @@ void walk_right(t_camera *camera, char **map)
         camera->pos.y = fut_pos.y;
 	else if (camera->dir.y < 0.3 && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.3)]) && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.3)]) )
         camera->pos.y = fut_pos.y;
-	update_minimap(map, fut_pos, curr_x, curr_y);
+	update_minimap(mini_map, fut_pos, curr_x, curr_y);
 }

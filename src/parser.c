@@ -352,7 +352,7 @@ void ft_floodfill(char **map, int i, int j, int height, int width)
 	ft_floodfill(map, i, j - 1, height, width);
 }
 
-char **duplicate_map(char **map, int height, int width)
+char **duplicate_map_bordered(char **map, int height, int width)
 {
 	char **copy_map;
 	int i;
@@ -390,7 +390,7 @@ int validate_map(char **map, int height, int width)
 	pos.y = 0;
 	if (!validate_characters(map))
 		return (0);
-	copy_map = duplicate_map(map, height, width);
+	copy_map = duplicate_map_bordered(map, height, width);
 	if (!copy_map)
 		return (0);
 	get_initial_pos_i(copy_map, &pos);
@@ -444,6 +444,21 @@ void fill_spaces_with_zero(char **map, int height, int width)
 	}
 }
 
+char **duplicate_map(char **map, int height, int width)
+{
+	char **copy_map;
+	int i;
+
+	copy_map = malloc(sizeof(char *) * (height + 1));
+	if (!copy_map)
+		return (NULL);
+	i = -1;
+	while (++i < height)
+		copy_map[i] = ft_strdup(map[i]);
+	copy_map[i] = NULL;
+	return copy_map;
+}
+
 void	get_map(t_game *game, char *file)
 {
 	if (!check_extension(file))
@@ -485,12 +500,15 @@ void	get_map(t_game *game, char *file)
 		printf("Error at test_files\n");
 		exit(1);
 	}
+	game->map.mini_map = duplicate_map(game->map.map, game->map.height, game->map.width);
+	print_split(game->map.mini_map);
 }
 
 void destroy_map(t_map *map)
 {
 	free_split(map->map);
 }
+
 
 // TODO: Adicionar validacoes do mapa
 // - [ ] Descobrir um jeito de validar se o mapa esta cercado por paredes sem fazer com que espacos no meio do mapa gerem erro.

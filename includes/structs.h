@@ -47,6 +47,7 @@ typedef struct s_ray
 typedef struct s_map
 {
 	char       **map;
+	char		**mini_map;
 	int          width;
 	int          height;
 	char       **map_file_array;

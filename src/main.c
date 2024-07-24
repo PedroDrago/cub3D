@@ -97,6 +97,7 @@ void init_camera(t_camera *camera, t_game *game)
 	camera->plane.y = 0.66;
 	// This is for making easier to update the minimap player position and keep the player movements validations short
 	game->map.map[(int)camera->pos.x][(int)camera->pos.y] = 'P';
+	game->map.mini_map[(int)camera->pos.x][(int)camera->pos.y] = 'P';
 }
 
 int key_hook_down(int key, t_game *game)
@@ -145,13 +146,13 @@ void	update_camera(t_game *game)
 	{
 		movement_limiter = 0;
 		if (game->keys[I_W])
-			walk_forward(&game->camera, game->map.map);
+			walk_forward(&game->camera, game->map.map, game->map.mini_map);
 		if (game->keys[I_A])
-			walk_left(&game->camera, game->map.map);
+			walk_left(&game->camera, game->map.map, game->map.mini_map);
 		if (game->keys[I_S])
-			walk_backwards(&game->camera, game->map.map);
+			walk_backwards(&game->camera, game->map.map, game->map.mini_map);
 		if (game->keys[I_D])
-			walk_right(&game->camera, game->map.map);
+			walk_right(&game->camera, game->map.map, game->map.mini_map);
 		if (game->keys[I_LEFT])
 			rotate_left(&game->camera);
 		if (game->keys[I_RIGHT])
@@ -202,6 +203,7 @@ int game_loop(t_game *game)
 	mlx_destroy_image(game->mlx, frame.img);
 	return 0;
 }
+
 
 int main(int argc, char *argv[])
 {

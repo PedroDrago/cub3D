@@ -39,15 +39,15 @@ void	draw_map(t_game *game, t_data *tile)
 	int y = 0;
 	int square_side = get_square_size(&game->map);
 	square_side /= 3;
-	while(game->map.map[i])
+	while(game->map.mini_map[i])
 	{
 		j = 0;
 		x = 0;
-		while(game->map.map[i][j])
+		while(game->map.mini_map[i][j])
 		{
-			if (game->map.map[i][j] == ' ' || game->map.map[i][j] == '0')
+			if (game->map.mini_map[i][j] == ' ' || game->map.mini_map[i][j] == '0')
 				draw_square(tile, y, x, RGB_WHITE, square_side);
-			else if (game->map.map[i][j] == '1')
+			else if (game->map.mini_map[i][j] == '1')
 				draw_square(tile, y, x, RGB_PURPLE, square_side);
 			else
 				draw_square(tile, y, x, RGB_GREEN, square_side);
