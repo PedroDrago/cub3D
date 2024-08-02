@@ -1,39 +1,49 @@
 # cub3d
 Version: 10
 
-### Blog
-17/04/2024 04:38
-Appearently raycasting is an algorithm to transoform a 2D view in a 3D view, so I guess the first step in this project would be building the 2D view of the game, and then applying raycasting on top of it. This will also be good for the Bonus part of the minimap, that will just be the 2D view of the game. But, I need to build the game already prepared to receive the raycasting, so for now I'll be studying really hard how raycasting works. 
+### General
+- [ ] End the game in a clean way
+- [ ] Norm
+- [ ] Refactor to organize better the functions
+- [ ] Choose sprites?
 
-Also I have a lot of doubts about smooth movements, tecnically I could just move the character like a did in so_long, tile by tile, but that is shit, so I seted as a personal goal that everything will have smooth movimentation in this game.
+### Rendering
+- [ ] Study Raycasting
+- [ ] Player initializing looking to the right position
 
-### Contents
-- [Super Fast Ray Casting in Tiled Worlds using DDA](https://www.youtube.com/watch?v=NbSee-XM7WA)
-- [Scratch a Pixel](https://www.scratchapixel.com/index.html)
-- [raycasting article](https://lodev.org/cgtutor/raycasting.html)
-- [Minilibx Content](https://github.com/qst0/ft_libgfx)
-- [Raycasting Tutorial](https://permadi.com/1996/05/ray-casting-tutorial-table-of-contents/)
-- [John Carmack Talk](https://www.youtube.com/watch?v=lHLpKzUxjGk)
-- [Programming a FPS From scratch](https://www.youtube.com/watch?v=fSjc8vLMg8c)
+### Movements
 
-### Learn to use Funtions
-```c
-int	mlx_mouse_hook (void *win_ptr, int (*funct_ptr)(), void *param);
-int	mlx_key_hook (void *win_ptr, int (*funct_ptr)(), void *param);
-int	mlx_expose_hook (void *win_ptr, int (*funct_ptr)(), void *param);
+### Parser
+- [ ] Remove memory leaks
+- [ ] Test weird map scenarios:
+    - [ ] No player
+    - [ ] Two or more players
+    - [ ] Player located on the wall?
+    - [ ] 
+- [ ] Test Weird information scenarios (message bust be `Error\n` followed by explicit message about the error in all scenarios):
+    - [ ] Missing NO texture in map file
+    - [ ] Missing SO texture in map file
+    - [ ] Missing WE texture in map file
+    - [ ] Missing EA texture in map file
+    - [ ] Missing more than one of the above (some permutations)
+    - [ ] Wrong path in NO texture
+    - [ ] Wrong path in SO texture
+    - [ ] Wrong path in WE texture
+    - [ ] Wrong path in EA texture
+    - [ ] Missing F color
+    - [ ] Missing C color
+    - [ ] Missing both
+    - [ ] F color missing a number
+    - [ ] C color missing a number
+    - [ ] F color with extra number
+    - [ ] C color with extra number
+    - [ ] F color with number out of range (0, 255)
+    - [ ] C color with number out of range (0, 255)
 
-int	mlx_loop_hook (void *mlx_ptr, int (*funct_ptr)(), void *param);
-int	mlx_loop (void *mlx_ptr);
-int mlx_loop_end (void *mlx_ptr);
-int	mlx_hook(void *win_ptr, int x_event, int x_mask,
-                 int (*funct)(), void *param);
 
-int	mlx_do_key_autorepeatoff(void *mlx_ptr);
-int	mlx_do_key_autorepeaton(void *mlx_ptr);
-int	mlx_do_sync(void *mlx_ptr);
-
-int	mlx_mouse_get_pos(void *mlx_ptr, void *win_ptr, int *x, int *y);
-int	mlx_mouse_move(void *mlx_ptr, void *win_ptr, int x, int y);
-int	mlx_mouse_hide(void *mlx_ptr, void *win_ptr);
-int	mlx_mouse_show(void *mlx_ptr, void *win_ptr);
-```
+### Bonus (Let's not do it please)
+- [ ] Wall colision (Find if there is still some bug with collision)
+- [ ] Fix minimap bug where player dot is being duplicated sometimes
+- [ ] Sprite Animation
+- [ ] Camera movements with mouse
+- [ ] Doorks which can open and close
