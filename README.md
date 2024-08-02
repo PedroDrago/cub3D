@@ -1,6 +1,7 @@
 # cub3d
 Version: 10
 
+# To-do
 ### General
 - [ ] End the game in a clean way
 - [ ] Norm
