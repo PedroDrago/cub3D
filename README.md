@@ -6,12 +6,15 @@ Version: 10
 - [ ] Norm
 - [ ] Refactor to organize better the functions
 - [ ] Choose sprites?
+- [ ] The speed variable needs to be adjusted
+- [ ] The resolution may be adjusted as well
 
 ### Rendering
 - [ ] Study Raycasting
-- [ ] Player initializing looking to the right position
+- [ ] Player initializing looking to the right position (NO, SO, EA, WE)
 
 ### Movements
+- [ ] I don't know if it is lacking something
 
 ### Parser
 - [ ] Remove memory leaks
@@ -19,7 +22,7 @@ Version: 10
     - [ ] No player
     - [ ] Two or more players
     - [ ] Player located on the wall?
-    - [ ] 
+    - [ ] Test all initial directions in all weird scenarios
 - [ ] Test Weird information scenarios (message bust be `Error\n` followed by explicit message about the error in all scenarios):
     - [ ] Missing NO texture in map file
     - [ ] Missing SO texture in map file
@@ -43,7 +46,9 @@ Version: 10
 
 ### Bonus (Let's not do it please)
 - [ ] Wall colision (Find if there is still some bug with collision)
-- [ ] Fix minimap bug where player dot is being duplicated sometimes
+- [ ] Minimap
+    - [ ] Fix minimap bug where player dot is being duplicated sometimes
+    - [ ] Minimap will be weird when map is too big I guess, solve it with some scale based solution (shorten square size based on map width and height)
 - [ ] Sprite Animation
 - [ ] Camera movements with mouse
 - [ ] Doorks which can open and close
