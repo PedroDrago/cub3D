@@ -13,6 +13,7 @@ Version: 10
 ### Rendering
 - [ ] Study Raycasting
 - [ ] Player initializing looking to the right position (NO, SO, EA, WE)
+- [ ] Celing and Floor color are hardcoded now, need to get the parsed colors and make them usable in the `my_mlx_pixel_put()` function context
 
 ### Movements
 - [ ] I don't know if it is lacking something
