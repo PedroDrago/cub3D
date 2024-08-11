@@ -146,13 +146,13 @@ void	update_camera(t_game *game)
 	{
 		movement_limiter = 0;
 		if (game->keys[I_W])
-			walk_forward(&game->camera, game->map.map, game->map.mini_map);
+			walk_forward(&game->camera, game->map.map);
 		if (game->keys[I_A])
-			walk_left(&game->camera, game->map.map, game->map.mini_map);
+			walk_left(&game->camera, game->map.map);
 		if (game->keys[I_S])
-			walk_backwards(&game->camera, game->map.map, game->map.mini_map);
+			walk_backwards(&game->camera, game->map.map);
 		if (game->keys[I_D])
-			walk_right(&game->camera, game->map.map, game->map.mini_map);
+			walk_right(&game->camera, game->map.map);
 		if (game->keys[I_LEFT])
 			rotate_left(&game->camera);
 		if (game->keys[I_RIGHT])

@@ -19,10 +19,10 @@ void init_textures(t_game *game);
 int  key_hook(int key, t_game *game);
 void rotate_right(t_camera *camera);
 void rotate_left(t_camera *camera);
-void walk_forward(t_camera *camera, char **map, char **mini_map);
-void walk_backwards(t_camera *camera, char **map, char **mini_map);
-void walk_left(t_camera *camera, char **map, char **mini_map);
-void walk_right(t_camera *camera, char **map, char **mini_map);
+void walk_forward(t_camera *camera, char **map);
+void walk_backwards(t_camera *camera, char **map);
+void walk_left(t_camera *camera, char **map);
+void walk_right(t_camera *camera, char **map);
 void calculate_line(t_ray *ray, t_line *line);
 void digital_diferencial_analysis(t_game *game, t_ray *ray, t_line *line); // this is de DDA algorithm, responsible to get the position where the ray will hit a wall
 void dda_setup(t_game *game, t_ray *ray); // this setup data for the DDA algorithm
