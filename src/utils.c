@@ -57,7 +57,7 @@ void	free_split(char **splited)
 	int	i;
 
 	i = 0;
-	while(splited[i])
+	while(splited && splited[i])
 		free(splited[i++]);
 	free(splited);
 }

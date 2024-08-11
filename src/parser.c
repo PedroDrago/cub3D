@@ -24,13 +24,12 @@ int read_map_file(t_map *map_data, char *file_path)
 	i = 0;
 	while(line)
 	{
-		map_data->map_file_array[i++] = line;
+		map_data->map_file_array[i++] = line; // Does not need free cause we save the pointer instead of copying it
 		line = get_next_line(fd);
 	}
 	map_data->map_file_array[i] = NULL;
 	close(fd);
 	return 1;
-
 }
 
 int is_empty_line(char *line)
@@ -162,7 +161,7 @@ int get_map_array(t_map *map_data, int start)
 		map_data->height++;
 		tmp++;
 	}
-	if (map_data->height < 3 || map_data->width < 4) //4 because here we still have \n at end of each line
+	if (map_data->height < 3 || map_data->width < 4)
 		return 0;
 	map_data->map = malloc(sizeof(char *) * (map_data->height + 1));
 	if (!map_data->map)
@@ -176,7 +175,7 @@ int get_map_array(t_map *map_data, int start)
 			map_data->map[i] = get_spaced_line(map_data->map_file_array[start], map_data->width);
 		}
 		else
-			map_data->map[i] = remove_linebreak(ft_strdup(map_data->map_file_array[start])); // WARN: dupping to make freeing easy later avoiding double frees with map file array;
+			map_data->map[i] = remove_linebreak(ft_strdup(map_data->map_file_array[start]));
 		i++;
 		start++;
 	}
@@ -185,7 +184,7 @@ int get_map_array(t_map *map_data, int start)
 }
 
 
-int get_map_data(t_map *map_data)
+int parse_map(t_map *map_data)
 {
 	int i;
 	int data_count;
@@ -215,12 +214,6 @@ int get_map_data(t_map *map_data)
 	return 1;
 }
 
-int parse_map(t_map *map_data)
-{
-	if (!get_map_data(map_data))
-		return 0;
-	return 1;
-}
 
 
 void	destroy_map_data(t_map *map_data)
@@ -265,6 +258,7 @@ int	check_extension(char *file)
 void	init_map(t_map *map)
 {
 	map->map = NULL;
+	map->mini_map = NULL;
 	map->file_width = 0;
 	map->file_height = 0;
 	map->width = 0;
@@ -459,33 +453,45 @@ char **duplicate_map(char **map, int height, int width)
 	return copy_map;
 }
 
+void	exit_printing(int status, char *msg)
+{
+	printf("%s\n", msg);
+	exit(status);
+}
+
+void	free_map(t_map *map)
+{
+	free_split(map->map);
+	free_split(map->mini_map);
+	free_split(map->map_file_array);
+	free(map->north_path);
+	free(map->south_path);
+	free(map->west_path);
+	free(map->east_path);
+	free(map->ceiling_rgb);
+	free(map->floor_rgb);
+}
+
 void	get_map(t_game *game, char *file)
 {
 	if (!check_extension(file))
-	{
-		printf("Error at check_extension\n");
-		exit(1);
-	}
+		exit_printing(1, "Error at check_extension");
 	init_map(&game->map);
 	if (!get_map_proportions(&game->map, file))
-	{
-		printf("Error at get_map_proportions\n");
-		exit(1);
-	}
+		exit_printing(1, "Error at get_map_proportions");
 	if(!read_map_file(&game->map, file))
-	{
-		printf("Error at read_map_file\n");
-		exit(1);
-	}
+		exit_printing(1, "Error at read_map_file\n");
 	if (!parse_map(&game->map))
 	{
+		free_map(&game->map);
 		printf("Error at parse_map\n");
 		exit(1);
 	}
 	fill_spaces_with_zero(game->map.map, game->map.height, game->map.width);
 	if (!validate_map(game->map.map, game->map.height, game->map.width))
 	{
-		printf("Error at check_surrounded\n");
+		free_map(&game->map);
+		printf("Error at validate_map\n");
 		exit(1);
 	}
 	free_split(game->map.map_file_array);
@@ -497,7 +503,8 @@ void	get_map(t_game *game, char *file)
 	free(game->map.ceiling_rgb);
 	if (!files_exist(&game->map))
 	{
-		printf("Error at test_files\n");
+		free_map(&game->map);
+		printf("Error at files_exist\n");
 		exit(1);
 	}
 	game->map.mini_map = duplicate_map(game->map.map, game->map.height, game->map.width);
