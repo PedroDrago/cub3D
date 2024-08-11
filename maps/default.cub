@@ -3,7 +3,7 @@ SO ./assets/graystone.xpm
 WE ./assets/purplestone.xpm
 EA ./assets/redstone.xpm
 
-F 255,255,0
+F 255,255,255
 C 0,255,255
 
         1111111111111111111111111

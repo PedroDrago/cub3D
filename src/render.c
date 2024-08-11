@@ -40,7 +40,7 @@ void	draw_line(t_data *img, int x, t_line line, t_ray *ray, t_game *game, t_data
 	}
 }
 
-void	draw_background(t_data *frame)
+void	draw_background(t_data *frame, unsigned int ceil_rgb, unsigned int floor_rgb)
 {
 	int x;
 	int y;
@@ -54,9 +54,9 @@ void	draw_background(t_data *frame)
 	{
 		y = 0;
 		while (y <= S_HEIGHT / 2)
-			my_mlx_pixel_put(frame, x, y++, RGB_LIGHT_BLUE);
+			my_mlx_pixel_put(frame, x, y++, ceil_rgb);
 		while(y <= S_HEIGHT)
-			my_mlx_pixel_put(frame, x, y++, RGB_BROWN);
+			my_mlx_pixel_put(frame, x, y++, floor_rgb);
 		x++;
 	}
 }

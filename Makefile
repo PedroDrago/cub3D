@@ -1,6 +1,6 @@
 NAME = cub3D
 
-SRC = src/main.c src/movement.c src/parser.c src/raycasting.c src/render.c src/utils.c src/textures.c src/minimap.c
+SRC = src/main.c src/movement.c src/parser.c src/raycasting.c src/render.c src/utils.c src/textures.c src/minimap.c src/ft_split_charset.c
 OBJ = $(SRC:.c=.o)
 LINKS = -lX11 -lXext -lm
 

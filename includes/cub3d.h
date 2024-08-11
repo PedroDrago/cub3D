@@ -30,7 +30,7 @@ void setup_raycasting(t_game *game, t_ray *ray, int x); // this initialize some 
 void	draw_line(t_data *img, int x, t_line line, t_ray *ray, t_game *game, t_data *texture);
 void print_split(char **splited);
 void my_mlx_pixel_put(t_data *img, int x, int y, unsigned int color);
-void draw_background(t_data *frame);
+void	draw_background(t_data *frame, unsigned int ceil_rgb, unsigned int floor_rgb);
 void init_textures(t_game *game);
 void get_map(t_game *game, char *file);
 void free_split(char **splited);
@@ -44,5 +44,6 @@ void	draw_map(t_game *game, t_data *tile);
 
 int get_initial_pos(char **map, t_vector_d *pos);
 int get_initial_pos_i(char **map, t_vector_i *pos);
+char	**ft_split_charset(char const *s, const char *charset);
 
 #endif

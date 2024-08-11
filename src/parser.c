@@ -1,5 +1,6 @@
 #include "../includes/cub3d.h"
 #include <fcntl.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -84,13 +85,17 @@ int	parse_texture(t_map *map_data, char *line)
 int	parse_colors(t_map *map_data, char *line)
 {
 	char	**splited;
+	char	**validation_splited;
 
-	splited = ft_split(line, ' '); // FIX: This needs to be a split_charset splitting by space and comma (' ', ',')
-	if (split_len(splited) != 2)
+	validation_splited = ft_split_charset(line, " ,");  //NOTE: just for validating the format
+	print_split(validation_splited);
+	if (split_len(validation_splited) != 4)
 	{
-		free_split(splited);
+		free_split(validation_splited);
 		return 0;
 	}
+	free_split(validation_splited);
+	splited = ft_split(line, ' ');
 	if (!ft_strncmp(splited[0], "F", 3))
 		map_data->floor_rgb = remove_linebreak(splited[1]);
 	else if (!ft_strncmp(splited[0], "C", 3))
@@ -125,7 +130,7 @@ char *get_spaced_line(char *line, int len)
 	return spaced_line;
 }
 
-unsigned int rgb_to_hex(char *rgb)
+unsigned int rgb_to_hex(char *rgb, int *sig)
 {
 	unsigned int color;
 	char **splited;
@@ -135,8 +140,8 @@ unsigned int rgb_to_hex(char *rgb)
 	if (!splited[0] || !splited[1] || !splited[2])
 	{ // WARN: if any of these indexes are NULL it means RGB lacks data (it should not happen, because it should be validated prior, in parser
 		free_split(splited);
-		printf("Error on rgb_to_hex\n");
-		exit(1);
+		*sig = -1;
+		return 0;
 	}
 	color = (ft_atoi(splited[0]) << 16) | (ft_atoi(splited[1]) << 8) | ft_atoi(splited[2]);
 	free_split(splited);
@@ -352,7 +357,7 @@ char **duplicate_map_bordered(char **map, int height, int width)
 	int i;
 	int j;
 
-	copy_map = malloc(sizeof(char *) * (height + 3)); //1 for null | 1 for first extra | 1 for last extra
+	copy_map = malloc(sizeof(char *) * (height + 3)); 
 	if (!copy_map)
 		return (NULL);
 	copy_map[0] = malloc(sizeof(char) * (width + 1));
@@ -497,8 +502,14 @@ void	get_map(t_game *game, char *file)
 	free_split(game->map.map_file_array);
 	game->map.map_file_array = NULL;
 	print_map_data(&game->map);
-	game->map.floor_color = rgb_to_hex(game->map.floor_rgb);
-	game->map.ceiling_color = rgb_to_hex(game->map.ceiling_rgb);
+	int sig = 1;
+	game->map.floor_color = rgb_to_hex(game->map.floor_rgb, &sig);
+	if (sig < 0)
+	{
+		free_map(&game->map);
+		printf("Error at color formatting\n");
+	}
+	game->map.ceiling_color = rgb_to_hex(game->map.ceiling_rgb, &sig);
 	free(game->map.floor_rgb);
 	free(game->map.ceiling_rgb);
 	if (!files_exist(&game->map))
