@@ -15,3 +15,21 @@ void init_textures(t_game *game)
 	load_texture(game, &game->textures[EAST], game->map.east_path);
 	load_texture(game, &game->textures[WEST], game->map.west_path);
 }
+
+void clear_textures(t_game *game)
+{
+	mlx_destroy_image(game->mlx, game->textures[NORTH].img);
+	mlx_destroy_image(game->mlx, game->textures[SOUTH].img);
+	mlx_destroy_image(game->mlx, game->textures[EAST].img);
+	mlx_destroy_image(game->mlx, game->textures[WEST].img);
+}
+
+void destroy_all(t_game *game)
+{
+	mlx_destroy_window(game->mlx, game->win);
+	clear_textures(game);
+	mlx_destroy_display(game->mlx);
+	free(game->map.map);
+	free(game->mlx);
+	exit(0);
+}

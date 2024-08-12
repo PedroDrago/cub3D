@@ -103,7 +103,10 @@ void init_camera(t_camera *camera, t_game *game)
 int key_hook_down(int key, t_game *game)
 {
 	if (key == ESC)
+	{
+		destroy_all(game);
 		exit(1);
+	}
 	if (key == W)
 		game->keys[I_W] =  1;
 	if (key == A)
