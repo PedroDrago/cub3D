@@ -61,19 +61,21 @@ int	parse_texture(t_map *map_data, char *line)
 	splited = ft_split(line, ' ');
 	if (split_len(splited) != 2)
 	{
+		printf("[parse_texture -> parser.c] Error\nBad Formatting in Texture\n");
 		free_split(splited);
 		return 0;
 	}
-	if (!ft_strncmp(splited[0], "NO", 3))
+	if (!ft_strncmp(splited[0], "NO", 3) && (map_data->north_path == NULL))
 		map_data->north_path = remove_linebreak(splited[1]);
-	else if (!ft_strncmp(splited[0], "SO", 3))
+	else if (!ft_strncmp(splited[0], "SO", 3) && (map_data->south_path == NULL))
 		map_data->south_path = remove_linebreak(splited[1]);
-	else if (!ft_strncmp(splited[0], "WE", 3))
+	else if (!ft_strncmp(splited[0], "WE", 3) && (map_data->west_path == NULL))
 		map_data->west_path = remove_linebreak(splited[1]);
-	else if (!ft_strncmp(splited[0], "EA", 3))
+	else if (!ft_strncmp(splited[0], "EA", 3) && (map_data->east_path == NULL))
 		map_data->east_path =remove_linebreak(splited[1]);
 	else
 	{
+		printf("[parse_textures -> parser.c] Error\nBad Formatting in Texture\n");
 		free_split(splited);
 		return 0;
 	}
@@ -81,6 +83,7 @@ int	parse_texture(t_map *map_data, char *line)
 	free(splited);
 	return 1;
 }
+
 
 int	parse_colors(t_map *map_data, char *line)
 {
@@ -91,23 +94,33 @@ int	parse_colors(t_map *map_data, char *line)
 	print_split(validation_splited);
 	if (split_len(validation_splited) != 4)
 	{
+		printf("[parse_colors -> parser.c] Error\n Bad Formmatting in colors\n");
 		free_split(validation_splited);
 		return 0;
 	}
 	free_split(validation_splited);
 	splited = ft_split(line, ' ');
-	if (!ft_strncmp(splited[0], "F", 3))
+	if (!ft_strncmp(splited[0], "F", 3) && (map_data->floor_rgb == NULL))
 		map_data->floor_rgb = remove_linebreak(splited[1]);
-	else if (!ft_strncmp(splited[0], "C", 3))
+	else if (!ft_strncmp(splited[0], "C", 3) && (map_data->ceiling_rgb == NULL))
 		map_data->ceiling_rgb = remove_linebreak(splited[1]); 
 	else
 	{
+		printf("[parse_colors -> parser.c] Error\n Bad Formmatting in colors\n");
 		free_split(splited);
 		return 0;
 	}
 	free(splited[0]);
 	free(splited);
 	return 1;
+}
+
+int parse_data(t_map *map_data, char *line)
+{
+	if (line[0] == 'F' || line[0] == 'C')
+		return parse_colors(map_data, line);
+	else
+		return parse_texture(map_data, line);
 }
 
 char *get_spaced_line(char *line, int len)
@@ -198,19 +211,18 @@ int parse_map(t_map *map_data)
 	data_count = 0;
 	while(map_data->map_file_array[i] && data_count < 6)
 	{
-		if (!is_empty_line(map_data->map_file_array[i]) && data_count < 4)
+		if (!is_empty_line(map_data->map_file_array[i]) && data_count < 6)
 		{
-			if (!parse_texture(map_data, map_data->map_file_array[i]))
-				return 0;
-			data_count++;
-		}
-		else if (!is_empty_line(map_data->map_file_array[i]) && data_count < 6)
-		{
-			if (!parse_colors(map_data, map_data->map_file_array[i]) && data_count < 6)
+			if (!parse_data(map_data, map_data->map_file_array[i]))
 				return 0;
 			data_count++;
 		}
 		i++;
+	}
+	if (map_data->north_path == NULL || map_data->south_path == NULL || map_data->west_path == NULL || map_data->east_path == NULL || map_data->floor_rgb == NULL || map_data->ceiling_rgb == NULL)
+	{
+		printf("Error\nMissing some information in map file\n");
+		return 0;
 	}
 	while(is_empty_line(map_data->map_file_array[i]))
 		i++;
@@ -489,7 +501,6 @@ void	get_map(t_game *game, char *file)
 	if (!parse_map(&game->map))
 	{
 		free_map(&game->map);
-		printf("Error at parse_map\n");
 		exit(1);
 	}
 	fill_spaces_with_zero(game->map.map, game->map.height, game->map.width);
