@@ -20,6 +20,7 @@ Version: 10
 
 ### Parser
 - [x?] Remove memory leaks
+- [ ] Current map can't parse correctly colors formatting (detect if a color has been passed with less channels like `255, 150,` or `255,150,:`). Need to validate this cases.
 - [ ] Test weird map scenarios:
     - [ ] No player
     - [ ] Two or more players
