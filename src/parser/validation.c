@@ -77,7 +77,10 @@ int validate_map(char **map, int height, int width)
 	pos.x = 0;
 	pos.y = 0;
 	if (!validate_characters(map))
+	{
+		printf("[%s:%i] Error\nInvalid Characters\n", __FILE__, __LINE__);
 		return (0);
+	}
 	copy_map = duplicate_map_bordered(map, height, width);
 	if (!copy_map)
 		return (0);
@@ -85,6 +88,7 @@ int validate_map(char **map, int height, int width)
 	ft_floodfill(copy_map, 0, 0, height, width);
 	if ((copy_map[(int)pos.x][(int)pos.y + 1] == '2') || (copy_map[(int)pos.x][(int)pos.y - 1] == '2') || (copy_map[(int)pos.x + 1][(int)pos.y] == '2') || (copy_map[(int)pos.x - 1][(int)pos.y] == '2'))
 	{
+		printf("[%s:%i] Error\nMap must be Surroundede\n", __FILE__, __LINE__);
 		free_split(copy_map);
 		return (0);
 	}

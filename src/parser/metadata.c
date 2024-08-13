@@ -24,7 +24,7 @@ int	parse_texture(t_map *map_data, char *line)
 	splited = ft_split(line, ' ');
 	if (split_len(splited) != 2)
 	{
-		printf("[parse_texture -> parser.c] Error\nBad Formatting in Texture\n");
+		printf("[%s: %i]Error\nBad Formatting in Texture\n", __FILE__, __LINE__);
 		free_split(splited);
 		return 0;
 	}
@@ -38,7 +38,7 @@ int	parse_texture(t_map *map_data, char *line)
 		map_data->east_path =remove_linebreak(splited[1]);
 	else
 	{
-		printf("[parse_textures -> parser.c] Error\nBad Formatting in Texture\n");
+		printf("[%s: %i]Error\nBad Formatting in Texture\n", __FILE__, __LINE__);
 		free_split(splited);
 		return 0;
 	}
@@ -78,7 +78,7 @@ int	parse_colors(t_map *map_data, char *line)
 	validation_splited = ft_split_charset(line, " ,\n");  //NOTE: just for validating the format
 	if (!validation_splited || split_len(validation_splited) != 4 || !is_valid_rgb(validation_splited))
 	{
-		printf("[parse_colors -> parser.c] Error\nBad Formmatting in colors\n");
+		printf("[%s: %i] Error\nBad Formmatting in colors\n", __FILE__, __LINE__);
 		free_split(validation_splited);
 		return 0;
 	}
@@ -90,7 +90,7 @@ int	parse_colors(t_map *map_data, char *line)
 		map_data->ceiling_rgb = remove_linebreak(splited[1]); 
 	else
 	{
-		printf("[parse_colors -> parser.c] Error\n Bad Formmatting in colors\n");
+		printf("[%s: %i] Error\nBad Formmatting in colors\n", __FILE__, __LINE__);
 		free_split(splited);
 		return 0;
 	}

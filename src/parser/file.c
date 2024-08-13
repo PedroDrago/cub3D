@@ -5,7 +5,7 @@ int	check_extension(char *file)
 	char *dot;
 
 	dot = ft_strrchr(file, '.');
-	if (dot && !ft_strncmp(dot, ".cub", 4))
+	if (dot && !ft_strncmp(dot, ".cub", 5))
 		return 1;
 	return 0;
 }
