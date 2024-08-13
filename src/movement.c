@@ -81,7 +81,6 @@ void walk_forward(t_camera *camera, char **map)
     fut_pos.x = camera->pos.x + camera->dir.x * camera->mov_speed;
     fut_pos.y = camera->pos.y + camera->dir.y * camera->mov_speed;
 
-	printf("map[10][26] %c\n", map[10][26]);
 	diagonal_dir = get_diagonal_dir(camera->pos, fut_pos);
 	if (map[(int)(fut_pos.x)][(int)(fut_pos.y)] == '1')
 		return ;
@@ -120,7 +119,6 @@ void walk_forward(t_camera *camera, char **map)
         camera->pos.y = fut_pos.y;
 		update_map(map, fut_pos, curr_x, curr_y);
     }
-	printf("pos.x: %f, pos.y: %f\n", camera->pos.x, camera->pos.y);
 }
 
 void walk_backwards(t_camera *camera, char **map)

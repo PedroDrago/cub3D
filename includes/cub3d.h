@@ -61,6 +61,7 @@ void	exit_printing(int status, char *msg);
 void	free_map(t_map *map);
 void destroy_map(t_map *map);
 void fill_spaces_with_zero(char **map, int height, int width);
+void destroy_all(t_game *game);
 int validate_map(char **map, int height, int width);
 char	*ft_strdup_margin(const char *s);
 
