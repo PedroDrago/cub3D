@@ -1,4 +1,5 @@
 #include "../includes/cub3d.h"
+#include <ctype.h>
 #include <fcntl.h>
 #include <signal.h>
 #include <stdio.h>
@@ -84,6 +85,28 @@ int	parse_texture(t_map *map_data, char *line)
 	return 1;
 }
 
+int is_valid_rgb(char **rgb)
+{
+	int i;
+	int j;
+
+	i = 1;
+	while (rgb[i])
+	{
+		j = 0;
+		while(rgb[i][j])
+		{
+			if (isalpha(rgb[i][j]))
+				return (0);
+			j++;
+		}
+		j = ft_atoi(rgb[i]);
+		if (j < 0 || j > 255)
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 int	parse_colors(t_map *map_data, char *line)
 {
@@ -91,12 +114,9 @@ int	parse_colors(t_map *map_data, char *line)
 	char	**validation_splited;
 
 	validation_splited = ft_split_charset(line, " ,\n");  //NOTE: just for validating the format
-	printf("HEELO\n");
-	print_split(validation_splited);
-	printf("HEELO\n");
-	if (split_len(validation_splited) != 4)
+	if (!validation_splited || split_len(validation_splited) != 4 || !is_valid_rgb(validation_splited))
 	{
-		printf("[parse_colors -> parser.c] Error\n Bad Formmatting in colors\n");
+		printf("[parse_colors -> parser.c] Error\nBad Formmatting in colors\n");
 		free_split(validation_splited);
 		return 0;
 	}
