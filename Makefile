@@ -1,6 +1,6 @@
 NAME = cub3D
 
-SRC = src/main.c src/movement.c src/parser.c src/raycasting.c src/render.c src/utils.c src/textures.c src/minimap.c src/ft_split_charset.c src/parser/file.c src/parser/metadata.c src/parser/parser.c src/parser/read.c src/parser/utils.c src/parser/validation.c
+SRC = src/main.c src/movement.c src/raycasting.c src/render.c src/utils.c src/textures.c src/minimap.c src/ft_split_charset.c src/parser/file.c src/parser/metadata.c src/parser/parser.c src/parser/read.c src/parser/utils.c src/parser/validation.c
 
 
 OBJ = $(SRC:.c=.o)
