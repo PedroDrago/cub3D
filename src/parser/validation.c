@@ -1,18 +1,17 @@
-
 #include "../../includes/cub3d.h"
 
 int	validate_characters(char **map)
 {
-	int i;
-	int j;
-	int player;
+	int	i;
+	int	j;
+	int	player;
 
 	i = 0;
 	player = 0;
-	while(map[i])
+	while (map[i])
 	{
 		j = 0;
-		while(map[i][j])
+		while (map[i][j])
 		{
 			if (map[i][j] != 'N' && map[i][j] != 'E' && map[i][j] != 'W' && map[i][j] != 'S' && map[i][j] != '0' && map[i][j] != '1')
 				return (0);
@@ -29,10 +28,10 @@ int	validate_characters(char **map)
 	return (1);
 }
 
-void ft_floodfill(char **map, int i, int j, int height, int width)
+void	ft_floodfill(char **map, int i, int j, int height, int width)
 {
 	if (i < 0 || i >= height || j < 0 || j >= width || map[i][j] != '0')
-		return;
+		return ;
 	map[i][j] = '2';
 	ft_floodfill(map, i + 1, j, height, width);
 	ft_floodfill(map, i - 1, j, height, width);
@@ -40,13 +39,13 @@ void ft_floodfill(char **map, int i, int j, int height, int width)
 	ft_floodfill(map, i, j - 1, height, width);
 }
 
-char **duplicate_map_bordered(char **map, int height, int width)
+char	**duplicate_map_bordered(char **map, int height, int width)
 {
-	char **copy_map;
-	int i;
-	int j;
+	char	**copy_map;
+	int		i;
+	int		j;
 
-	copy_map = malloc(sizeof(char *) * (height + 3)); 
+	copy_map = malloc(sizeof(char *) * (height + 3));
 	if (!copy_map)
 		return (NULL);
 	copy_map[0] = malloc(sizeof(char) * (width + 1));
@@ -57,7 +56,7 @@ char **duplicate_map_bordered(char **map, int height, int width)
 		copy_map[0][i++] = '0';
 	i = 1;
 	j = 0;
-	while(map[j])
+	while (map[j])
 		copy_map[i++] = ft_strdup_margin(map[j++]);
 	copy_map[i] = malloc(sizeof(char) * (width + 1));
 	if (!copy_map[i])
@@ -66,13 +65,13 @@ char **duplicate_map_bordered(char **map, int height, int width)
 	while (j < width + 1)
 		copy_map[i][j++] = '0';
 	copy_map[++i] = NULL;
-	return copy_map;
+	return (copy_map);
 }
 
-int validate_map(char **map, int height, int width)
+int	validate_map(char **map, int height, int width)
 {
-	char **copy_map;
-	t_vector_i pos;
+	char		**copy_map;
+	t_vector_i	pos;
 
 	pos.x = 0;
 	pos.y = 0;

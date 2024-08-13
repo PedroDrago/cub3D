@@ -2,12 +2,14 @@
 
 void	get_map(t_game *game, char *file)
 {
+	int	hold;
+
 	if (!check_extension(file))
 		exit_printing(1, "Error\nWrong extension\n");
 	init_map(&game->map);
 	if (!get_map_proportions(&game->map, file))
 		exit_printing(1, "Error\nFile not found\n");
-	if(!read_map_file(&game->map, file))
+	if (!read_map_file(&game->map, file))
 		exit_printing(1, "Error\nInternal Error\n");
 	if (!parse_map(&game->map))
 	{
@@ -24,7 +26,7 @@ void	get_map(t_game *game, char *file)
 	free_split(game->map.map_file_array);
 	game->map.map_file_array = NULL;
 	game->map.floor_color = rgb_to_hex(game->map.floor_rgb);
-	int hold = rgb_to_hex(game->map.floor_rgb);
+	hold = rgb_to_hex(game->map.floor_rgb);
 	if (hold < 0)
 	{
 		free_map(&game->map);

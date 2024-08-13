@@ -1,24 +1,25 @@
 #include "../../includes/cub3d.h"
 
-int is_empty_line(char *line)
+int	is_empty_line(char *line)
 {
-	int i;
+	int	i;
+
 	if (ft_strlen(line) == 0)
-		return 1;
+		return (1);
 	i = 0;
-	while(line[i])
+	while (line[i])
 	{
 		if (line[i] != ' ' && line[i] != '\n')
-			return 0;
+			return (0);
 		i++;
 	}
-	return 1;
+	return (1);
 }
 
-char *remove_linebreak(char *line)
+char	*remove_linebreak(char *line)
 {
 	line[ft_strlen(line) - 1] = '\0';
-	return line;
+	return (line);
 }
 
 void	destroy_map_data(t_map *map_data)
@@ -43,23 +44,22 @@ void	init_map(t_map *map)
 	map->floor_rgb = NULL;
 }
 
-
-int is_invalid_char(char c)
+int	is_invalid_char(char c)
 {
 	return (c != '1' && c != '0' && c != 'N' && c != 'S' && c != 'E' && c != 'W' && c != ' ');
 }
 
-int is_player_char(char c)
+int	is_player_char(char c)
 {
 	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 		return (1);
 	return (0);
 }
 
-char **duplicate_map(char **map, int height)
+char	**duplicate_map(char **map, int height)
 {
-	char **copy_map;
-	int i;
+	char	**copy_map;
+	int		i;
 
 	copy_map = malloc(sizeof(char *) * (height + 1));
 	if (!copy_map)
@@ -68,7 +68,7 @@ char **duplicate_map(char **map, int height)
 	while (++i < height)
 		copy_map[i] = ft_strdup(map[i]);
 	copy_map[i] = NULL;
-	return copy_map;
+	return (copy_map);
 }
 
 void	exit_printing(int status, char *msg)
@@ -90,7 +90,7 @@ void	free_map(t_map *map)
 	free(map->floor_rgb);
 }
 
-void destroy_map(t_map *map)
+void	destroy_map(t_map *map)
 {
 	free_split(map->map);
 }
