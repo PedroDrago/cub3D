@@ -45,5 +45,23 @@ void	draw_map(t_game *game, t_data *tile);
 int get_initial_pos(char **map, t_vector_d *pos);
 int get_initial_pos_i(char **map, t_vector_i *pos);
 char	**ft_split_charset(char const *s, const char *charset);
+int	check_extension(char *file);
+int read_map_file(t_map *map_data, char *file_path);
+int files_exist(t_map *map);
+unsigned int rgb_to_hex(char *rgb, int *sig);
+int parse_data(t_map *map_data, char *line);
+int is_empty_line(char *line);
+char *remove_linebreak(char *line);
+void	destroy_map_data(t_map *map_data);
+void	init_map(t_map *map);
+int is_invalid_char(char c);
+int is_player_char(char c);
+char **duplicate_map(char **map, int height);
+void	exit_printing(int status, char *msg);
+void	free_map(t_map *map);
+void destroy_map(t_map *map);
+void fill_spaces_with_zero(char **map, int height, int width);
+int validate_map(char **map, int height, int width);
+char	*ft_strdup_margin(const char *s);
 
 #endif
