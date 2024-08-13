@@ -3,12 +3,12 @@
 void	get_map(t_game *game, char *file)
 {
 	if (!check_extension(file))
-		exit_printing(1, "Error at check_extension");
+		exit_printing(1, "Error\nWrong extension\n");
 	init_map(&game->map);
 	if (!get_map_proportions(&game->map, file))
-		exit_printing(1, "Error at get_map_proportions");
+		exit_printing(1, "Error\nFile not found\n");
 	if(!read_map_file(&game->map, file))
-		exit_printing(1, "Error at read_map_file\n");
+		exit_printing(1, "Error\nInternal Error\n");
 	if (!parse_map(&game->map))
 	{
 		free_map(&game->map);
@@ -23,19 +23,21 @@ void	get_map(t_game *game, char *file)
 	}
 	free_split(game->map.map_file_array);
 	game->map.map_file_array = NULL;
-	print_map_data(&game->map);
 	game->map.floor_color = rgb_to_hex(game->map.floor_rgb);
-	if (game->map.floor_rgb < 0)
+	int hold = rgb_to_hex(game->map.floor_rgb);
+	if (hold < 0)
 	{
 		free_map(&game->map);
 		printf("Error at color formatting\n");
 	}
-	game->map.ceiling_color = rgb_to_hex(game->map.ceiling_rgb);
-	if (game->map.ceiling_rgb < 0)
+	game->map.floor_color = hold;
+	hold = rgb_to_hex(game->map.ceiling_rgb);
+	if (hold < 0)
 	{
 		free_map(&game->map);
 		printf("Error at color formatting\n");
 	}
+	game->map.ceiling_color = hold;
 	free(game->map.floor_rgb);
 	free(game->map.ceiling_rgb);
 	if (!files_exist(&game->map))

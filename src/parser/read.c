@@ -1,5 +1,6 @@
 
 #include "../../includes/cub3d.h"
+#include <stdio.h>
 
 void fill_spaces_with_zero(char **map, int height, int width)
 {
@@ -59,7 +60,10 @@ int get_map_array(t_map *map_data, int start)
 		tmp++;
 	}
 	if (map_data->height < 3 || map_data->width < 4)
+	{
+		printf("[%s: %i] Error\nMap too small\n", __FILE__, __LINE__);
 		return 0;
+	}
 	map_data->map = malloc(sizeof(char *) * (map_data->height + 1));
 	if (!map_data->map)
 		return 0;
@@ -100,7 +104,7 @@ int parse_map(t_map *map_data)
 	}
 	if (map_data->north_path == NULL || map_data->south_path == NULL || map_data->west_path == NULL || map_data->east_path == NULL || map_data->floor_rgb == NULL || map_data->ceiling_rgb == NULL)
 	{
-		printf("Error\nMissing some information in map file\n");
+		printf("[%s: %i] Error\nMissing some information in map file\n", __FILE__, __LINE__);
 		return 0;
 	}
 	while(is_empty_line(map_data->map_file_array[i]))
