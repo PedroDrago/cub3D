@@ -191,7 +191,7 @@ int game_loop(t_game *game)
 	update_camera(game);
 	frame.img = mlx_new_image(game->mlx, S_WIDTH, S_HEIGHT);
 	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, &frame.line_length, &frame.endian);
-	draw_background(&frame);
+	draw_background(&frame, game->map.ceiling_color, game->map.floor_color);
 	while (x < S_WIDTH) // for every vertical stripe on the screen we raycast
 	{
 		setup_raycasting(game, &ray, x);
@@ -215,9 +215,9 @@ int main(int argc, char *argv[])
 	// int hg;
 	// mlx_get_screen_size(game->mlx, &wd, &hg); // make some math with this to have dinamic sized window based on the monitor, and also define RATE based on the screen resolution
 
-	if (argc != 2)
+	if (argc < 2)
 	{
-		printf("Too much or too many arguments\n");
+		printf("A path to the map file must be passed as argument\n");
 		exit(1);
 	}
 	ft_bzero(game.keys, 20);
