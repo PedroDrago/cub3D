@@ -11,7 +11,7 @@ Version: 10
 - [ ] The resolution may be adjusted as well
 
 ### Rendering
-- [ ] Study Raycasting
+- [ ] Study Raycasting.
 - [ ] Player initializing looking to the right position (NO, SO, EA, WE)
 - x] Celing and Floor color are hardcoded now, need to get the parsed colors and make them usable in the `my_mlx_pixel_put()` function context
 
