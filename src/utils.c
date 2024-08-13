@@ -24,7 +24,7 @@ void	print_split(char **splited)
 	printf("\n");
 	i = 0;
 	while(splited[i])
-		printf("%s\n", splited[i++]);
+		printf("!%s!\n", splited[i++]);
 	i = -1;
 	while (++i <= len + 1)
 		printf("-");

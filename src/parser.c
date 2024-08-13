@@ -90,8 +90,10 @@ int	parse_colors(t_map *map_data, char *line)
 	char	**splited;
 	char	**validation_splited;
 
-	validation_splited = ft_split_charset(line, " ,");  //NOTE: just for validating the format
+	validation_splited = ft_split_charset(line, " ,\n");  //NOTE: just for validating the format
+	printf("HEELO\n");
 	print_split(validation_splited);
+	printf("HEELO\n");
 	if (split_len(validation_splited) != 4)
 	{
 		printf("[parse_colors -> parser.c] Error\n Bad Formmatting in colors\n");
