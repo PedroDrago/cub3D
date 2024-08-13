@@ -1,6 +1,6 @@
 #include "../../includes/cub3d.h"
 
-unsigned int rgb_to_hex(char *rgb, int *sig)
+int rgb_to_hex(char *rgb)
 {
 	unsigned int color;
 	char **splited;
@@ -8,10 +8,9 @@ unsigned int rgb_to_hex(char *rgb, int *sig)
 	color = 0;
 	splited = ft_split(rgb, ',');
 	if (!splited[0] || !splited[1] || !splited[2])
-	{ // WARN: if any of these indexes are NULL it means RGB lacks data (it should not happen, because it should be validated prior, in parser
+	{
 		free_split(splited);
-		*sig = -1;
-		return 0;
+		return -1;
 	}
 	color = (ft_atoi(splited[0]) << 16) | (ft_atoi(splited[1]) << 8) | ft_atoi(splited[2]);
 	free_split(splited);

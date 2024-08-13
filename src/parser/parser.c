@@ -24,14 +24,18 @@ void	get_map(t_game *game, char *file)
 	free_split(game->map.map_file_array);
 	game->map.map_file_array = NULL;
 	print_map_data(&game->map);
-	int sig = 1;
-	game->map.floor_color = rgb_to_hex(game->map.floor_rgb, &sig);
-	if (sig < 0)
+	game->map.floor_color = rgb_to_hex(game->map.floor_rgb);
+	if (game->map.floor_rgb < 0)
 	{
 		free_map(&game->map);
 		printf("Error at color formatting\n");
 	}
-	game->map.ceiling_color = rgb_to_hex(game->map.ceiling_rgb, &sig);
+	game->map.ceiling_color = rgb_to_hex(game->map.ceiling_rgb);
+	if (game->map.ceiling_rgb < 0)
+	{
+		free_map(&game->map);
+		printf("Error at color formatting\n");
+	}
 	free(game->map.floor_rgb);
 	free(game->map.ceiling_rgb);
 	if (!files_exist(&game->map))

@@ -48,7 +48,7 @@ char	**ft_split_charset(char const *s, const char *charset);
 int	check_extension(char *file);
 int read_map_file(t_map *map_data, char *file_path);
 int files_exist(t_map *map);
-unsigned int rgb_to_hex(char *rgb, int *sig);
+int rgb_to_hex(char *rgb);
 int parse_data(t_map *map_data, char *line);
 int is_empty_line(char *line);
 char *remove_linebreak(char *line);
