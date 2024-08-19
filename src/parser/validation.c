@@ -91,5 +91,6 @@ int	validate_map(char **map, int height, int width)
 		free_split(copy_map);
 		return (0);
 	}
+	free_split(copy_map);
 	return (1);
 }

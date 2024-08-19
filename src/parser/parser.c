@@ -49,5 +49,5 @@ void	get_map(t_game *game, char *file)
 		exit(1);
 	}
 	game->map.mini_map = duplicate_map(game->map.map, game->map.height);
-	print_split(game->map.mini_map);
+	// print_split(game->map.mini_map);
 }

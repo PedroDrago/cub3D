@@ -81,6 +81,7 @@ typedef struct s_game
 	t_map    map;
 	void    *mlx;
 	void    *win;
+	int	should_end;
 } t_game;
 
 #endif
