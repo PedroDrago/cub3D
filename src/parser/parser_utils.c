@@ -77,18 +77,6 @@ void	exit_printing(int status, char *msg)
 	exit(status);
 }
 
-void	free_map(t_map *map)
-{
-	free_split(map->map);
-	free_split(map->mini_map);
-	free_split(map->map_file_array);
-	free(map->north_path);
-	free(map->south_path);
-	free(map->west_path);
-	free(map->east_path);
-	free(map->ceiling_rgb);
-	free(map->floor_rgb);
-}
 
 void	destroy_map(t_map *map)
 {

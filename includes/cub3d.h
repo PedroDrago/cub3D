@@ -65,4 +65,6 @@ void destroy_all(t_game *game);
 int validate_map(char **map, int height, int width);
 char	*ft_strdup_margin(const char *s);
 
+void clean_exit(t_game *game);
+
 #endif

@@ -104,8 +104,8 @@ int key_hook_down(int key, t_game *game)
 {
 	if (key == ESC)
 	{
-		destroy_all(game);
-		exit(1);
+		game->should_end = 1;
+		return 0;
 	}
 	if (key == W)
 		game->keys[I_W] =  1;
@@ -125,7 +125,7 @@ int key_hook_down(int key, t_game *game)
 int key_hook_up(int key, t_game *game)
 {
 	if (key == ESC)
-		exit(1);
+		return 1;
 	if (key == W)
 		game->keys[I_W] =  0;
 	if (key == A)
@@ -187,6 +187,12 @@ int game_loop(t_game *game)
 	t_line line;
 	t_data sprite;
 
+	if (game->should_end)
+	{
+		mlx_loop_end(game->mlx);
+		clean_exit(game);
+		return 1;
+	}
 	x = 0;
 	update_camera(game);
 	frame.img = mlx_new_image(game->mlx, S_WIDTH, S_HEIGHT);
@@ -214,6 +220,7 @@ int main(int argc, char *argv[])
 	// int wd;
 	// int hg;
 	// mlx_get_screen_size(game->mlx, &wd, &hg); // make some math with this to have dinamic sized window based on the monitor, and also define RATE based on the screen resolution
+	game.should_end = 0;
 
 	if (argc < 2)
 	{
