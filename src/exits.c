@@ -29,8 +29,9 @@ void mlx_clean(t_game *game)
 	free(game->mlx);
 }
 
-void clean_exit(t_game *game)
+int	clean_exit(t_game *game)
 {
 	mlx_clean(game);
 	free_map(&game->map);
+	exit(1);
 }

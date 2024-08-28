@@ -192,7 +192,6 @@ int game_loop(t_game *game)
 	{
 		mlx_loop_end(game->mlx);
 		clean_exit(game);
-		exit(1);
 	}
 	x = 0;
 	update_camera(game);
@@ -246,6 +245,7 @@ int main(int argc, char *argv[])
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_hook(game.win, KeyPress, KeyPressMask, &key_hook_down, &game);
 	mlx_hook(game.win, KeyRelease, KeyReleaseMask, &key_hook_up, &game);
+	mlx_hook(game.win, DestroyNotify, StructureNotifyMask, clean_exit, &game);
 	mlx_loop(game.mlx);
 	return (0);
 }
