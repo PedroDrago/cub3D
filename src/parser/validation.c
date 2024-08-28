@@ -80,11 +80,11 @@ int	validate_map(char **map, int height, int width)
 		printf("[%s:%i] Error\nInvalid Characters\n", __FILE__, __LINE__);
 		return (0);
 	}
-	copy_map = duplicate_map_bordered(map, height, width);
+	copy_map = duplicate_map_bordered(map, height, width); // WARN: copy map doesn't have a terminating NULL pointer, walk it with height and width
 	if (!copy_map)
 		return (0);
-	get_initial_pos_i(copy_map, &pos, height + 2, width + 2); //+2 because of the two extra 0 layers
-	ft_floodfill(copy_map, 0, 0, height + 2, width + 2);
+	get_initial_pos_i(copy_map, &pos, height + 2, width + 1); // NOTE: +2 because of the two extra 0 layers | +2 in width was giving mem error, i have no idea why, +1 works ok
+	ft_floodfill(copy_map, 0, 0, height + 2, width + 1);
 	if ((copy_map[(int)pos.x][(int)pos.y + 1] == '2') || (copy_map[(int)pos.x][(int)pos.y - 1] == '2') || (copy_map[(int)pos.x + 1][(int)pos.y] == '2') || (copy_map[(int)pos.x - 1][(int)pos.y] == '2'))
 	{
 		printf("[%s:%i] Error\nMap must be Surroundede\n", __FILE__, __LINE__);
