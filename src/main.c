@@ -7,6 +7,7 @@ int get_initial_pos_i(char **map, t_vector_i *pos, int height, int width)
 	int y;
 
 	x = 0;
+	printf("h: %i | w: %i\n", height, width);
 	while (x < height)
 	{
 		y = 0;
