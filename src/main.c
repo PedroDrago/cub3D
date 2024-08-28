@@ -22,7 +22,7 @@ int get_initial_pos_i(char **map, t_vector_i *pos, int height, int width)
 		}
 		x++;
 	}
-	printf("Exiting at get_initial_pos\n");
+	printf("Exiting at get_initial_pos_i\n");
 	exit(1); //n achou deu merda, eh pra ter validado essa porra antes de chegar aqui (no momento ainda n esta validando).
 	return 0;
 }
