@@ -42,6 +42,8 @@ void	get_map(t_game *game, char *file)
 	game->map.ceiling_color = hold;
 	free(game->map.floor_rgb);
 	free(game->map.ceiling_rgb);
+	game->map.floor_rgb = NULL;
+	game->map.ceiling_rgb = NULL;
 	if (!files_exist(&game->map))
 	{
 		free_map(&game->map);

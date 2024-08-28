@@ -17,8 +17,8 @@ void	free_map(t_map *map)
 	free(map->south_path);
 	free(map->west_path);
 	free(map->east_path);
-	// free(map->ceiling_rgb); NOTE: This was not suposed to be a double free, but it is. I believe some structure have another pointer to this memory and some `free_split()` call frees this string, but IDK.
-	// free(map->floor_rgb);
+	free(map->ceiling_rgb); // NOTE: This was not suposed to be a double free, but it is. I believe some structure have another pointer to this memory and some `free_split()` call frees this string, but IDK.
+	free(map->floor_rgb);
 }
 
 void mlx_clean(t_game *game)
