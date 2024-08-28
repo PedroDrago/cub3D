@@ -83,7 +83,7 @@ int	validate_map(char **map, int height, int width)
 	copy_map = duplicate_map_bordered(map, height, width);
 	if (!copy_map)
 		return (0);
-	get_initial_pos_i(copy_map, &pos);
+	get_initial_pos_i(copy_map, &pos, height, width);
 	ft_floodfill(copy_map, 0, 0, height, width);
 	if ((copy_map[(int)pos.x][(int)pos.y + 1] == '2') || (copy_map[(int)pos.x][(int)pos.y - 1] == '2') || (copy_map[(int)pos.x + 1][(int)pos.y] == '2') || (copy_map[(int)pos.x - 1][(int)pos.y] == '2'))
 	{

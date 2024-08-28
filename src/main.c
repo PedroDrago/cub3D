@@ -1,16 +1,16 @@
 #include "../includes/cub3d.h"
 #include <stdio.h>
 
-int get_initial_pos_i(char **map, t_vector_i *pos)
+int get_initial_pos_i(char **map, t_vector_i *pos, int height, int width)
 {
 	int	x;
 	int y;
 
 	x = 0;
-	while (map[x])
+	while (x < height)
 	{
 		y = 0;
-		while(map[x][y])
+		while(y < width)
 		{
 			if (map[x][y] == 'N' || map[x][y] == 'S' || map[x][y] == 'E' || map[x][y] == 'W')
 			{
@@ -191,7 +191,7 @@ int game_loop(t_game *game)
 	{
 		mlx_loop_end(game->mlx);
 		clean_exit(game);
-		return 1;
+		exit(1);
 	}
 	x = 0;
 	update_camera(game);
@@ -213,6 +213,14 @@ int game_loop(t_game *game)
 	return 0;
 }
 
+void	zero_keys_array(t_game *game)
+{
+	int	i;
+
+	i = -1;
+	while(++i < 20) //20 because game->keys[] array size is 20
+		game->keys[i] = 0;
+}
 
 int main(int argc, char *argv[])
 {
@@ -227,6 +235,7 @@ int main(int argc, char *argv[])
 		printf("A path to the map file must be passed as argument\n");
 		exit(1);
 	}
+	zero_keys_array(&game);
 	ft_bzero(game.keys, 20);
 	get_map(&game, argv[1]);
 	game.mlx = mlx_init();

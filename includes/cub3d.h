@@ -43,7 +43,7 @@ void free_split(char **splited);
 void	draw_map(t_game *game, t_data *tile);
 
 int get_initial_pos(char **map, t_vector_d *pos);
-int get_initial_pos_i(char **map, t_vector_i *pos);
+int get_initial_pos_i(char **map, t_vector_i *pos, int height, int width);
 char	**ft_split_charset(char const *s, const char *charset);
 int	check_extension(char *file);
 int read_map_file(t_map *map_data, char *file_path);
