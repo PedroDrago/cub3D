@@ -1,16 +1,17 @@
 #include "../includes/cub3d.h"
 #include <stdio.h>
 
-int get_initial_pos_i(char **map, t_vector_i *pos)
+int get_initial_pos_i(char **map, t_vector_i *pos, int height, int width)
 {
 	int	x;
 	int y;
 
 	x = 0;
-	while (map[x])
+	printf("h: %i | w: %i\n", height, width);
+	while (x < height)
 	{
 		y = 0;
-		while(map[x][y])
+		while(y < width)
 		{
 			if (map[x][y] == 'N' || map[x][y] == 'S' || map[x][y] == 'E' || map[x][y] == 'W')
 			{
@@ -22,7 +23,7 @@ int get_initial_pos_i(char **map, t_vector_i *pos)
 		}
 		x++;
 	}
-	printf("Exiting at get_initial_pos\n");
+	printf("Exiting at get_initial_pos_i\n");
 	exit(1); //n achou deu merda, eh pra ter validado essa porra antes de chegar aqui (no momento ainda n esta validando).
 	return 0;
 }
@@ -53,48 +54,77 @@ int get_initial_pos(char **map, t_vector_d *pos)
 	return 0;
 }
 
+void set_camera_dir(t_camera *camera, char **map)
+{
+	if (map[(int)camera->pos.x][(int)camera->pos.y] == 'S')
+	{
+		// NOTE: So that we can spawn the camera to the right direction (N, S, E, W) we need to alter camera.dir and camera.plane, just like in the rotation functions, 
+		// but to a fixed value that would represent a 90 angle? idk, something like that, but I know that this current value makes tha camera looks to NORTH, 
+		// so if we invert all the values to:
+		// dir.x = 1
+		// dir.y = 0
+		// plane.x = 0
+		// plane.y = -0.66
+		// We should get a SOUTH directed camera. But for west and east I have no idea, i guess GPT could help with that.
+		camera->dir.x = -1;
+		camera->dir.y = 0;
+		camera->plane.x = 0; 
+		// NOTE: the camera plane representes the vector of where the camera exists. This is necessary because when drawing the ray, if the trace it directly 
+		// to the player exatc point (pos.x, pos.y) all the rays will appear rounded, with the fish eye effect. This happens because when each point is traced directly to the player, 
+		// each of them will have a calculated distance different from each other becuase of the player distance horizontal ditance to them, so the distance will 
+		// increase respecting the horizontal position as well, and this cause each ray to have a different height not based on vertical distance but based on horizontal 
+		// distance, and that causes the rounded effect.
+		//NOTE:
+		//--.---.---.---
+		//  \   |   /
+		//   \  |  /
+		//    \ | /
+		//     \|/
+		//      P
+		// In the above example we can visualize it. Both 3 points should appear the same height, because the are at the same vertical distance from the player, 
+		// but because we trace them directly to the player x,y they will have different distances to it (straight line always the shortest path etc), so they'll 
+		// be drawd with different heights.
+		//--.---.---.---
+		//  |   |   |
+		//  |   |   |
+		//  |   |   |
+		//  |   |   |
+		//------P------- -> Camera Plane
+		// Here we trace them to the camera Plane instead of the Player, so we can see that both 3 points have the same distance from this plain, so will have the same height when drawed
+		// This type of technique is not a fisheye correction, the fisheye is simply avoided by this way of calculating. It makes the calculations easier also, since whe don't 
+		//even need to know the exact location where the wall was hit.
+		camera->plane.y = 0.66;
+	}
+	else if (map[(int)camera->pos.x][(int)camera->pos.y] == 'N')
+	{
+		camera->dir.x = 1;
+		camera->dir.y = 0;
+		camera->plane.x = 0;
+		camera->plane.y = -0.66;
+	}
+	else if (map[(int)camera->pos.x][(int)camera->pos.y] == 'E')
+	{
+		camera->dir.x = 0;
+		camera->dir.y = -1;
+		camera->plane.x = -0.66;
+		camera->plane.y = 0;
+	}
+	else if (map[(int)camera->pos.x][(int)camera->pos.y] == 'W')
+	{
+		camera->dir.x = 0;
+		camera->dir.y = 1;
+		camera->plane.x = 0.66;
+		camera->plane.y = 0;
+	}
+}
+
 void init_camera(t_camera *camera, t_game *game)
 {
 	//9/4
 	camera->mov_speed = 0.5;
 	camera->rot_speed = 0.2;
 	get_initial_pos(game->map.map, &camera->pos);
-	// NOTE: So that we can spawn the camera to the right direction (N, S, E, W) we need to alter camera.dir and camera.plane, just like in the rotation functions, 
-	// but to a fixed value that would represent a 90 angle? idk, something like that, but I know that this current value makes tha camera looks to NORTH, 
-	// so if we invert all the values to:
-	// dir.x = 1
-	// dir.y = 0
-	// plane.x = 0
-	// plane.y = -0.66
-	// We should get a SOUTH directed camera. But for west and east I have no idea, i guess GPT could help with that.
-	camera->dir.x = -1;
-	camera->dir.y = 0;
-	camera->plane.x = 0; 
-	// NOTE: the camera plane representes the vector of where the camera exists. This is necessary because when drawing the ray, if the trace it directly 
-	// to the player exatc point (pos.x, pos.y) all the rays will appear rounded, with the fish eye effect. This happens because when each point is traced directly to the player, 
-	// each of them will have a calculated distance different from each other becuase of the player distance horizontal ditance to them, so the distance will 
-	// increase respecting the horizontal position as well, and this cause each ray to have a different height not based on vertical distance but based on horizontal 
-	// distance, and that causes the rounded effect.
-	//NOTE:
-	//--.---.---.---
-	//  \   |   /
-	//   \  |  /
-	//    \ | /
-	//     \|/
-	//      P
-	// In the above example we can visualize it. Both 3 points should appear the same height, because the are at the same vertical distance from the player, 
-	// but because we trace them directly to the player x,y they will have different distances to it (straight line always the shortest path etc), so they'll 
-	// be drawd with different heights.
-	//--.---.---.---
-	//  |   |   |
-	//  |   |   |
-	//  |   |   |
-	//  |   |   |
-	//------P------- -> Camera Plane
-	// Here we trace them to the camera Plane instead of the Player, so we can see that both 3 points have the same distance from this plain, so will have the same height when drawed
-	// This type of technique is not a fisheye correction, the fisheye is simply avoided by this way of calculating. It makes the calculations easier also, since whe don't 
-	//even need to know the exact location where the wall was hit.
-	camera->plane.y = 0.66;
+	set_camera_dir(camera, game->map.map);
 	// This is for making easier to update the minimap player position and keep the player movements validations short
 	game->map.map[(int)camera->pos.x][(int)camera->pos.y] = 'P';
 	game->map.mini_map[(int)camera->pos.x][(int)camera->pos.y] = 'P';
@@ -149,13 +179,13 @@ void	update_camera(t_game *game)
 	{
 		movement_limiter = 0;
 		if (game->keys[I_W])
-			walk_forward(&game->camera, game->map.map);
+			walk_forward(&game->camera, game->map.map, game->map.mini_map);
 		if (game->keys[I_A])
-			walk_left(&game->camera, game->map.map);
+			walk_left(&game->camera, game->map.map, game->map.mini_map);
 		if (game->keys[I_S])
-			walk_backwards(&game->camera, game->map.map);
+			walk_backwards(&game->camera, game->map.map, game->map.mini_map);
 		if (game->keys[I_D])
-			walk_right(&game->camera, game->map.map);
+			walk_right(&game->camera, game->map.map, game->map.mini_map);
 		if (game->keys[I_LEFT])
 			rotate_left(&game->camera);
 		if (game->keys[I_RIGHT])
@@ -191,7 +221,6 @@ int game_loop(t_game *game)
 	{
 		mlx_loop_end(game->mlx);
 		clean_exit(game);
-		return 1;
 	}
 	x = 0;
 	update_camera(game);
@@ -213,6 +242,14 @@ int game_loop(t_game *game)
 	return 0;
 }
 
+void	zero_keys_array(t_game *game)
+{
+	int	i;
+
+	i = -1;
+	while(++i < 20) //20 because game->keys[] array size is 20
+		game->keys[i] = 0;
+}
 
 int main(int argc, char *argv[])
 {
@@ -227,6 +264,7 @@ int main(int argc, char *argv[])
 		printf("A path to the map file must be passed as argument\n");
 		exit(1);
 	}
+	zero_keys_array(&game);
 	ft_bzero(game.keys, 20);
 	get_map(&game, argv[1]);
 	game.mlx = mlx_init();
@@ -236,6 +274,7 @@ int main(int argc, char *argv[])
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_hook(game.win, KeyPress, KeyPressMask, &key_hook_down, &game);
 	mlx_hook(game.win, KeyRelease, KeyReleaseMask, &key_hook_up, &game);
+	mlx_hook(game.win, DestroyNotify, StructureNotifyMask, clean_exit, &game);
 	mlx_loop(game.mlx);
 	return (0);
 }
