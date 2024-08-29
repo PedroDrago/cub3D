@@ -102,8 +102,20 @@ void set_camera_dir(t_camera *camera, char **map)
 		camera->plane.x = 0;
 		camera->plane.y = -0.66;
 	}
-	// else if (map[(int)camera->pos.x][(int)camera->pos.y] == 'W')
-	// else if (map[(int)camera->pos.x][(int)camera->pos.y] == 'E')
+	else if (map[(int)camera->pos.x][(int)camera->pos.y] == 'E')
+	{
+		camera->dir.x = 0;
+		camera->dir.y = -1;
+		camera->plane.x = -0.66;
+		camera->plane.y = 0;
+	}
+	else if (map[(int)camera->pos.x][(int)camera->pos.y] == 'W')
+	{
+		camera->dir.x = 0;
+		camera->dir.y = 1;
+		camera->plane.x = 0.66;
+		camera->plane.y = 0;
+	}
 }
 
 void init_camera(t_camera *camera, t_game *game)
