@@ -93,31 +93,19 @@ void walk_forward(t_camera *camera, char **map, char **minimap)
 
     // Check for collision with walls in x-direction
     if (!is_empty_tile(map[(int)(fut_pos.x + 0.2)][curr_y]))
-	{
 		fut_pos.x = camera->pos.x;
-	}
 	if (camera->dir.x > 0.2 && is_empty_tile(map[(int)(fut_pos.x + 0.2)][curr_y]))
-	{
         camera->pos.x = fut_pos.x;
-    }
 	else if (camera->dir.x < 0.2 && is_empty_tile(map[(int)(fut_pos.x - 0.2)][curr_y]))
-	{
         camera->pos.x = fut_pos.x;
-    }
 
     // Check for collision with walls in y-direction
 	if (!is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.2)]))
-	{
 		fut_pos.y = camera->pos.y;
-	}
 	if (camera->dir.y > 0.2 && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.2)] ))
-	{
         camera->pos.y = fut_pos.y;
-    }
 	else if (camera->dir.y < 0.2 && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.2)] ))
-	{
         camera->pos.y = fut_pos.y;
-    }
 	update_map(minimap, fut_pos, curr_x, curr_y);
 }
 
@@ -138,23 +126,15 @@ void walk_backwards(t_camera *camera, char **map, char **minimap)
 		return ;
     // Check for collision with walls in x-direction
     if (camera->dir.x > 0.2 && is_empty_tile(map[(int)(fut_pos.x - 0.2)][curr_y]) && is_empty_tile(map[(int)(fut_pos.x + 0.2)][curr_y]))
-	{
         camera->pos.x = fut_pos.x;
-    }
 	else if (camera->dir.x < 0.2 && is_empty_tile(map[(int)(fut_pos.x + 0.2)][curr_y]) && is_empty_tile(map[(int)(fut_pos.x - 0.2)][curr_y]))
-	{
         camera->pos.x = fut_pos.x;
-    }
 
     // Check for collision with walls in y-direction
     if (camera->dir.y > 0.2 && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.2)]) && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.2)]))
-	{
         camera->pos.y = fut_pos.y;
-    }
 	else if (camera->dir.y < 0.2 && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.2)]) && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.2)]) )
-	{
         camera->pos.y = fut_pos.y;
-    }
 	update_map(minimap, fut_pos, curr_x, curr_y);
 }
 
@@ -175,23 +155,15 @@ void walk_left(t_camera *camera, char **map, char **minimap)
 		return ;
     // Check for collision with walls in x-direction
     if (camera->dir.x > 0.2 && is_empty_tile(map[(int)(fut_pos.x - 0.2)][curr_y])  && is_empty_tile(map[(int)(fut_pos.x + 0.2)][curr_y]))
-	{
         camera->pos.x = fut_pos.x;
-    }
 	else if (camera->dir.x < 0.2 && is_empty_tile(map[(int)(fut_pos.x + 0.2)][curr_y]) && is_empty_tile(map[(int)(fut_pos.x - 0.2)][curr_y]))
-	{
         camera->pos.x = fut_pos.x;
-    }
 
     // Check for collision with walls in y-direction
     if (camera->dir.y > 0.2 && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.2)]) && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.2)]))
-	{
         camera->pos.y = fut_pos.y;
-    }
 	else if (camera->dir.y < 0.2 && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.2)]) && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.2)]))
-	{
         camera->pos.y = fut_pos.y;
-    }
 	update_map(minimap, fut_pos, curr_x, curr_y);
 }
 
@@ -212,22 +184,14 @@ void walk_right(t_camera *camera, char **map, char **minimap)
 		return ;
     // Check for collision with walls in x-direction
     if (camera->dir.x > 0.2 && is_empty_tile(map[(int)(fut_pos.x + 0.2)][curr_y]) && is_empty_tile(map[(int)(fut_pos.x - 0.2)][curr_y]))
-	{
         camera->pos.x = fut_pos.x;
-    }
 	else if (camera->dir.x < 0.2 && is_empty_tile(map[(int)(fut_pos.x - 0.2)][curr_y]) && is_empty_tile(map[(int)(fut_pos.x + 0.2)][curr_y]))
-	{
         camera->pos.x = fut_pos.x;
-    }
 
     // Check for collision with walls in y-direction
     if (camera->dir.y > 0.2 && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.2)]) && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.2)]))
-	{
         camera->pos.y = fut_pos.y;
-    }
 	else if (camera->dir.y < 0.2 && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.2)]) && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.2)]) )
-	{
         camera->pos.y = fut_pos.y;
-    }
 	update_map(minimap, fut_pos, curr_x, curr_y);
 }
