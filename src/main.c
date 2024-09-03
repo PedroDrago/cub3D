@@ -194,19 +194,16 @@ void	update_camera(t_game *game)
 }
 
 
-t_data get_sprite(t_line line, t_game *game)
+void	get_sprite(t_line *line, t_game *game)
 {
-	t_data tex;
-
-	if (line.color == NORTH)
-		tex = game->textures[0];
-	else if (line.color == SOUTH)
-		tex = game->textures[1];
-	else if (line.color == WEST)
-		tex = game->textures[2];
+	if (line->color == NORTH)
+		line->texture = &game->textures[0];
+	else if (line->color == SOUTH)
+		line->texture = &game->textures[1];
+	else if (line->color == WEST)
+		line->texture = &game->textures[2];
 	else
-		tex = game->textures[3];
-	return (tex);
+		line->texture = &game->textures[3];
 }
 
 int game_loop(t_game *game)
@@ -215,7 +212,6 @@ int game_loop(t_game *game)
 	t_ray ray;
 	t_data frame;
 	t_line line;
-	t_data sprite;
 
 	if (game->should_end)
 	{
@@ -232,8 +228,9 @@ int game_loop(t_game *game)
 		setup_raycasting(game, &ray, x);
 		digital_diferencial_analysis(game, &ray, &line);
 		calculate_line(&ray, &line);
-		sprite = get_sprite(line, game);
-		draw_line(&frame, x, line, &ray, game, &sprite);
+		get_sprite(&line, game);
+		ray.x = x;
+		draw_line(&frame, line, &ray, game);
 		x++;
 	}
 	draw_map(game, &frame);

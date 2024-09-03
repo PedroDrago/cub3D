@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exits.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdrago <pdrago@student.42.rio>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/03 19:04:37 by pdrago            #+#    #+#             */
+/*   Updated: 2024/09/03 19:04:41 by pdrago           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/cub3d.h"
 
-void clear_textures(t_game *game)
+void	clear_textures(t_game *game)
 {
 	mlx_destroy_image(game->mlx, game->textures[NORTH].img);
 	mlx_destroy_image(game->mlx, game->textures[SOUTH].img);
@@ -21,7 +33,7 @@ void	free_map(t_map *map)
 	free(map->floor_rgb);
 }
 
-void mlx_clean(t_game *game)
+void	mlx_clean(t_game *game)
 {
 	mlx_destroy_window(game->mlx, game->win);
 	clear_textures(game);

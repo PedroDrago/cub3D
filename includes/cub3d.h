@@ -27,7 +27,7 @@ void calculate_line(t_ray *ray, t_line *line);
 void digital_diferencial_analysis(t_game *game, t_ray *ray, t_line *line); // this is de DDA algorithm, responsible to get the position where the ray will hit a wall
 void dda_setup(t_game *game, t_ray *ray); // this setup data for the DDA algorithm
 void setup_raycasting(t_game *game, t_ray *ray, int x); // this initialize some data about this current ray we'll trace
-void	draw_line(t_data *img, int x, t_line line, t_ray *ray, t_game *game, t_data *texture);
+void	draw_line(t_data *img, t_line line, t_ray *ray, t_game *game);
 void print_split(char **splited);
 void my_mlx_pixel_put(t_data *img, int x, int y, unsigned int color);
 void	draw_background(t_data *frame, unsigned int ceil_rgb, unsigned int floor_rgb);
@@ -65,6 +65,8 @@ void destroy_all(t_game *game);
 int validate_map(char **map, int height, int width);
 char	*ft_strdup_margin(const char *s);
 
+int	is_empty_tile(char c);
+int	get_diagonal_dir(t_vector_d pos, t_vector_d fut_pos);
 int	clean_exit(t_game *game);
 
 #endif

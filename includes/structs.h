@@ -29,7 +29,19 @@ typedef struct s_line
 	int          start;
 	int          end;
 	unsigned int color;
+	t_data *texture;
 } t_line;
+
+
+typedef struct s_line_data
+{
+	int		y;
+	int		tex_y;
+	int		tex_x;
+	int		color;
+	int		d;
+	double	wall_x;
+}t_line_data;
 
 typedef struct s_ray
 {
@@ -42,6 +54,7 @@ typedef struct s_ray
 	t_vector_i step;
 	int        hit;
 	int        side;
+	int        x;
 } t_ray;
 
 typedef struct s_map
