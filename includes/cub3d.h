@@ -206,7 +206,7 @@ void				init_map(t_map *map);
 int					is_invalid_char(char c);
 int					is_player_char(char c);
 char				**duplicate_map(char **map, int height);
-void	error_exit(int status, char *msg);
+void				error_exit(int status, char *msg);
 void				free_map(t_map *map);
 void				destroy_map(t_map *map);
 void				fill_spaces_with_zero(char **map, int height, int width);
