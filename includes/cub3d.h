@@ -21,10 +21,10 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-# define NORTH 0
-# define SOUTH 1
-# define WEST 2
-# define EAST 3
+# define SOUTH 0
+# define NORTH 1
+# define EAST 2
+# define WEST 3
 # define S_WIDTH 1280
 # define S_HEIGHT 720
 # define RGB_RED 0xFF0000
