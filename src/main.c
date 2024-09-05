@@ -11,18 +11,13 @@
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-#include <stdio.h>
 
 int	main(int argc, char *argv[])
 {
 	t_game	game;
 
+	(void) argc;
 	game.should_end = 0;
-	if (argc < 2)
-	{
-		printf("A path to the map file must be passed as argument\n");
-		exit(1);
-	}
 	zero_keys_array(&game);
 	ft_bzero(game.keys, 20);
 	get_map(&game, argv[1]);

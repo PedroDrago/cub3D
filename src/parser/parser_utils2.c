@@ -45,9 +45,9 @@ char	**duplicate_map(char **map, int height)
 	return (copy_map);
 }
 
-void	exit_printing(int status, char *msg)
+void	error_exit(int status, char *msg)
 {
-	printf("%s\n", msg);
+	ft_putstr_fd(msg, 2);
 	exit(status);
 }
 

@@ -18,7 +18,6 @@ int	get_initial_pos_i(char **map, t_vector_i *pos, int height, int width)
 	int	y;
 
 	x = 0;
-	printf("h: %i | w: %i\n", height, width);
 	while (x < height)
 	{
 		y = 0;
@@ -35,7 +34,6 @@ int	get_initial_pos_i(char **map, t_vector_i *pos, int height, int width)
 		}
 		x++;
 	}
-	printf("Exiting at get_initial_pos_i\n");
 	exit(1);
 	return (0);
 }
@@ -62,7 +60,6 @@ int	get_initial_pos(char **map, t_vector_d *pos)
 		}
 		x++;
 	}
-	printf("Exiting at get_initial_pos\n");
 	exit(1);
 	return (0);
 }
