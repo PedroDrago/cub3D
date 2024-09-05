@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   read.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdrago <pdrago@student.42.rio>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/04 20:41:47 by pdrago            #+#    #+#             */
+/*   Updated: 2024/09/04 20:46:51 by pdrago           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/cub3d.h"
 
 void	fill_spaces_with_zero(char **map, int height, int width)
@@ -39,6 +51,27 @@ char	*get_spaced_line(char *line, int len)
 	return (spaced_line);
 }
 
+void	adjust_map_array(t_map *map_data, int i, int len, int start)
+{
+	while (i < map_data->height)
+	{
+		len = ft_strlen(map_data->map_file_array[start]);
+		if (len < map_data->width)
+		{
+			map_data->map_file_array[start]
+				= remove_linebreak(map_data->map_file_array[start]);
+			map_data->map[i] = get_spaced_line(map_data->map_file_array[start],
+					map_data->width);
+		}
+		else
+			map_data->map[i]
+				= remove_linebreak(ft_strdup(map_data->map_file_array[start]));
+		i++;
+		start++;
+	}
+	map_data->map[i] = NULL;
+}
+
 int	get_map_array(t_map *map_data, int start)
 {
 	int	tmp;
@@ -58,27 +91,11 @@ int	get_map_array(t_map *map_data, int start)
 		tmp++;
 	}
 	if (map_data->height < 3 || map_data->width < 4)
-	{
-		printf("[%s: %i] Error\nMap too small\n", __FILE__, __LINE__);
 		return (0);
-	}
 	map_data->map = malloc(sizeof(char *) * (map_data->height + 1));
 	if (!map_data->map)
 		return (0);
-	while (i < map_data->height)
-	{
-		len = ft_strlen(map_data->map_file_array[start]);
-		if (len < map_data->width)
-		{
-			map_data->map_file_array[start] = remove_linebreak(map_data->map_file_array[start]);
-			map_data->map[i] = get_spaced_line(map_data->map_file_array[start], map_data->width);
-		}
-		else
-			map_data->map[i] = remove_linebreak(ft_strdup(map_data->map_file_array[start]));
-		i++;
-		start++;
-	}
-	map_data->map[i] = NULL;
+	adjust_map_array(map_data, i, len, start);
 	return (1);
 }
 
@@ -99,38 +116,13 @@ int	parse_map(t_map *map_data)
 		}
 		i++;
 	}
-	if (map_data->north_path == NULL || map_data->south_path == NULL || map_data->west_path == NULL || map_data->east_path == NULL || map_data->floor_rgb == NULL || map_data->ceiling_rgb == NULL)
-	{
-		printf("[%s: %i] Error\nMissing some information in map file\n", __FILE__, __LINE__);
+	if (map_data->north_path == NULL || map_data->south_path == NULL
+		|| map_data->west_path == NULL || map_data->east_path == NULL
+		|| map_data->floor_rgb == NULL || map_data->ceiling_rgb == NULL)
 		return (0);
-	}
 	while (is_empty_line(map_data->map_file_array[i]))
 		i++;
 	if (!get_map_array(map_data, i))
 		return (0);
-	return (1);
-}
-
-int	get_map_proportions(t_map *map_data, char *file_path)
-{
-	int		fd;
-	int		len;
-	char	*line;
-
-	len = 0;
-	fd = open(file_path, O_RDONLY);
-	if (fd < 0)
-		return (0);
-	line = get_next_line(fd);
-	while (line)
-	{
-		map_data->file_height++;
-		len = ft_strlen(line);
-		if (len > map_data->file_width)
-			map_data->file_width = len;
-		free(line);
-		line = get_next_line(fd);
-	}
-	close(fd);
 	return (1);
 }

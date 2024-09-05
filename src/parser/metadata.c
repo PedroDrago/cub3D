@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   metadata.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdrago <pdrago@student.42.rio>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/04 20:37:32 by pdrago            #+#    #+#             */
+/*   Updated: 2024/09/04 20:37:33 by pdrago           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/cub3d.h"
 
 int	rgb_to_hex(char *rgb)
@@ -12,7 +24,8 @@ int	rgb_to_hex(char *rgb)
 		free_split(splited);
 		return (-1);
 	}
-	color = (ft_atoi(splited[0]) << 16) | (ft_atoi(splited[1]) << 8) | ft_atoi(splited[2]);
+	color = (ft_atoi(splited[0]) << 16)
+		| (ft_atoi(splited[1]) << 8) | ft_atoi(splited[2]);
 	free_split(splited);
 	return (color);
 }
@@ -24,7 +37,6 @@ int	parse_texture(t_map *map_data, char *line)
 	splited = ft_split(line, ' ');
 	if (split_len(splited) != 2)
 	{
-		printf("[%s: %i]Error\nBad Formatting in Texture\n", __FILE__, __LINE__);
 		free_split(splited);
 		return (0);
 	}
@@ -38,7 +50,6 @@ int	parse_texture(t_map *map_data, char *line)
 		map_data->east_path = remove_linebreak(splited[1]);
 	else
 	{
-		printf("[%s: %i]Error\nBad Formatting in Texture\n", __FILE__, __LINE__);
 		free_split(splited);
 		return (0);
 	}
@@ -47,7 +58,7 @@ int	parse_texture(t_map *map_data, char *line)
 	return (1);
 }
 
-int is_valid_rgb(char **rgb)
+int	is_valid_rgb(char **rgb)
 {
 	int	i;
 	int	j;
@@ -76,9 +87,9 @@ int	parse_colors(t_map *map_data, char *line)
 	char	**validation_splited;
 
 	validation_splited = ft_split_charset(line, " ,\n");
-	if (!validation_splited || split_len(validation_splited) != 4 || !is_valid_rgb(validation_splited))
+	if (!validation_splited || split_len(validation_splited) != 4
+		|| !is_valid_rgb(validation_splited))
 	{
-		printf("[%s: %i] Error\nBad Formmatting in colors\n", __FILE__, __LINE__);
 		free_split(validation_splited);
 		return (0);
 	}
@@ -90,7 +101,6 @@ int	parse_colors(t_map *map_data, char *line)
 		map_data->ceiling_rgb = remove_linebreak(splited[1]);
 	else
 	{
-		printf("[%s: %i] Error\nBad Formmatting in colors\n", __FILE__, __LINE__);
 		free_split(splited);
 		return (0);
 	}

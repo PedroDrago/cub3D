@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exits.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdrago <pdrago@student.42.rio>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/03 19:04:37 by pdrago            #+#    #+#             */
+/*   Updated: 2024/09/04 20:49:10 by pdrago           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/cub3d.h"
 
-void clear_textures(t_game *game)
+void	clear_textures(t_game *game)
 {
 	mlx_destroy_image(game->mlx, game->textures[NORTH].img);
 	mlx_destroy_image(game->mlx, game->textures[SOUTH].img);
@@ -17,11 +29,11 @@ void	free_map(t_map *map)
 	free(map->south_path);
 	free(map->west_path);
 	free(map->east_path);
-	free(map->ceiling_rgb); // NOTE: This was not suposed to be a double free, but it is. I believe some structure have another pointer to this memory and some `free_split()` call frees this string, but IDK.
+	free(map->ceiling_rgb);
 	free(map->floor_rgb);
 }
 
-void mlx_clean(t_game *game)
+void	mlx_clean(t_game *game)
 {
 	mlx_destroy_window(game->mlx, game->win);
 	clear_textures(game);

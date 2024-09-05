@@ -1,4 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validation.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdrago <pdrago@student.42.rio>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/04 20:32:57 by pdrago            #+#    #+#             */
+/*   Updated: 2024/09/04 20:36:18 by pdrago           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/cub3d.h"
+
+int	is_invalid_map_char(char c)
+{
+	return (c != 'N'
+		&& c != 'E'
+		&& c != 'W'
+		&& c != 'S'
+		&& c != '0'
+		&& c != '1');
+}
 
 int	validate_characters(char **map)
 {
@@ -13,7 +35,7 @@ int	validate_characters(char **map)
 		j = 0;
 		while (map[i][j])
 		{
-			if (map[i][j] != 'N' && map[i][j] != 'E' && map[i][j] != 'W' && map[i][j] != 'S' && map[i][j] != '0' && map[i][j] != '1')
+			if (is_invalid_map_char(map[i][j]))
 				return (0);
 			if (is_player_char(map[i][j]))
 				player++;
@@ -28,15 +50,17 @@ int	validate_characters(char **map)
 	return (1);
 }
 
-void	ft_floodfill(char **map, int i, int j, int height, int width)
+void	ft_floodfill(char **map, int i, int j, t_vector_i dimensions)
 {
-	if (i < 0 || i >= height || j < 0 || j >= width || map[i][j] != '0')
+	if (i < 0 || i >= dimensions.x
+		|| j < 0 || j >= dimensions.y
+		|| map[i][j] != '0')
 		return ;
 	map[i][j] = '2';
-	ft_floodfill(map, i + 1, j, height, width);
-	ft_floodfill(map, i - 1, j, height, width);
-	ft_floodfill(map, i, j + 1, height, width);
-	ft_floodfill(map, i, j - 1, height, width);
+	ft_floodfill(map, i + 1, j, dimensions);
+	ft_floodfill(map, i - 1, j, dimensions);
+	ft_floodfill(map, i, j + 1, dimensions);
+	ft_floodfill(map, i, j - 1, dimensions);
 }
 
 char	**duplicate_map_bordered(char **map, int height, int width)
@@ -72,22 +96,24 @@ int	validate_map(char **map, int height, int width)
 {
 	char		**copy_map;
 	t_vector_i	pos;
+	t_vector_i	dim;
 
 	pos.x = 0;
 	pos.y = 0;
 	if (!validate_characters(map))
-	{
-		printf("[%s:%i] Error\nInvalid Characters\n", __FILE__, __LINE__);
 		return (0);
-	}
-	copy_map = duplicate_map_bordered(map, height, width); // WARN: copy map doesn't have a terminating NULL pointer, walk it with height and width
+	copy_map = duplicate_map_bordered(map, height, width);
 	if (!copy_map)
 		return (0);
-	get_initial_pos_i(copy_map, &pos, height + 2, width + 1); // NOTE: +2 because of the two extra 0 layers | +2 in width was giving mem error, i have no idea why, +1 works ok
-	ft_floodfill(copy_map, 0, 0, height + 2, width + 1);
-	if ((copy_map[(int)pos.x][(int)pos.y + 1] == '2') || (copy_map[(int)pos.x][(int)pos.y - 1] == '2') || (copy_map[(int)pos.x + 1][(int)pos.y] == '2') || (copy_map[(int)pos.x - 1][(int)pos.y] == '2'))
+	get_initial_pos_i(copy_map, &pos, height + 2, width + 1);
+	dim.x = height + 2;
+	dim.y = width + 1;
+	ft_floodfill(copy_map, 0, 0, dim);
+	if ((copy_map[(int)pos.x][(int)pos.y + 1] == '2')
+			|| (copy_map[(int)pos.x][(int)pos.y - 1] == '2')
+			|| (copy_map[(int)pos.x + 1][(int)pos.y] == '2')
+			|| (copy_map[(int)pos.x - 1][(int)pos.y] == '2'))
 	{
-		printf("[%s:%i] Error\nMap must be Surroundede\n", __FILE__, __LINE__);
 		free_split(copy_map);
 		return (0);
 	}
