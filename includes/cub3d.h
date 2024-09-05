@@ -68,5 +68,14 @@ char	*ft_strdup_margin(const char *s);
 int	is_empty_tile(char c);
 int	get_diagonal_dir(t_vector_d pos, t_vector_d fut_pos);
 int	clean_exit(t_game *game);
+void	init_camera(t_camera *camera, t_game *game);
+int	key_hook_down(int key, t_game *game);
+int	key_hook_up(int key, t_game *game);
+void	zero_keys_array(t_game *game);
+void	set_south(t_camera *camera);
+void	set_north(t_camera *camera);
+void	set_east(t_camera *camera);
+void	set_west(t_camera *camera);
 
+int	game_loop(t_game *game);
 #endif

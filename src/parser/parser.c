@@ -1,9 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdrago <pdrago@student.42.rio>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/04 20:26:39 by pdrago            #+#    #+#             */
+/*   Updated: 2024/09/04 20:26:40 by pdrago           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/cub3d.h"
 
-void	get_map(t_game *game, char *file)
+void	part1(t_game *game, char *file)
 {
-	int	hold;
-
 	if (!check_extension(file))
 		exit_printing(1, "Error\nWrong extension\n");
 	init_map(&game->map);
@@ -25,6 +35,12 @@ void	get_map(t_game *game, char *file)
 	}
 	free_split(game->map.map_file_array);
 	game->map.map_file_array = NULL;
+}
+
+void	part2(t_game *game)
+{
+	int	hold;
+
 	game->map.floor_color = rgb_to_hex(game->map.floor_rgb);
 	hold = rgb_to_hex(game->map.floor_rgb);
 	if (hold < 0)
@@ -44,12 +60,22 @@ void	get_map(t_game *game, char *file)
 	free(game->map.ceiling_rgb);
 	game->map.floor_rgb = NULL;
 	game->map.ceiling_rgb = NULL;
+}
+
+void	part3(t_game *game)
+{
+	game->map.mini_map = duplicate_map(game->map.map, game->map.height);
 	if (!files_exist(&game->map))
 	{
 		free_map(&game->map);
 		printf("Error at files_exist\n");
 		exit(1);
 	}
-	game->map.mini_map = duplicate_map(game->map.map, game->map.height);
-	// print_split(game->map.mini_map);
+}
+
+void	get_map(t_game *game, char *file)
+{
+	part1(game, file);
+	part2(game);
+	part3(game);
 }

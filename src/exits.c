@@ -6,7 +6,7 @@
 /*   By: pdrago <pdrago@student.42.rio>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 19:04:37 by pdrago            #+#    #+#             */
-/*   Updated: 2024/09/03 19:04:41 by pdrago           ###   ########.fr       */
+/*   Updated: 2024/09/04 20:49:10 by pdrago           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	free_map(t_map *map)
 	free(map->south_path);
 	free(map->west_path);
 	free(map->east_path);
-	free(map->ceiling_rgb); // NOTE: This was not suposed to be a double free, but it is. I believe some structure have another pointer to this memory and some `free_split()` call frees this string, but IDK.
+	free(map->ceiling_rgb);
 	free(map->floor_rgb);
 }
 

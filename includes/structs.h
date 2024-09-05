@@ -1,6 +1,7 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
+
 typedef struct s_texture {
     void    *img;
     char    *addr;
@@ -22,6 +23,14 @@ typedef struct s_vector_i
 	int x;
 	int y;
 } t_vector_i;
+
+typedef struct s_minimap_data
+{
+	int	i;
+	int	j;
+	t_vector_i vec;
+	int	square_side;
+}t_minimap_data;
 
 typedef struct s_line
 {
