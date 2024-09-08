@@ -76,6 +76,8 @@ int	game_loop(t_game *game)
 
 	x = 0;
 	pre_loop(game, &frame);
+
+	mlx_mouse_move(game->mlx, game->win, S_WIDTH / 2, S_HEIGHT / 2);
 	while (x < S_WIDTH)
 	{
 		setup_raycasting(game, &ray, x);

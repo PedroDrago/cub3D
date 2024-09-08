@@ -487,6 +487,7 @@ int game_loop(t_game *game)
 	}
 	x = 0;
 	update_camera(game);
+	mlx_mouse_move(game->mlx, game->win, S_WIDTH / 2, S_HEIGHT / 2);
 	frame.img = mlx_new_image(game->mlx, S_WIDTH, S_HEIGHT);
 	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, &frame.line_length, &frame.endian);
 	draw_background(&frame, game->map.ceiling_color, game->map.floor_color);
