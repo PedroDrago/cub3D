@@ -161,7 +161,9 @@ void				print_map_data(t_map *map_data);
 void				init_textures(t_game *game);
 int					key_hook(int key, t_game *game);
 void				rotate_right(t_camera *camera);
+void				slowly_rotate_right(t_camera *camera);
 void				rotate_left(t_camera *camera);
+void				slowly_rotate_left(t_camera *camera);
 void				walk_forward(t_camera *camera, char **map, char **minimap);
 void				walk_backwards(t_camera *camera, char **map,
 						char **minimap);

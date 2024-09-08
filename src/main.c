@@ -14,17 +14,10 @@
 
 int mouse_hook(int x, int y, t_game *game)
 {
-	int	delta;
-
-	delta = x - S_WIDTH / 2;
-	game->camera.dir.x = game->camera.dir.x * cos(-delta * 0.001)
-		- game->camera.dir.y * sin(-delta * 0.001);
-	game->camera.dir.y = game->camera.dir.x * sin(-delta * 0.001)
-		+ game->camera.dir.y * cos(-delta * 0.001);
-	game->camera.plane.x = game->camera.plane.x * cos(-delta * 0.001)
-		- game->camera.plane.y * sin(-delta * 0.001);
-	game->camera.plane.y = game->camera.plane.x * sin(-delta * 0.001)
-		+ game->camera.plane.y * cos(-delta * 0.001);
+	if (x > S_WIDTH / 2)
+		slowly_rotate_right(&game->camera);
+	else if (x < S_WIDTH / 2)
+		slowly_rotate_left(&game->camera);
 	mlx_mouse_move(game->mlx, game->win, S_WIDTH / 2, S_HEIGHT / 2);
 	return (0);
 }
