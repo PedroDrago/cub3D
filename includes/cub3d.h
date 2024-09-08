@@ -186,6 +186,8 @@ void				dda_setup(t_game *game, t_ray *ray);
 void				setup_raycasting(t_game *game, t_ray *ray, int x);
 void				draw_line(t_data *img, t_line line, t_ray *ray,
 						t_game *game);
+void				put_transparency(t_data *frame, t_data *texture, int x, int y);
+void				draw_weapon(t_game *game, t_data *frame);
 void				print_split(char **splited);
 void				my_mlx_pixel_put(t_data *img, int x, int y,
 						unsigned int color);

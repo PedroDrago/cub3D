@@ -12,7 +12,7 @@
 
 #include "../includes/cub3d.h"
 
-int mouse_hook(int x, int y, t_game *game)
+int	mouse_hook(int x, int y, t_game *game)
 {
 	if (x > S_WIDTH / 2)
 		slowly_rotate_right(&game->camera);
@@ -22,7 +22,7 @@ int mouse_hook(int x, int y, t_game *game)
 	return (0);
 }
 
-int left_click(int button, int x, int y, t_game *game)
+int	left_click(int button, int x, int y, t_game *game)
 {
 	(void)x;
 	(void)y;
@@ -48,7 +48,6 @@ int	main(int argc, char *argv[])
 	mlx_mouse_move(game.mlx, game.win, S_WIDTH / 2, S_HEIGHT / 2);
 	mlx_mouse_hide(game.mlx, game.win);
 	mlx_loop_hook(game.mlx, game_loop, &game);
-	//hook mouse left click
 	mlx_hook(game.win, ButtonPress, ButtonPressMask, &left_click, &game);
 	mlx_hook(game.win, MotionNotify, PointerMotionMask, &mouse_hook, &game);
 	mlx_hook(game.win, KeyPress, KeyPressMask, &key_hook_down, &game);

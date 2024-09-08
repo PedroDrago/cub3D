@@ -64,3 +64,52 @@ void	draw_background(t_data *frame
 		x++;
 	}
 }
+
+void	put_transparency(t_data *frame, t_data *texture, int x, int y)
+{
+	unsigned int	color;
+	int				i;
+	int				j;
+
+	i = 0;
+	while (i < texture->width)
+	{
+		j = 0;
+		while (j < texture->height)
+		{
+			color = *(unsigned int *)(texture->addr
+					+ (j * texture->line_length + i
+						* (texture->bits_per_pixel / 8)));
+			if (color != 4278190080)
+				my_mlx_pixel_put(frame, x + i, y + j, color);
+			j++;
+		}
+		i++;
+	}
+}
+
+void	draw_weapon(t_game *game, t_data *frame)
+{
+	static int	weapon_frame = 0;
+	t_data		*weapon_frame_data;
+
+	weapon_frame_data = &game->weapon_sprites.frame1;
+	if (game->is_shooting)
+	{
+		weapon_frame++;
+		if (weapon_frame > 5 && weapon_frame < 10)
+			weapon_frame_data = &game->weapon_sprites.frame2;
+		else if (weapon_frame >= 10 && weapon_frame < 15)
+			weapon_frame_data = &game->weapon_sprites.frame3;
+		else if (weapon_frame >= 15)
+		{
+			if (weapon_frame == 25)
+			{
+				game->is_shooting = 0;
+				weapon_frame = 0;
+			}
+			weapon_frame_data = &game->weapon_sprites.frame4;
+		}
+	}
+	put_transparency(frame, weapon_frame_data, S_WIDTH / 1.8, S_HEIGHT / 1.5);
+}
