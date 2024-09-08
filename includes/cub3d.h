@@ -142,15 +142,25 @@ typedef struct s_camera
 	t_vector_d		plane;
 }					t_camera;
 
+typedef	struct s_sprite
+{
+	t_data			frame1;
+	t_data			frame2;
+	t_data			frame3;
+	t_data			frame4;
+}				t_sprite;
+
 typedef struct s_game
 {
 	int				keys[20];
 	t_data			textures[4];
+	t_sprite		weapon_sprites;
 	int				texture_index;
 	t_camera		camera;
 	t_map			map;
 	void			*mlx;
 	void			*win;
+	int				is_shooting;
 	int				should_end;
 }					t_game;
 
