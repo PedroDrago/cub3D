@@ -1,4 +1,5 @@
 NAME = cub3D
+BONUS_NAME = cub3D_BONUS
 
 SRC = cub3d/src/main.c cub3d/src/walk.c cub3d/src/turn.c cub3d/src/movement_utils.c cub3d/src/raycasting.c cub3d/src/render.c cub3d/src/utils.c cub3d/src/textures.c cub3d/src/parser/ft_split_charset.c cub3d/src/parser/file.c cub3d/src/parser/metadata.c cub3d/src/parser/parser.c cub3d/src/parser/read.c cub3d/src/parser/parser_utils.c cub3d/src/parser/validation.c cub3d/src/exits.c cub3d/src/print_utils.c cub3d/src/dda.c cub3d/src/parser/parser_utils2.c cub3d/src/parser/read2.c cub3d/src/camera.c cub3d/src/game_loop.c cub3d/src/key_hook.c cub3d/src/position.c cub3d/src/directions.c
 
@@ -29,7 +30,7 @@ $(NAME): $(LIBFT) $(MINILIBX) $(OBJ)
 	@echo "$(RED)[ATTENTION] REMOVE DEV_FLAGS BEFORE SHIPPING$(ENDCOLOR)"
 
 bonus: $(LIBFT) $(MINILIBX) $(BONUS_OBJ)
-	$(CC) $(DEV_FLAGS) $(BONUS_OBJ) $(MINILIBX) $(LIBFT) $(LINKS) -o cub3D_bonus
+	$(CC) $(DEV_FLAGS) $(BONUS_OBJ) $(MINILIBX) $(LIBFT) $(LINKS) -o $(BONUS_NAME)
 	@echo "$(RED)[ATTENTION] REMOVE DEV_FLAGS BEFORE SHIPPING$(ENDCOLOR)"
 
 $(LIBFT):
@@ -49,19 +50,14 @@ debug: $(NAME)
 
 clean:
 	rm -f $(OBJ)
-	make clean -C libft/
-
-clean_bonus:
 	rm -f $(BONUS_OBJ)
 	make clean -C libft/
 
 fclean: clean
 	rm -f $(NAME)
+	rm -f $(BONUS_NAME)
 	make fclean -C libft/
 
-fclean_bonus: clean_bonus
-	rm -f cub3D_bonus
-	make fclean -C libft/
 re: fclean all
 
 exec2: re $(NAME)
