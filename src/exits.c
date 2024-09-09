@@ -18,6 +18,10 @@ void	clear_textures(t_game *game)
 	mlx_destroy_image(game->mlx, game->textures[SOUTH].img);
 	mlx_destroy_image(game->mlx, game->textures[EAST].img);
 	mlx_destroy_image(game->mlx, game->textures[WEST].img);
+	mlx_destroy_image(game->mlx, game->weapon_sprites.frame1.img);
+	mlx_destroy_image(game->mlx, game->weapon_sprites.frame2.img);
+	mlx_destroy_image(game->mlx, game->weapon_sprites.frame3.img);
+	mlx_destroy_image(game->mlx, game->weapon_sprites.frame4.img);
 }
 
 void	free_map(t_map *map)
