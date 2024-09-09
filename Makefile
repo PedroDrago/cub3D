@@ -1,6 +1,6 @@
 NAME = cub3D
 
-SRC = src/main.c src/walk.c src/turn.c src/movement_utils.c src/raycasting.c src/render.c src/utils.c src/textures.c src/minimap.c src/parser/ft_split_charset.c src/parser/file.c src/parser/metadata.c src/parser/parser.c src/parser/read.c src/parser/parser_utils.c src/parser/validation.c src/exits.c src/print_utils.c src/dda.c src/parser/parser_utils2.c src/parser/read2.c src/camera.c src/game_loop.c src/key_hook.c src/position.c src/directions.c
+SRC = cub3d/src/main.c cub3d/src/walk.c cub3d/src/turn.c cub3d/src/movement_utils.c cub3d/src/raycasting.c cub3d/src/render.c cub3d/src/utils.c cub3d/src/textures.c cub3d/src/parser/ft_split_charset.c cub3d/src/parser/file.c cub3d/src/parser/metadata.c cub3d/src/parser/parser.c cub3d/src/parser/read.c cub3d/src/parser/parser_utils.c cub3d/src/parser/validation.c cub3d/src/exits.c cub3d/src/print_utils.c cub3d/src/dda.c cub3d/src/parser/parser_utils2.c cub3d/src/parser/read2.c cub3d/src/camera.c cub3d/src/game_loop.c cub3d/src/key_hook.c cub3d/src/position.c cub3d/src/directions.c
 
 
 OBJ = $(SRC:.c=.o)
