@@ -25,6 +25,8 @@
 # define NORTH 1
 # define EAST 2
 # define WEST 3
+# define OPEN 4
+# define CLOSED 5
 # define S_WIDTH 1280
 # define S_HEIGHT 720
 # define RGB_RED 0xFF0000
@@ -37,10 +39,12 @@
 # define RGB_LIGHT_BLUE 0x87CEFA
 # define LEFT 65361
 # define RIGHT 65363
+# define SPACE 32
 # define W 119
 # define A 97
 # define S 115
 # define D 100
+# define E 101
 # define ESC 65307
 # define I_W 0
 # define I_A 1
@@ -48,6 +52,8 @@
 # define I_D 3
 # define I_LEFT 4
 # define I_RIGHT 5
+# define I_OPEN 6
+# define I_CLOSED 7
 # define RATE 3
 
 typedef struct s_texture
@@ -152,8 +158,10 @@ typedef	struct s_sprite
 
 typedef struct s_game
 {
+	char	*open_door_texture;
+	char	*closed_door_texture;
 	int				keys[20];
-	t_data			textures[4];
+	t_data			textures[6];
 	t_sprite		weapon_sprites;
 	int				texture_index;
 	t_camera		camera;
@@ -241,4 +249,7 @@ void				set_east(t_camera *camera);
 void				set_west(t_camera *camera);
 
 int					game_loop(t_game *game);
+void	ft_floodfill(char **map, int i, int j, t_vector_i dimensions);
+char	**duplicate_map_bordered(char **map, int height, int width);
+int	left_click(int button, int x, int y, t_game *game);
 #endif

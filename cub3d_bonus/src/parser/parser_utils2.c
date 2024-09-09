@@ -18,6 +18,8 @@ int	is_invalid_char(char c)
 		&& c != '0'
 		&& c != 'N'
 		&& c != 'S'
+		&& c != 'O'
+		&& c != 'C'
 		&& c != 'E'
 		&& c != 'W'
 		&& c != ' ');

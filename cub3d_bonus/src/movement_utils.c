@@ -14,7 +14,7 @@
 
 int	is_empty_tile(char c)
 {
-	return (c == '0' || c == 'P');
+	return (c == '0' || c == 'P' || c == 'O');
 }
 
 int	get_diagonal_dir(t_vector_d pos, t_vector_d fut_pos)

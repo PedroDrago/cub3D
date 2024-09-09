@@ -20,6 +20,8 @@ void	get_sprite(t_line *line, t_game *game)
 		line->texture = &game->textures[1];
 	else if (line->color == WEST)
 		line->texture = &game->textures[2];
+	else if (line->color == CLOSED)
+		line->texture = &game->textures[CLOSED];
 	else
 		line->texture = &game->textures[3];
 }

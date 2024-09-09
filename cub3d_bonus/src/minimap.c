@@ -65,10 +65,13 @@ void	draw_map(t_game *game, t_data *tile)
 		while (game->map.mini_map[data.i][data.j])
 		{
 			if (game->map.mini_map[data.i][data.j] == ' '
-				|| game->map.mini_map[data.i][data.j] == '0')
+				|| game->map.mini_map[data.i][data.j] == '0'
+				|| game->map.mini_map[data.i][data.j] == 'O')
 				draw_square(tile, data.vec, RGB_WHITE, data.square_side);
 			else if (game->map.mini_map[data.i][data.j] == '1')
 				draw_square(tile, data.vec, RGB_PURPLE, data.square_side);
+			else if (game->map.mini_map[data.i][data.j] == 'C')
+				draw_square(tile, data.vec, RGB_BROWN, data.square_side);
 			else
 				draw_square(tile, data.vec, RGB_GREEN, data.square_side);
 			data.j++;
