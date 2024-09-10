@@ -8,4 +8,3 @@ Version: 10
 - [ ] Mouse can bug hard the PC (inputs are limited to the game, PC may seem stuck)
 - [ ] Sprites
 - [ ] `mlx_mouse_hide()` leak
-- [ ] Refactor header files to remove unused/inexistent stuff
