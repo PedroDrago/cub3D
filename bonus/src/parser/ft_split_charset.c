@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "../../includes/cub3d.h"
 
 char	*split_string(char *str, int start, int end)
 {

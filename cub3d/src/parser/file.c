@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
-#include <stdio.h>
 
 int	check_extension(char *file)
 {
