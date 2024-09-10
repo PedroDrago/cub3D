@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-#include <stdio.h>
 
 int	key_hook_down(int key, t_game *game)
 {
