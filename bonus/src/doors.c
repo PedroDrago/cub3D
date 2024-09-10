@@ -41,6 +41,7 @@ int	get_cam_pos(t_game *game, t_vector_i *pos)
 	return (1);
 }
 
+// FIX: rename this to validate_doors
 int	test(t_game *game, t_vector_i pos)
 {
 	char		**copy_map;
