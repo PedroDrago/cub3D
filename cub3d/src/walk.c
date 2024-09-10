@@ -41,12 +41,10 @@ void	walk_forward(t_camera *cam, char **map)
 void	walk_backwards(t_camera *cam, char **map)
 {
 	t_vector_d	fut_pos;
-	int			curr_x;
 	int			curr_y;
 
 	fut_pos.x = cam->pos.x - cam->dir.x * cam->mov_speed;
 	fut_pos.y = cam->pos.y - cam->dir.y * cam->mov_speed;
-	curr_x = (int)(cam->pos.x);
 	curr_y = (int)(cam->pos.y);
 	if (!is_empty_tile(map[(int)(fut_pos.x + 0.2)][curr_y])
 		|| !is_empty_tile(map[(int)(fut_pos.x - 0.2)][curr_y]))
