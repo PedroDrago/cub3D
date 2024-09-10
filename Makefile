@@ -27,11 +27,11 @@ all: $(NAME)
 bonus: $(BONUS_NAME)
 
 $(NAME): $(LIBFT) $(MINILIBX) $(OBJ)
-	$(CC) $(DEV_FLAGS) $(OBJ) $(MINILIBX) $(LIBFT) $(LINKS) -o $(NAME)
+	$(CC) $(FLAGS) $(OBJ) $(MINILIBX) $(LIBFT) $(LINKS) -o $(NAME)
 	@echo "$(RED)[ATTENTION] REMOVE DEV_FLAGS BEFORE SHIPPING$(ENDCOLOR)"
 
 $(BONUS_NAME): $(LIBFT) $(MINILIBX) $(BONUS_OBJ)
-	$(CC) $(DEV_FLAGS) $(BONUS_OBJ) $(MINILIBX) $(LIBFT) $(LINKS) -o $(BONUS_NAME)
+	$(CC) $(FLAGS) $(BONUS_OBJ) $(MINILIBX) $(LIBFT) $(LINKS) -o $(BONUS_NAME)
 	@echo "$(RED)[ATTENTION] REMOVE DEV_FLAGS BEFORE SHIPPING$(ENDCOLOR)"
 
 $(LIBFT):
@@ -41,7 +41,7 @@ $(MINILIBX):
 	make -C $(MINILIBX_DIR)
 
 .c.o:
-	$(CC) $(DEV_FLAGS) -c $< -o $@
+	$(CC) $(FLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJ)

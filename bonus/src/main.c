@@ -14,6 +14,8 @@
 
 int	mouse_hook(int x, int y, t_game *game)
 {
+	(void) y;
+
 	if (x > S_WIDTH / 2)
 		slowly_rotate_right(&game->camera);
 	else if (x < S_WIDTH / 2)
