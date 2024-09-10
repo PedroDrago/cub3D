@@ -28,7 +28,7 @@ void	init_textures(t_game *game)
 	load_texture(game, &game->textures[SOUTH], game->map.south_path);
 	load_texture(game, &game->textures[EAST], game->map.east_path);
 	load_texture(game, &game->textures[WEST], game->map.west_path);
-	load_texture(game, &game->textures[CLOSED],"./assets/wood.xpm");
+	load_texture(game, &game->textures[CLOSED], "./assets/wood.xpm");
 	load_texture(game, &game->weapon_sprites.frame1,
 		"./assets/weapon/sprite1.xpm");
 	load_texture(game, &game->weapon_sprites.frame2,

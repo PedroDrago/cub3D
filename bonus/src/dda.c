@@ -86,12 +86,9 @@ void	digital_diferencial_analysis(t_game *game, t_ray *ray, t_line *line)
 		}
 		if (game->map.map[ray->map.x][ray->map.y] == '1')
 			calculate_hit(ray, line);
-		else if(game->map.map[ray->map.x][ray->map.y] == '0')
-		{
+		else if (game->map.map[ray->map.x][ray->map.y] == '0')
 			ray->hit = 0;
-			line->color = OPEN;
-		}
-		else if(game->map.map[ray->map.x][ray->map.y] == 'C')
+		else if (game->map.map[ray->map.x][ray->map.y] == 'C')
 		{
 			ray->hit = 1;
 			line->color = CLOSED;

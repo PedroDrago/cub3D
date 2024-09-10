@@ -148,18 +148,18 @@ typedef struct s_camera
 	t_vector_d		plane;
 }					t_camera;
 
-typedef	struct s_sprite
+typedef struct s_sprite
 {
 	t_data			frame1;
 	t_data			frame2;
 	t_data			frame3;
 	t_data			frame4;
-}				t_sprite;
+}					t_sprite;
 
 typedef struct s_game
 {
-	char	*open_door_texture;
-	char	*closed_door_texture;
+	char			*open_door_texture;
+	char			*closed_door_texture;
 	int				keys[20];
 	t_data			textures[6];
 	t_sprite		weapon_sprites;
@@ -194,7 +194,8 @@ void				dda_setup(t_game *game, t_ray *ray);
 void				setup_raycasting(t_game *game, t_ray *ray, int x);
 void				draw_line(t_data *img, t_line line, t_ray *ray,
 						t_game *game);
-void				put_transparency(t_data *frame, t_data *texture, int x, int y);
+void				put_transparency(t_data *frame, t_data *texture, int x,
+						int y);
 void				draw_weapon(t_game *game, t_data *frame);
 void				print_split(char **splited);
 void				my_mlx_pixel_put(t_data *img, int x, int y,
@@ -249,7 +250,10 @@ void				set_east(t_camera *camera);
 void				set_west(t_camera *camera);
 
 int					game_loop(t_game *game);
-void	ft_floodfill(char **map, int i, int j, t_vector_i dimensions);
-char	**duplicate_map_bordered(char **map, int height, int width);
-int	left_click(int button, int x, int y, t_game *game);
+void				ft_floodfill(char **map, int i, int j,
+						t_vector_i dimensions);
+char				**duplicate_map_bordered(char **map, int height, int width);
+int					left_click(int button, int x, int y, t_game *game);
+
+int					toggle_door(t_game *game);
 #endif
