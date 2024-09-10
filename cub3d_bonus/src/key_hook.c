@@ -53,7 +53,6 @@ int	toggle_door(t_game *game)
 	pos.x = (int)(game->camera.pos.x);
 	pos.y = (int)(game->camera.pos.y);
 
-	printf("AAAA\n");
 	if (!get_cam_pos(game, &pos))
 		return (1);
 	if (game->map.map[pos.x][pos.y] == 'O')
