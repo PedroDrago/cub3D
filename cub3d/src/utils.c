@@ -12,19 +12,14 @@
 
 #include "../includes/cub3d.h"
 
-void	*ft_memset(void *s, int c, size_t n)
+void	free_split(char **splited)
 {
-	size_t	count;
-	char	*ptr;
+	int	i;
 
-	count = 0;
-	ptr = (char *) s;
-	while (count < n)
-	{
-		ptr[count] = c;
-		count++;
-	}
-	return (s);
+	i = 0;
+	while (splited && splited[i])
+		free(splited[i++]);
+	free(splited);
 }
 
 int	split_len(char **splited)
