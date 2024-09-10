@@ -21,6 +21,9 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+# ifndef SENSE
+#  define SENSE 8
+# endif
 # define SOUTH 0
 # define NORTH 1
 # define EAST 2

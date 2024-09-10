@@ -35,7 +35,7 @@ void	slowly_rotate_right(t_camera *camera)
 	double	old_plane_x;
 	double	rot;
 
-	rot = camera->rot_speed / 35;
+	rot = camera->rot_speed / SENSE;
 	old_dir_x = camera->dir.x;
 	old_plane_x = camera->plane.x;
 	camera->dir.x = camera->dir.x * cos(-rot) - camera->dir.y * sin(-rot);
@@ -68,7 +68,7 @@ void	slowly_rotate_left(t_camera *camera)
 	double	old_plane_x;
 	double	rot;
 
-	rot = camera->rot_speed / 35;
+	rot = camera->rot_speed / SENSE;
 	old_dir_x = camera->dir.x;
 	old_plane_x = camera->plane.x;
 	camera->dir.x = camera->dir.x * cos(rot) - camera->dir.y * sin(rot);

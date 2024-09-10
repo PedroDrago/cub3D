@@ -49,7 +49,7 @@ int	main(int argc, char *argv[])
 	init_camera(&game.camera, &game);
 	init_textures(&game);
 	mlx_mouse_move(game.mlx, game.win, S_WIDTH / 2, S_HEIGHT / 2);
-	mlx_mouse_hide(game.mlx, game.win);
+	// mlx_mouse_hide(game.mlx, game.win);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_hook(game.win, ButtonPress, ButtonPressMask, &left_click, &game);
 	mlx_hook(game.win, MotionNotify, PointerMotionMask, &mouse_hook, &game);
