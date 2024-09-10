@@ -34,11 +34,6 @@ char	*remove_linebreak(char *line)
 	return (line);
 }
 
-void	destroy_map_data(t_map *map_data)
-{
-	free_split(map_data->map);
-}
-
 void	init_map(t_map *map)
 {
 	map->map = NULL;

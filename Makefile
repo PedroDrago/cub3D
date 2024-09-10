@@ -19,8 +19,8 @@ GREEN=\e[32m
 ENDCOLOR=\e[0m
 
 CC = cc
-FLAGS = -Wall -Wextra -Werror -ggdb3
-DEV_FLAGS = -Wall -Wextra -ggdb3
+FLAGS = -Wall -Wextra -Werror 
+DEV_FLAGS = -Wall -Wextra -g -ffunction-sections -Wl,--gc-sections -Wl,--print-gc-sections
 
 all: $(NAME)
 
