@@ -248,7 +248,6 @@ void walk_forward(t_camera *camera, char **map, char **minimap)
         camera->pos.y = fut_pos.y;
 	else if (camera->dir.y < 0.2 && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.2)] ))
         camera->pos.y = fut_pos.y;
-	update_map(minimap, fut_pos, curr_x, curr_y);
 }
 
 void walk_backwards(t_camera *camera, char **map, char **minimap)
@@ -277,7 +276,6 @@ void walk_backwards(t_camera *camera, char **map, char **minimap)
         camera->pos.y = fut_pos.y;
 	else if (camera->dir.y < 0.2 && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.2)]) && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.2)]) )
         camera->pos.y = fut_pos.y;
-	update_map(minimap, fut_pos, curr_x, curr_y);
 }
 
 void walk_left(t_camera *camera, char **map, char **minimap)
@@ -306,7 +304,6 @@ void walk_left(t_camera *camera, char **map, char **minimap)
         camera->pos.y = fut_pos.y;
 	else if (camera->dir.y < 0.2 && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.2)]) && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.2)]))
         camera->pos.y = fut_pos.y;
-	update_map(minimap, fut_pos, curr_x, curr_y);
 }
 
 void walk_right(t_camera *camera, char **map, char **minimap)
@@ -335,7 +332,6 @@ void walk_right(t_camera *camera, char **map, char **minimap)
         camera->pos.y = fut_pos.y;
 	else if (camera->dir.y < 0.2 && is_empty_tile(map[curr_x][(int)(fut_pos.y - 0.2)]) && is_empty_tile(map[curr_x][(int)(fut_pos.y + 0.2)]) )
         camera->pos.y = fut_pos.y;
-	update_map(minimap, fut_pos, curr_x, curr_y);
 }
 ```
 
@@ -487,6 +483,7 @@ int game_loop(t_game *game)
 	}
 	x = 0;
 	update_camera(game);
+	mlx_mouse_move(game->mlx, game->win, S_WIDTH / 2, S_HEIGHT / 2);
 	frame.img = mlx_new_image(game->mlx, S_WIDTH, S_HEIGHT);
 	frame.addr = mlx_get_data_addr(frame.img, &frame.bits_per_pixel, &frame.line_length, &frame.endian);
 	draw_background(&frame, game->map.ceiling_color, game->map.floor_color);

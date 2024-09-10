@@ -5,4 +5,6 @@ Version: 10
 ### General
 - [ ] The speed variable needs to be adjusted (specific for 42 PC)
 - [ ] The resolution may be adjusted as well (specific for 42 PC)
-- [ ] Character get stucks in the wall sometimes (needs to walk back to unstuck).
+- [ ] Mouse can bug hard the PC (inputs are limited to the game, PC may seem stuck)
+- [ ] Sprites
+- [ ] `mlx_mouse_hide()` leak

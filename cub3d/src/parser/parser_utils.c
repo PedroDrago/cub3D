@@ -1,57 +1,51 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils2.c                                    :+:      :+:    :+:   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pdrago <pdrago@student.42.rio>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 20:39:01 by pdrago            #+#    #+#             */
-/*   Updated: 2024/09/04 20:39:35 by pdrago           ###   ########.fr       */
+/*   Updated: 2024/09/04 20:40:04 by pdrago           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-int	is_invalid_char(char c)
+int	is_empty_line(char *line)
 {
-	return (c != '1'
-		&& c != '0'
-		&& c != 'N'
-		&& c != 'S'
-		&& c != 'E'
-		&& c != 'W'
-		&& c != ' ');
-}
+	int	i;
 
-int	is_player_char(char c)
-{
-	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+	if (ft_strlen(line) == 0)
 		return (1);
-	return (0);
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] != ' ' && line[i] != '\n')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
-char	**duplicate_map(char **map, int height)
+char	*remove_linebreak(char *line)
 {
-	char	**copy_map;
-	int		i;
-
-	copy_map = malloc(sizeof(char *) * (height + 1));
-	if (!copy_map)
-		return (NULL);
-	i = -1;
-	while (++i < height)
-		copy_map[i] = ft_strdup(map[i]);
-	copy_map[i] = NULL;
-	return (copy_map);
+	line[ft_strlen(line) - 1] = '\0';
+	return (line);
 }
 
-void	error_exit(int status, char *msg)
+void	init_map(t_map *map)
 {
-	ft_putstr_fd(msg, 2);
-	exit(status);
-}
-
-void	destroy_map(t_map *map)
-{
-	free_split(map->map);
+	map->map = NULL;
+	map->file_width = 0;
+	map->file_height = 0;
+	map->width = 0;
+	map->height = 0;
+	map->map_file_array = NULL;
+	map->east_path = NULL;
+	map->west_path = NULL;
+	map->south_path = NULL;
+	map->north_path = NULL;
+	map->ceiling_rgb = NULL;
+	map->floor_rgb = NULL;
 }

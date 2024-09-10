@@ -23,7 +23,6 @@ void	clear_textures(t_game *game)
 void	free_map(t_map *map)
 {
 	free_split(map->map);
-	free_split(map->mini_map);
 	free_split(map->map_file_array);
 	free(map->north_path);
 	free(map->south_path);

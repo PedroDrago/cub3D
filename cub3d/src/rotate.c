@@ -26,7 +26,6 @@ void	rotate_right(t_camera *camera)
 	camera->plane.x = camera->plane.x * cos(-rot) - (camera->plane.y
 			* sin(-rot));
 	camera->plane.y = old_plane_x * sin(-rot) + camera->plane.y * cos(-rot);
-	return ;
 }
 
 void	rotate_left(t_camera *camera)
@@ -42,5 +41,4 @@ void	rotate_left(t_camera *camera)
 	camera->dir.y = old_dir_x * sin(rot) + camera->dir.y * cos(rot);
 	camera->plane.x = camera->plane.x * cos(rot) - (camera->plane.y * sin(rot));
 	camera->plane.y = old_plane_x * sin(rot) + camera->plane.y * cos(rot);
-	return ;
 }

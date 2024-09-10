@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   movement_utils.c                                   :+:      :+:    :+:   */
+/*   parser_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pdrago <pdrago@student.42.rio>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/03 20:13:51 by pdrago            #+#    #+#             */
-/*   Updated: 2024/09/03 20:13:52 by pdrago           ###   ########.fr       */
+/*   Created: 2024/09/04 20:39:01 by pdrago            #+#    #+#             */
+/*   Updated: 2024/09/04 20:39:35 by pdrago           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
-int	is_empty_tile(char c)
+int	is_player_char(char c)
 {
-	return (c == '0' || c == 'P');
+	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+		return (1);
+	return (0);
 }
 
-int	get_diagonal_dir(t_vector_d pos, t_vector_d fut_pos)
+void	error_exit(int status, char *msg)
 {
-	if (pos.x < fut_pos.x && pos.y < fut_pos.y)
-		return (2);
-	else if (pos.x < fut_pos.x && pos.y > fut_pos.y)
-		return (1);
-	else if (pos.x > fut_pos.x && pos.y > fut_pos.y)
-		return (3);
-	else if (pos.x > fut_pos.x && pos.y < fut_pos.y)
-		return (4);
-	return (0);
+	ft_putstr_fd(msg, 2);
+	exit(status);
 }
