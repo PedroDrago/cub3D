@@ -7,3 +7,4 @@ Version: 10
 - [ ] The resolution may be adjusted as well (specific for 42 PC)
 - [ ] Mouse can bug hard the PC (inputs are limited to the game, PC may seem stuck)
 - [ ] Sprites
+- [ ] `mlx_mouse_hide()` leak
