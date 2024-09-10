@@ -14,8 +14,8 @@
 
 void	update_map(char **map, t_vector_d fut_pos, int curr_x, int curr_y)
 {
-	if (curr_x != fut_pos.x || curr_y != fut_pos.y
-		&& is_empty_tile(map[(int)curr_x][(int)curr_y]))
+	if (curr_x != fut_pos.x || (curr_y != fut_pos.y
+			&& is_empty_tile(map[(int)curr_x][(int)curr_y])))
 	{
 		map[(int)curr_x][(int)curr_y] = '0';
 		map[(int)fut_pos.x][(int)fut_pos.y] = 'P';

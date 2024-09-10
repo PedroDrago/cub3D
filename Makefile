@@ -43,24 +43,24 @@ $(MINILIBX):
 .c.o:
 	$(CC) $(DEV_FLAGS) -c $< -o $@
 
-exec: $(NAME)
-	./$(NAME)
-
-debug: $(NAME)
-	lldb ./$(NAME)
-
 clean:
 	rm -f $(OBJ)
+	make clean -C libft/
+
+clean_bonus:
 	rm -f $(BONUS_OBJ)
 	make clean -C libft/
 
 fclean: clean
 	rm -f $(NAME)
+	make fclean -C libft/
+
+fclean_bonus: clean
 	rm -f $(BONUS_NAME)
 	make fclean -C libft/
 
 re: fclean all
 
-exec2: re $(NAME)
-	./cub3D ./maps/default.cub
-.PHONY: clean fclean re all exec debug
+re_bonus: fclean bonus
+
+.PHONY: clean clean_bonus fclean fclean_bonus we re_bonus all bonus
