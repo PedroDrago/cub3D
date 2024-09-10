@@ -20,7 +20,7 @@ ENDCOLOR=\e[0m
 
 CC = cc
 FLAGS = -Wall -Wextra -Werror 
-DEV_FLAGS = -Wall -Wextra -g -ffunction-sections -Wl,--gc-sections -Wl,--print-gc-sections
+DEV_FLAGS = -Wall -Wextra -ggdb3 -ffunction-sections -Wl,--gc-sections -Wl,--print-gc-sections
 
 all: $(NAME)
 
