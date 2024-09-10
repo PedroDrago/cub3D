@@ -16,7 +16,8 @@ int	main(int argc, char *argv[])
 {
 	t_game	game;
 
-	(void) argc;
+	if (argc < 2)
+		return (1);
 	game.should_end = 0;
 	game.is_shooting = 0;
 	zero_keys_array(&game);
