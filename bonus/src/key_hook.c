@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+#include <stdio.h>
 
 int	key_hook_down(int key, t_game *game)
 {
@@ -31,6 +32,8 @@ int	key_hook_down(int key, t_game *game)
 		game->keys[I_LEFT] = 1;
 	if (key == RIGHT)
 		game->keys[I_RIGHT] = 1;
+	if (key == 101)
+		game->is_shooting = 1;
 	if (key == SPACE)
 		if (!toggle_door(game))
 			clean_exit(game);
