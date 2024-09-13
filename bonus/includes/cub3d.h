@@ -56,7 +56,7 @@
 # define I_RIGHT 5
 # define I_OPEN 6
 # define I_CLOSED 7
-# define RATE 2
+# define RATE 3
 
 typedef struct s_texture
 {

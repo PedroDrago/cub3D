@@ -111,6 +111,5 @@ void	draw_weapon(t_game *game, t_data *frame)
 			weapon_frame_data = &game->weapon_sprites.frame4;
 		}
 	}
-	// FIX: Run this only 5 times at the start, one for each sprite
 	put_transparency(frame, weapon_frame_data, S_WIDTH / 1.8, S_HEIGHT / 1.5);
 }
