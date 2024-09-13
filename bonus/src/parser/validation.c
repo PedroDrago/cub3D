@@ -19,6 +19,8 @@ int	is_invalid_map_char(char c)
 		&& c != 'W'
 		&& c != 'O'
 		&& c != 'C'
+		&& c != 'L'
+		&& c != 'Q'
 		&& c != 'S'
 		&& c != '0'
 		&& c != '1');
@@ -56,7 +58,7 @@ void	ft_floodfill(char **map, int i, int j, t_vector_i dimensions)
 {
 	if (i < 0 || i >= dimensions.x
 		|| j < 0 || j >= dimensions.y
-		|| (map[i][j] != '0' && map[i][j] != 'O'))
+		|| (map[i][j] != '0' && map[i][j] != 'O' && map[i][j] != 'L'))
 		return ;
 	map[i][j] = '2';
 	ft_floodfill(map, i + 1, j, dimensions);

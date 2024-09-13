@@ -69,7 +69,7 @@ int	is_valid_rgb(char **rgb)
 		j = 0;
 		while (rgb[i][j])
 		{
-			if (ft_isalpha(rgb[i][j]))
+			if (!ft_isdigit(rgb[i][j]))
 				return (0);
 			j++;
 		}

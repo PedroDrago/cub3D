@@ -23,6 +23,8 @@ void	clear_textures(t_game *game)
 	mlx_destroy_image(game->mlx, game->weapon_sprites.frame2.img);
 	mlx_destroy_image(game->mlx, game->weapon_sprites.frame3.img);
 	mlx_destroy_image(game->mlx, game->weapon_sprites.frame4.img);
+	mlx_destroy_image(game->mlx, game->lucas.img);
+	mlx_destroy_image(game->mlx, game->frame.img);
 }
 
 void	free_map(t_map *map)

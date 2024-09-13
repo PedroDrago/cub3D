@@ -66,7 +66,7 @@ void	part3(t_game *game)
 	if (!files_exist(&game->map))
 	{
 		free_map(&game->map);
-		error_exit(1, "Error\n Invalid File\n");
+		error_exit(1, "Error\nInvalid File\n");
 	}
 }
 

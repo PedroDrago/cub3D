@@ -22,6 +22,10 @@ void	get_sprite(t_line *line, t_game *game)
 		line->texture = &game->textures[2];
 	else if (line->color == CLOSED)
 		line->texture = &game->textures[CLOSED];
+	else if (line->color == LUCAS)
+		line->texture = &game->lucas;
+	else if (line->color == FRAME)
+		line->texture = &game->frame;
 	else
 		line->texture = &game->textures[3];
 }

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+#include <stdio.h>
 
 int	mouse_hook(int x, int y, t_game *game)
 {
@@ -27,10 +28,17 @@ int	left_click(int button, int x, int y, t_game *game)
 {
 	(void)x;
 	(void)y;
-	if (button == 1)
+	if (button == 4)
+		rotate_left(&game->camera);
+	else if (button == 5)
+		rotate_right(&game->camera);
+	else if (button == 1)
 		game->is_shooting = 1;
 	return (0);
 }
+
+// mlx_mouse_move(game.mlx, game.win, S_WIDTH / 2, S_HEIGHT / 2);
+// mlx_hook(game.win, MotionNotify, PointerMotionMask, &mouse_hook, &game);
 
 int	main(int argc, char *argv[])
 {

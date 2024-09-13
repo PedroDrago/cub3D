@@ -67,6 +67,25 @@ void	calculate_hit(t_ray *ray, t_line *line)
 	}
 }
 
+void	dda2(t_game *game, t_ray *ray, t_line *line)
+{
+	if (game->map.map[ray->map.x][ray->map.y] == 'C')
+	{
+		ray->hit = 1;
+		line->color = CLOSED;
+	}
+	else if (game->map.map[ray->map.x][ray->map.y] == 'L')
+	{
+		ray->hit = 1;
+		line->color = LUCAS;
+	}
+	else if (game->map.map[ray->map.x][ray->map.y] == 'Q')
+	{
+		ray->hit = 1;
+		line->color = FRAME;
+	}
+}
+
 void	digital_diferencial_analysis(t_game *game, t_ray *ray, t_line *line)
 {
 	dda_setup(game, ray);
@@ -88,10 +107,7 @@ void	digital_diferencial_analysis(t_game *game, t_ray *ray, t_line *line)
 			calculate_hit(ray, line);
 		else if (game->map.map[ray->map.x][ray->map.y] == '0')
 			ray->hit = 0;
-		else if (game->map.map[ray->map.x][ray->map.y] == 'C')
-		{
-			ray->hit = 1;
-			line->color = CLOSED;
-		}
+		else
+			dda2(game, ray, line);
 	}
 }

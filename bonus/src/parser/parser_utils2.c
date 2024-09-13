@@ -21,6 +21,8 @@ int	is_invalid_char(char c)
 		&& c != 'O'
 		&& c != 'C'
 		&& c != 'E'
+		&& c != 'L'
+		&& c != 'Q'
 		&& c != 'W'
 		&& c != ' ');
 }

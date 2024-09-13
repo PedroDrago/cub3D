@@ -29,6 +29,8 @@
 # define WEST 3
 # define OPEN 4
 # define CLOSED 5
+# define LUCAS 6
+# define FRAME 7
 # define S_WIDTH 1280
 # define S_HEIGHT 720
 # define RGB_RED 0xFF0000
@@ -165,6 +167,8 @@ typedef struct s_game
 	int				keys[20];
 	t_data			textures[6];
 	t_sprite		weapon_sprites;
+	t_data			lucas;
+	t_data			frame;
 	int				texture_index;
 	t_camera		camera;
 	t_map			map;

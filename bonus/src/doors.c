@@ -25,16 +25,19 @@ int	get_cam_pos(t_game *game, t_vector_i *pos)
 	player.x = game->camera.pos.x;
 	player.y = game->camera.pos.y;
 	if (game->map.map[player.x + 1][player.y] == 'C' || game->map.map[player.x
-		+ 1][player.y] == 'O')
+		+ 1][player.y] == 'O' || game->map.map[player.x + 1][player.y] == 'L')
 		set_cam_pos(pos, player.x + 1, player.y);
 	else if (game->map.map[player.x - 1][player.y] == 'C'
-		|| game->map.map[player.x - 1][player.y] == 'O')
+		|| game->map.map[player.x - 1][player.y] == 'O'
+		|| game->map.map[player.x - 1][player.y] == 'L')
 		set_cam_pos(pos, player.x - 1, player.y);
 	else if (game->map.map[player.x][player.y + 1] == 'C'
-		|| game->map.map[player.x][player.y + 1] == 'O')
+		|| game->map.map[player.x][player.y + 1] == 'O'
+		|| game->map.map[player.x][player.y + 1] == 'L')
 		set_cam_pos(pos, player.x, player.y + 1);
 	else if (game->map.map[player.x][player.y - 1] == 'C'
-		|| game->map.map[player.x][player.y - 1] == 'O')
+		|| game->map.map[player.x][player.y - 1] == 'O'
+		|| game->map.map[player.x][player.y - 1] == 'L')
 		set_cam_pos(pos, player.x, player.y - 1);
 	else
 		return (0);
@@ -42,7 +45,7 @@ int	get_cam_pos(t_game *game, t_vector_i *pos)
 }
 
 // FIX: rename this to validate_doors
-int	test(t_game *game, t_vector_i pos)
+int	validate_doors(t_game *game, t_vector_i pos)
 {
 	char		**copy_map;
 	t_vector_i	dim;
@@ -76,12 +79,17 @@ int	toggle_door(t_game *game)
 	pos.y = (int)(game->camera.pos.y);
 	if (!get_cam_pos(game, &pos))
 		return (1);
-	if (game->map.map[pos.x][pos.y] == 'O')
+	else if (game->map.map[pos.x][pos.y] == 'L')
+	{
+		game->map.map[pos.x][pos.y] = '0';
+		game->map.mini_map[pos.x][pos.y] = '0';
+	}
+	else if (game->map.map[pos.x][pos.y] == 'O')
 	{
 		game->map.map[pos.x][pos.y] = 'C';
 		game->map.mini_map[pos.x][pos.y] = 'C';
 	}
 	else if (game->map.map[pos.x][pos.y] == 'C')
-		return (test(game, pos));
+		return (validate_doors(game, pos));
 	return (1);
 }
