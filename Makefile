@@ -9,9 +9,9 @@ OBJ = $(SRC:.c=.o)
 BONUS_OBJ = $(BONUS_SRC:.c=.o)
 LINKS = -lX11 -lXext -lm
 
-MINILIBX_DIR = minilibx-linux
+MINILIBX_DIR = libs/minilibx-linux
 MINILIBX = $(MINILIBX_DIR)/libmlx.a
-LIBFT_DIR = libft
+LIBFT_DIR = libs/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 RED=\e[31m
@@ -33,7 +33,7 @@ $(BONUS_NAME): $(LIBFT) $(MINILIBX) $(BONUS_OBJ)
 	$(CC) $(FLAGS) $(BONUS_OBJ) $(MINILIBX) $(LIBFT) $(LINKS) -o $(BONUS_NAME)
 
 $(LIBFT):
-	make -C libft/
+	make -C $(LIBFT_DIR)
 
 $(MINILIBX):
 	make -C $(MINILIBX_DIR)
